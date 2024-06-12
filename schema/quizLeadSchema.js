@@ -3,6 +3,8 @@ const Joi = require("joi");
 const quizLeadSchema = Joi.object({
   name: Joi.string().min(3).max(50).required(),
   phone: Joi.string().min(10).max(20).required(),
+  mail: Joi.string(),
+  password: Joi.string(),
   tag: Joi.string().empty(""),
   lang: Joi.string().empty(""),
   crmId: Joi.number(),

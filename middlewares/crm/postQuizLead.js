@@ -9,8 +9,6 @@ const postQuizLead = async (req, res, _) => {
   const postRequest = [
     {
       name: `Quiz lead ${req.body.name}`,
-      // tried to set lead status, but due to automated lead categorizing it does not work properly
-      // status_id: 55468371,
       pipeline_id: 8956372,
       custom_fields_values: [
         {
@@ -33,7 +31,7 @@ const postQuizLead = async (req, res, _) => {
           field_name: "Логін до платформи",
           values: [
             {
-              value: req.body.mail,
+              value: req.body.mail || "",
             },
           ],
         },
@@ -42,7 +40,7 @@ const postQuizLead = async (req, res, _) => {
           field_name: "Пароль до платформи",
           values: [
             {
-              value: req.body.password,
+              value: req.body.password || "",
             },
           ],
         },
@@ -56,7 +54,9 @@ const postQuizLead = async (req, res, _) => {
                   ? "Англійська"
                   : req.body.lang === "de"
                   ? "Німецька"
-                  : "Польська",
+                  : req.body.lang === "pl"
+                  ? "Польська"
+                  : "",
             },
           ],
         },

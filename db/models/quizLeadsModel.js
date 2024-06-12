@@ -10,6 +10,12 @@ const quizLeadSchema = new Schema(
       type: String,
       required: [true, "Set phone number"],
     },
+    mail: {
+      type: String,
+    },
+    password: {
+      type: String,
+    },
     tag: { type: String },
     lang: {
       type: String,
