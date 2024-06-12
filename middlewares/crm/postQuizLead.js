@@ -28,6 +28,38 @@ const postQuizLead = async (req, res, _) => {
             },
           ],
         },
+        {
+          field_id: 1809275,
+          field_name: "Логін до платформи",
+          values: [
+            {
+              value: req.body.mail,
+            },
+          ],
+        },
+        {
+          field_id: 1809273,
+          field_name: "Пароль до платформи",
+          values: [
+            {
+              value: req.body.password,
+            },
+          ],
+        },
+        {
+          field_id: 1818295,
+          field_name: "Мова для вивчення",
+          values: [
+            {
+              value:
+                req.body.lang === "en"
+                  ? "Англійська"
+                  : req.body.lang === "de"
+                  ? "Німецька"
+                  : "Польська",
+            },
+          ],
+        },
       ],
       _embedded: {
         tags: [{ name: "Лід з сайту" }, { name: req.body.tag }],
