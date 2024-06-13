@@ -72,6 +72,15 @@ const updateLeadById = async (req, res, next) => {
       name: req.body.name,
       custom_fields_values: [
         {
+          field_id: 1819781,
+          field_name: "Для кого навчання",
+          values: [
+            {
+              value: req.body.adult ? "Для себе" : "Для дитини",
+            },
+          ],
+        },
+        {
           field_id: 1819779,
           field_name: "Вік",
           values: [
