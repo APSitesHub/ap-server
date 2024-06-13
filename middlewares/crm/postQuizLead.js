@@ -12,21 +12,6 @@ const postQuizLead = async (req, res, _) => {
       pipeline_id: 8956372,
       custom_fields_values: [
         {
-          field_id: 557724,
-          field_name: "Примітка",
-          values: [
-            {
-              value: `Для кого: ${req.body.adult ? "Для себе" : "Для дитини"}
-Років${!req.body.adult ? " дитині" : ""}: ${req.body.age}
-Мова: ${req.body.lang} 
-Рівень: ${req.body.knowledge}
-Бажає занять на тиждень: ${req.body.quantity}
-Найскладніше дається: ${req.body.difficulties} 
-Цікавиться: ${req.body.interests}`,
-            },
-          ],
-        },
-        {
           field_id: 1809275,
           field_name: "Логін до платформи",
           values: [
@@ -60,6 +45,28 @@ const postQuizLead = async (req, res, _) => {
             },
           ],
         },
+        {
+          field_id: 1798420,
+          field_name: "Ваш рівень іноземної мови",
+          values: [
+            {
+              value:
+                req.body.knowledge === "a0"
+                  ? "Beginner ( нульовий)"
+                  : req.body.knowledge === "a1"
+                  ? "Elementary (початковий рівень)"
+                  : req.body.knowledge === "a2"
+                  ? "Pre-intermediate (нижчий за середній)"
+                  : req.body.knowledge === "b1"
+                  ? "Intermediate (середній)"
+                  : req.body.knowledge === "b2"
+                  ? "Upper-intermediate (вище за середній)"
+                  : req.body.knowledge === "c1"
+                  ? "Advanced (високий)"
+                  : "",
+            },
+          ],
+        },
       ],
       _embedded: {
         tags: [{ name: "Лід з сайту" }, { name: req.body.tag }],
@@ -74,6 +81,78 @@ const postQuizLead = async (req, res, _) => {
                   {
                     value: req.body.phone,
                     enum_code: "WORK",
+                  },
+                ],
+              },
+              {
+                field_id: 1819825,
+                field_name: "Час в тиждень на навчання",
+                values: [
+                  {
+                    value: req.body.quantity || "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819789,
+                field_name: "Наскладніше у вивченні",
+                values: [
+                  {
+                    value: req.body.difficulties || "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819787,
+                field_name: "Цікавить найбільше",
+                values: [
+                  {
+                    value: req.body.interests || "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819781,
+                field_name: "Для кого навчання",
+                values: [
+                  {
+                    value: req.body.adult ? "Для себе" : "Для дитини",
+                  },
+                ],
+              },
+              {
+                field_id: 1819779,
+                field_name: "Вік",
+                values: [
+                  {
+                    value: req.body.adult ? req.body.age : "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819821,
+                field_name: "Скільки років дитині",
+                values: [
+                  {
+                    value: req.body.adult ? "" : req.body.age,
+                  },
+                ],
+              },
+              {
+                field_id: 1819783,
+                field_name: "Рівень мови",
+                values: [
+                  {
+                    value: req.body.adult ? req.body.knowledge : "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819823,
+                field_name: "Рівень англ дитини",
+                values: [
+                  {
+                    value: req.body.adult ? "" : req.body.knowledge,
                   },
                 ],
               },

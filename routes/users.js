@@ -4,6 +4,7 @@ const { validateUser } = require("../schema/usersSchema");
 
 const authUser = require("../middlewares/streams/authUser");
 const checkIsAdmin = require("../middlewares/streams/checkIsAdmin");
+const updateLeadById = require("../middlewares/crm/updateLeadById");
 
 const addUser = require("../controllers/users/addUser");
 const getUser = require("../controllers/users/getUser");
@@ -30,6 +31,6 @@ router.post("/refresh", refreshUserToken);
 
 router.patch("/:id", banUser);
 
-router.put("/:id", validateUser, editUser);
+router.put("/:id", validateUser, updateLeadById, editUser);
 
 module.exports = router;
