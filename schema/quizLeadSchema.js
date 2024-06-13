@@ -8,6 +8,7 @@ const quizLeadSchema = Joi.object({
   tag: Joi.string().empty(""),
   lang: Joi.string().empty(""),
   crmId: Joi.number(),
+  contactId: Joi.number(),
   adult: Joi.bool().required(),
   age: Joi.string().required(),
   knowledge: Joi.string().required(),

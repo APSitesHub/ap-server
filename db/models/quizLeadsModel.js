@@ -22,6 +22,7 @@ const quizLeadSchema = new Schema(
       required: [true, "Set translation language"],
     },
     crmId: { type: Number },
+    contactId: { type: Number },
     adult: {
       type: Boolean,
       required: [true, "Set adult"],

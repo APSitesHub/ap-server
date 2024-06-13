@@ -184,9 +184,14 @@ const postQuizLead = async (req, res, _) => {
     const crmLead = await axios.post("api/v4/leads/complex", postRequest);
     console.log(crmLead.data[0]);
     const crmLeadId = crmLead.data[0].id;
-    return res
-      .status(201)
-      .json(await newQuizLead({ ...lead, crmId: crmLeadId }));
+    const crmContactId = crmLead.data[0].contact_id;
+    return res.status(201).json(
+      await newQuizLead({
+        ...lead,
+        crmId: crmLeadId,
+        contactId: crmContactId,
+      })
+    );
   } catch (error) {
     console.log(res.error);
     return res.status(400).json(error);
