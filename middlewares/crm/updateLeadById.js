@@ -5,7 +5,12 @@ const { getToken } = require("../../services/tokensServices");
 axios.defaults.baseURL = process.env.BASE_URL;
 
 const updateLeadById = async (req, res, next) => {
-  if (req.body.crmId) {
+  if (
+    req.body.user.crmId &&
+    req.body.user.contactId &&
+    req.body.crmId === req.body.user.crmId &&
+    req.body.contactId === req.body.user.contactId
+  ) {
     const updateRequest = {
       name: req.body.name,
       custom_fields_values: [
@@ -67,6 +72,7 @@ const updateLeadById = async (req, res, next) => {
         },
       ],
     };
+
     const updateContactRequest = {
       id: req.body.contactId,
       name: req.body.name,
@@ -134,7 +140,6 @@ const updateLeadById = async (req, res, next) => {
       );
       console.log(crm.data);
       console.log(contact.data);
-      next();
     } catch (error) {
       console.log(error);
       return res.status(400).json(error);
