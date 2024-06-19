@@ -185,8 +185,8 @@ const postQuizLead = async (req, res, _) => {
     console.log(crmLead.data[0]);
     const crmLeadId = crmLead.data[0].id;
     const crmContactId = crmLead.data[0].contact_id;
-    // const leadInfo = await axios.get(`/api/v4/leads/custom_fields/1018447`);
-    // console.log(leadInfo.data._embedded);
+    const leadInfo = await axios.get(`/api/v4/leads/${crmLeadId}`);
+    console.log(leadInfo.data);
     return res.status(201).json(
       await newQuizLead({
         ...lead,
