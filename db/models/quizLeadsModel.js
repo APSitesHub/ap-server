@@ -47,6 +47,9 @@ const quizLeadSchema = new Schema(
       type: String,
       required: [true, "Set interests"],
     },
+    leadPage: {
+      type: String,
+    },
   },
   {
     versionKey: false,

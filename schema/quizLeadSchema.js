@@ -15,6 +15,7 @@ const quizLeadSchema = Joi.object({
   quantity: Joi.string().required(),
   difficulties: Joi.string().required(),
   interests: Joi.string().required(),
+  leadPage: Joi.string(),
 });
 
 const validateQuizLead = ({ body }, res, next) => {
