@@ -25,6 +25,7 @@ const collectionsSchema = Joi.object({
   a2kids: Joi.string().empty(""),
   b1kids: Joi.string().empty(""),
   b2kids: Joi.string().empty(""),
+  с1kids: Joi.string().empty(""),
   b1kidsbeginner: Joi.string().empty(""),
   b2kidsbeginner: Joi.string().empty(""),
   a1kidsfree: Joi.string().empty(""),
