@@ -92,6 +92,15 @@ const hostKahoots = new Schema(
         deutscha2_5: String,
       },
     },
+    deutschb1: {
+      links: {
+        deutschb1_1: String,
+        deutschb1_2: String,
+        deutschb1_3: String,
+        deutschb1_4: String,
+        deutschb1_5: String,
+      },
+    },
     deutschfree: {
       links: {
         deutschfree_1: String,
@@ -135,6 +144,15 @@ const hostKahoots = new Schema(
         polskia2_3: String,
         polskia2_4: String,
         polskia2_5: String,
+      },
+    },
+    polskib1: {
+      links: {
+        polskib1_1: String,
+        polskib1_2: String,
+        polskib1_3: String,
+        polskib1_4: String,
+        polskib1_5: String,
       },
     },
     polskifree: {
@@ -228,6 +246,20 @@ const hostKahoots = new Schema(
         b1kidsbeginner_8: String,
         b1kidsbeginner_9: String,
         b1kidsbeginner_10: String,
+      },
+    },
+    b2kidsbeginner: {
+      links: {
+        b2kidsbeginner_1: String,
+        b2kidsbeginner_2: String,
+        b2kidsbeginner_3: String,
+        b2kidsbeginner_4: String,
+        b2kidsbeginner_5: String,
+        b2kidsbeginner_6: String,
+        b2kidsbeginner_7: String,
+        b2kidsbeginner_8: String,
+        b2kidsbeginner_9: String,
+        b2kidsbeginner_10: String,
       },
     },
     a1kidsfree: {

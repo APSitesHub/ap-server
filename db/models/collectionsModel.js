@@ -32,6 +32,9 @@ const collections = new Schema(
     deutscha2: {
       type: String,
     },
+    deutschb1: {
+      type: String,
+    },
     deutschfree: {
       type: String,
     },
@@ -47,6 +50,9 @@ const collections = new Schema(
     polskia2: {
       type: String,
     },
+    polskib1: {
+      type: String,
+    },
     polskifree: {
       type: String,
     },
@@ -56,6 +62,7 @@ const collections = new Schema(
     b1kids: { type: String },
     b2kids: { type: String },
     b1kidsbeginner: { type: String },
+    b2kidsbeginner: { type: String },
     a1kidsfree: { type: String },
     trials: { type: String },
     trials_de: { type: String },
