@@ -17,6 +17,9 @@ const collections = new Schema(
     b2: {
       type: String,
     },
+    c1: {
+      type: String,
+    },
     a1free: {
       type: String,
     },

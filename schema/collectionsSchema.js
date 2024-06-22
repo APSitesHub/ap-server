@@ -6,6 +6,7 @@ const collectionsSchema = Joi.object({
   a2: Joi.string().empty(""),
   b1: Joi.string().empty(""),
   b2: Joi.string().empty(""),
+  c1: Joi.string().empty(""),
   a1free: Joi.string().empty(""),
   a2free: Joi.string().empty(""),
   deutscha0: Joi.string().empty(""),

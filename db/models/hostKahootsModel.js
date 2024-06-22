@@ -47,6 +47,15 @@ const hostKahoots = new Schema(
         b2_5: String,
       },
     },
+    c1: {
+      links: {
+        c1_1: String,
+        c1_2: String,
+        c1_3: String,
+        c1_4: String,
+        c1_5: String,
+      },
+    },
     a1free: {
       links: {
         a1free_1: String,

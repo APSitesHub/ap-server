@@ -51,6 +51,16 @@ const hostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  c1: Joi.object({
+    links: Joi.object({
+      c1_1: Joi.string().empty(""),
+      c1_2: Joi.string().empty(""),
+      c1_3: Joi.string().empty(""),
+      c1_4: Joi.string().empty(""),
+      c1_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   a1free: Joi.object({
     links: Joi.object({
       a1free_1: Joi.string().empty(""),
