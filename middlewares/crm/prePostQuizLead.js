@@ -1,14 +1,15 @@
 const axios = require("axios");
 require("dotenv").config();
 const { getToken } = require("../../services/tokensServices");
-const { newQuizLead } = require("../../services/leadsServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const postQuizLead = async (req, res, _) => {
+const prePostQuizLead = async (req, res, _) => {
+  console.log("8", req.body);
+
   const postRequest = [
     {
-      name: `Quiz lead ${req.body.name}`,
+      name: `Недозаповнений лід з квізу`,
       pipeline_id: 8956372,
       custom_fields_values: [
         {
@@ -79,7 +80,7 @@ const postQuizLead = async (req, res, _) => {
                 field_name: "Work phone",
                 values: [
                   {
-                    value: req.body.phone,
+                    value: req.body.phone || "",
                     enum_code: "WORK",
                   },
                 ],
@@ -186,24 +187,18 @@ const postQuizLead = async (req, res, _) => {
     const crmLeadId = crmLead.data[0].id;
     const crmContactId = crmLead.data[0].contact_id;
     // const leadInfo = await axios.get(`/api/v4/leads/${crmLeadId}`);
-    const leadInfo = await axios.get(`/api/v4/leads/18677179`);
-    console.log(leadInfo.data);
+    const leadInfo = await axios.get(`/api/v4/leads/${crmLeadId}`);
+    console.log("leadInfo.data", leadInfo.data);
     const leadPage = leadInfo.data.custom_fields_values.find(
       (field) => field.field_name === "EngPage"
-    ).values[0].value;
+    )?.values[0]?.value;
+    console.log("leadPage", leadPage);
 
-    return res.status(201).json(
-      await newQuizLead({
-        ...lead,
-        crmId: crmLeadId,
-        contactId: crmContactId,
-        leadPage: leadPage,
-      })
-    );
+    return res.status(201).json(leadPage);
   } catch (error) {
     console.log(res.error);
     return res.status(400).json(error);
   }
 };
 
-module.exports = postQuizLead;
+module.exports = prePostQuizLead;
