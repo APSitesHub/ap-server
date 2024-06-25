@@ -186,18 +186,18 @@ const postQuizLead = async (req, res, _) => {
     const crmLeadId = crmLead.data[0].id;
     const crmContactId = crmLead.data[0].contact_id;
     // const leadInfo = await axios.get(`/api/v4/leads/${crmLeadId}`);
-    const leadInfo = await axios.get(`/api/v4/leads/18677457`);
-    console.log(leadInfo.data);
-    const leadPage = leadInfo.data.custom_fields_values.find(
-      (field) => field.field_name === "EngPage"
-    ).values[0].value;
+    // const leadInfo = await axios.get(`/api/v4/leads/18677457`);
+    // console.log(leadInfo.data);
+    // const leadPage = leadInfo.data.custom_fields_values.find(
+    //   (field) => field.field_name === "EngPage"
+    // ).values[0].value;
 
     return res.status(201).json(
       await newQuizLead({
         ...lead,
         crmId: crmLeadId,
         contactId: crmContactId,
-        leadPage: leadPage,
+        // leadPage: leadPage,
       })
     );
   } catch (error) {
