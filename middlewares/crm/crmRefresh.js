@@ -27,7 +27,7 @@ const crmRefresh = async (_, res, next) => {
         currentToken[0]._id,
         refreshResp.data
       );
-      console.log(newToken);
+      // console.log(newToken);
       return res.status(200).json(newToken);
     }
     next();

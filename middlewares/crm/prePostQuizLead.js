@@ -4,7 +4,7 @@ const { getToken } = require("../../services/tokensServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const prePostQuizLead = async (req, res, _) => {
+const prePostQuizLead = async (req, res, next) => {
   console.log("8", req.body);
 
   const postRequest = [
@@ -164,19 +164,6 @@ const prePostQuizLead = async (req, res, _) => {
     },
   ];
 
-  const lead = {
-    name: req.body.name,
-    phone: req.body.phone,
-    tag: req.body.tag,
-    lang: req.body.lang,
-    adult: req.body.adult,
-    age: req.body.age,
-    knowledge: req.body.knowledge,
-    quantity: req.body.quantity,
-    difficulties: req.body.difficulties,
-    interests: req.body.interests,
-  };
-
   try {
     const currentToken = await getToken();
     axios.defaults.headers.common[
@@ -186,15 +173,9 @@ const prePostQuizLead = async (req, res, _) => {
     console.log(crmLead.data[0]);
     const crmLeadId = crmLead.data[0].id;
     const crmContactId = crmLead.data[0].contact_id;
-    // const leadInfo = await axios.get(`/api/v4/leads/${crmLeadId}`);
-    const leadInfo = await axios.get(`/api/v4/leads/${crmLeadId}`);
-    console.log("leadInfo.data", leadInfo.data);
-    const leadPage = leadInfo.data.custom_fields_values.find(
-      (field) => field.field_name === "EngPage"
-    )?.values[0]?.value;
-    console.log("leadPage", leadPage);
-
-    return res.status(201).json(leadPage);
+    req.body.crmId = crmLeadId;
+    req.body.contactId = crmContactId;
+    next();
   } catch (error) {
     console.log(res.error);
     return res.status(400).json(error);

@@ -4,6 +4,8 @@ const crmRefresh = require("../middlewares/crm/crmRefresh");
 const postLead = require("../middlewares/crm/postLead");
 const postQuizLead = require("../middlewares/crm/postQuizLead");
 const prePostQuizLead = require("../middlewares/crm/prePostQuizLead");
+const getLead = require("../middlewares/crm/getLead");
+const getLeadAndPost = require("../middlewares/crm/getLeadAndPost");
 
 const { validateLead } = require("../schema/leadSchema");
 const { validateQuizLead } = require("../schema/quizLeadSchema");
@@ -16,8 +18,8 @@ router.get("/", getLeads);
 
 router.post("/", validateLead, postLead, crmRefresh);
 
-router.post("/quiz", validateQuizLead, postQuizLead, crmRefresh);
+router.post("/quiz", validateQuizLead, postQuizLead, getLeadAndPost, crmRefresh);
 
-router.post("/quiz-int", prePostQuizLead, crmRefresh);
+router.post("/quiz-int", prePostQuizLead, getLead, crmRefresh);
 
 module.exports = router;
