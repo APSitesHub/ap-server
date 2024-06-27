@@ -1,8 +1,6 @@
 const axios = require("axios");
 require("dotenv").config();
 const { getToken } = require("../../services/tokensServices");
-const { newQuizLead } = require("../../services/leadsServices");
-const getLead = require("./getLead");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
