@@ -18,7 +18,7 @@ router.get("/", getLeads);
 
 router.post("/", validateLead, postLead, crmRefresh);
 
-router.patch("/quiz", validateQuizLead, updateQuizLead, getLeadAndPost, crmRefresh);
+router.patch("/quiz/:id", validateQuizLead, updateQuizLead, getLeadAndPost, crmRefresh);
 
 router.post("/quiz-int", prePostQuizLead, getLead, crmRefresh);
 

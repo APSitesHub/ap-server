@@ -17,7 +17,13 @@ const getLead = async (req, res, _) => {
       .match("https:\\/\\/button.kommo.com\\/[a-zA-Z]+\\/[a-zA-Z]+")[0]
       .replace("\\", "");
     console.log(engPage);
-    return res.status(201).json(engPage);
+    return res
+      .status(200)
+      .json({
+        crmId: req.body.crmId,
+        contactId: req.body.contactId,
+        engPage: engPage,
+      });
   } catch (error) {
     console.log(error);
     return res.status(400).json(error);
