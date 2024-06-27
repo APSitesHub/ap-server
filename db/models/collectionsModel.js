@@ -35,6 +35,7 @@ const collections = new Schema(
     trials_pl: { type: String },
     trials_kids: { type: String },
     test: { type: String },
+    trendets: { type: String },
   },
   {
     versionKey: false,

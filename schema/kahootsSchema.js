@@ -326,6 +326,21 @@ const kahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  trendets: Joi.object({
+    links: Joi.object({
+      trendets_1: Joi.string().empty(""),
+      trendets_2: Joi.string().empty(""),
+      trendets_3: Joi.string().empty(""),
+      trendets_4: Joi.string().empty(""),
+      trendets_5: Joi.string().empty(""),
+      trendets_6: Joi.string().empty(""),
+      trendets_7: Joi.string().empty(""),
+      trendets_8: Joi.string().empty(""),
+      trendets_9: Joi.string().empty(""),
+      trendets_10: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   trials: Joi.object({
     links: Joi.object({
       trials_1: Joi.string().empty(""),
