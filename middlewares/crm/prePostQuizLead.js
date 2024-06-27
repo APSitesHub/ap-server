@@ -71,95 +71,95 @@ const prePostQuizLead = async (req, res, next) => {
       ],
       _embedded: {
         tags: [{ name: "Лід з сайту" }, { name: req.body.tag }],
-        // contacts: [
-        //   {
-        //     name: req.body.name,
-        //     custom_fields_values: [
-        //       {
-        //         field_id: 556510,
-        //         field_name: "Work phone",
-        //         values: [
-        //           {
-        //             value: req.body.phone || "",
-        //             enum_code: "WORK",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819825,
-        //         field_name: "Час в тиждень на навчання",
-        //         values: [
-        //           {
-        //             value: req.body.quantity || "",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819789,
-        //         field_name: "Наскладніше у вивченні",
-        //         values: [
-        //           {
-        //             value: req.body.difficulties || "",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819787,
-        //         field_name: "Цікавить найбільше",
-        //         values: [
-        //           {
-        //             value: req.body.interests || "",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819781,
-        //         field_name: "Для кого навчання",
-        //         values: [
-        //           {
-        //             value: req.body.adult ? "Для себе" : "Для дитини",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819779,
-        //         field_name: "Вік",
-        //         values: [
-        //           {
-        //             value: req.body.adult ? req.body.age : "",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819821,
-        //         field_name: "Скільки років дитині",
-        //         values: [
-        //           {
-        //             value: req.body.adult ? "" : req.body.age,
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819783,
-        //         field_name: "Рівень мови",
-        //         values: [
-        //           {
-        //             value: req.body.adult ? req.body.knowledge : "",
-        //           },
-        //         ],
-        //       },
-        //       {
-        //         field_id: 1819823,
-        //         field_name: "Рівень англ дитини",
-        //         values: [
-        //           {
-        //             value: req.body.adult ? "" : req.body.knowledge,
-        //           },
-        //         ],
-        //       },
-        //     ],
-        //   },
-        // ],
+        contacts: [
+          {
+            name: req.body.name,
+            custom_fields_values: [
+              {
+                field_id: 556510,
+                field_name: "Work phone",
+                values: [
+                  {
+                    value: req.body.phone || "",
+                    enum_code: "WORK",
+                  },
+                ],
+              },
+              {
+                field_id: 1819825,
+                field_name: "Час в тиждень на навчання",
+                values: [
+                  {
+                    value: req.body.quantity || "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819789,
+                field_name: "Наскладніше у вивченні",
+                values: [
+                  {
+                    value: req.body.difficulties || "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819787,
+                field_name: "Цікавить найбільше",
+                values: [
+                  {
+                    value: req.body.interests || "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819781,
+                field_name: "Для кого навчання",
+                values: [
+                  {
+                    value: req.body.adult ? "Для себе" : "Для дитини",
+                  },
+                ],
+              },
+              {
+                field_id: 1819779,
+                field_name: "Вік",
+                values: [
+                  {
+                    value: req.body.adult ? req.body.age : "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819821,
+                field_name: "Скільки років дитині",
+                values: [
+                  {
+                    value: req.body.adult ? "" : req.body.age,
+                  },
+                ],
+              },
+              {
+                field_id: 1819783,
+                field_name: "Рівень мови",
+                values: [
+                  {
+                    value: req.body.adult ? req.body.knowledge : "",
+                  },
+                ],
+              },
+              {
+                field_id: 1819823,
+                field_name: "Рівень англ дитини",
+                values: [
+                  {
+                    value: req.body.adult ? "" : req.body.knowledge,
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     },
   ];
