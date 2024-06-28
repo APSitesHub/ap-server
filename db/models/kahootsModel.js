@@ -117,6 +117,7 @@ const kahoots = new Schema(
         deutschfree_3: String,
         deutschfree_4: String,
         deutschfree_5: String,
+        deutschfree_6: String,
       },
     },
     deutscha2free: {

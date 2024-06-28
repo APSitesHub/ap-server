@@ -128,6 +128,7 @@ const hostKahootsSchema = Joi.object({
       deutschfree_3: Joi.string().empty(""),
       deutschfree_4: Joi.string().empty(""),
       deutschfree_5: Joi.string().empty(""),
+      deutschfree_6: Joi.string().empty(""),
     }),
     replace: Joi.bool().required(),
   }),
