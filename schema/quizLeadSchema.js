@@ -16,6 +16,16 @@ const quizLeadSchema = Joi.object({
   difficulties: Joi.string().required(),
   interests: Joi.string().required(),
   leadPage: Joi.string(),
+  utm_content: Joi.string().empty(""),
+  utm_medium: Joi.string().empty(""),
+  utm_campaign: Joi.string().empty(""),
+  utm_source: Joi.string().empty(""),
+  utm_term: Joi.string().empty(""),
+  utm_referrer: Joi.string().empty(""),
+  referrer: Joi.string().empty(""),
+  gclientid: Joi.string().empty(""),
+  gclid: Joi.string().empty(""),
+  fbclid: Joi.string().empty(""),
 });
 
 const validateQuizLead = ({ body }, res, next) => {

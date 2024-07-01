@@ -9,6 +9,96 @@ const updateQuizLead = async (req, res, next) => {
     name: req.body.name,
     custom_fields_values: [
       {
+        field_id: 556518,
+        field_name: "utm_content",
+        values: [
+          {
+            value: req.body.utm_content || "",
+          },
+        ],
+      },
+      {
+        field_id: 556520,
+        field_name: "utm_medium",
+        values: [
+          {
+            value: req.body.utm_medium || "",
+          },
+        ],
+      },
+      {
+        field_id: 556522,
+        field_name: "utm_campaign",
+        values: [
+          {
+            value: req.body.utm_campaign || "",
+          },
+        ],
+      },
+      {
+        field_id: 556524,
+        field_name: "utm_source",
+        values: [
+          {
+            value: req.body.utm_source || "",
+          },
+        ],
+      },
+      {
+        field_id: 556526,
+        field_name: "utm_term",
+        values: [
+          {
+            value: req.body.utm_term || "",
+          },
+        ],
+      },
+      {
+        field_id: 556528,
+        field_name: "utm_referrer",
+        values: [
+          {
+            value: req.body.utm_referrer || "",
+          },
+        ],
+      },
+      {
+        field_id: 556530,
+        field_name: "referrer",
+        values: [
+          {
+            value: req.body.referrer || "",
+          },
+        ],
+      },
+      {
+        field_id: 556532,
+        field_name: "gclientid",
+        values: [
+          {
+            value: req.body.gclientid || "",
+          },
+        ],
+      },
+      {
+        field_id: 556534,
+        field_name: "gclid",
+        values: [
+          {
+            value: req.body.gclid || "",
+          },
+        ],
+      },
+      {
+        field_id: 556536,
+        field_name: "fbclid",
+        values: [
+          {
+            value: req.body.fbclid || "",
+          },
+        ],
+      },
+      {
         field_id: 1809275,
         field_name: "Логін до платформи",
         values: [

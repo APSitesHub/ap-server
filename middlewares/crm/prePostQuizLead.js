@@ -10,7 +10,7 @@ const prePostQuizLead = async (req, res, next) => {
   const postRequest = [
     {
       name: `Недозаповнений лід з квізу`,
-      pipeline_id: 6453287,
+      pipeline_id: req.body.pipeline_id,
       custom_fields_values: [
         {
           field_id: 1809275,
@@ -70,11 +70,114 @@ const prePostQuizLead = async (req, res, next) => {
         },
       ],
       _embedded: {
-        tags: [{ name: "Лід з сайту" }, { name: req.body.tag }],
+        tags: [
+          { name: "Лід з сайту" },
+          { name: req.body.tag },
+          { name: req.body.utm_campaign },
+          { name: req.body.utm_content },
+          { name: req.body.utm_medium },
+          { name: req.body.utm_source },
+          { name: req.body.utm_term },
+          { name: req.body.utm_referrer },
+          { name: req.body.referrer },
+          { name: req.body.gclientid },
+          { name: req.body.gclid },
+          { name: req.body.fbclid },
+        ],
         contacts: [
           {
             name: req.body.name,
             custom_fields_values: [
+              {
+                field_id: 556518,
+                field_name: "utm_content",
+                values: [
+                  {
+                    value: req.body.utm_content || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556520,
+                field_name: "utm_medium",
+                values: [
+                  {
+                    value: req.body.utm_medium || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556522,
+                field_name: "utm_campaign",
+                values: [
+                  {
+                    value: req.body.utm_campaign || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556524,
+                field_name: "utm_source",
+                values: [
+                  {
+                    value: req.body.utm_source || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556526,
+                field_name: "utm_term",
+                values: [
+                  {
+                    value: req.body.utm_term || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556528,
+                field_name: "utm_referrer",
+                values: [
+                  {
+                    value: req.body.utm_referrer || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556530,
+                field_name: "referrer",
+                values: [
+                  {
+                    value: req.body.referrer || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556532,
+                field_name: "gclientid",
+                values: [
+                  {
+                    value: req.body.gclientid || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556534,
+                field_name: "gclid",
+                values: [
+                  {
+                    value: req.body.gclid || "",
+                  },
+                ],
+              },
+              {
+                field_id: 556536,
+                field_name: "fbclid",
+                values: [
+                  {
+                    value: req.body.fbclid || "",
+                  },
+                ],
+              },
               {
                 field_id: 556510,
                 field_name: "Work phone",

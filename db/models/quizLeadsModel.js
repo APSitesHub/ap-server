@@ -50,6 +50,16 @@ const quizLeadSchema = new Schema(
     leadPage: {
       type: String,
     },
+    utm_content: { type: String },
+    utm_medium: { type: String },
+    utm_campaign: { type: String },
+    utm_source: { type: String },
+    utm_term: { type: String },
+    utm_referrer: { type: String },
+    referrer: { type: String },
+    gclientid: { type: String },
+    gclid: { type: String },
+    fbclid: { type: String },
   },
   {
     versionKey: false,
