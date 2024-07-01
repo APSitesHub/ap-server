@@ -10,7 +10,7 @@ const prePostQuizLead = async (req, res, next) => {
   const postRequest = [
     {
       name: `Недозаповнений лід з квізу`,
-      pipeline_id: 8956372,
+      pipeline_id: 6453287,
       custom_fields_values: [
         {
           field_id: 1809275,

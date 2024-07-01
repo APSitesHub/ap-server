@@ -72,6 +72,16 @@ const updateQuizLead = async (req, res, next) => {
     name: req.body.name,
     custom_fields_values: [
       {
+        field_id: 556510,
+        field_name: "Work phone",
+        values: [
+          {
+            value: req.body.phone || "",
+            enum_code: "WORK",
+          },
+        ],
+      },
+      {
         field_id: 1819781,
         field_name: "Для кого навчання",
         values: [
