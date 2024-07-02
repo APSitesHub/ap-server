@@ -25,7 +25,7 @@ const validateUser = ({ body }, res, next) => {
   const { error } = userSchema.validate(body);
 
   if (error) return res.status(400).json(error.details[0].message);
-
+console.log('validated');
   next();
 };
 
