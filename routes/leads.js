@@ -5,10 +5,12 @@ const postLead = require("../middlewares/crm/postLead");
 const prePostQuizLead = require("../middlewares/crm/prePostQuizLead");
 const getLead = require("../middlewares/crm/getLead");
 const getLeadAndPost = require("../middlewares/crm/getLeadAndPost");
+const getAuthLeadAndPost = require("../middlewares/crm/getAuthLeadAndPost")
 const updateQuizLead = require("../middlewares/crm/updateQuizLead");
 
 const { validateLead } = require("../schema/leadSchema");
 const { validateQuizLead } = require("../schema/quizLeadSchema");
+const { validateQuizAuthCodeLead } = require("../schema/quizLeadAuthCodeSchema");
 
 const getLeads = require("../controllers/leads/getLeads");
 
@@ -19,7 +21,9 @@ router.get("/", getLeads);
 router.post("/", validateLead, postLead, crmRefresh);
 
 router.patch("/quiz/:id", validateQuizLead, updateQuizLead, getLeadAndPost, crmRefresh);
-
+    
 router.post("/quiz-int", prePostQuizLead, getLead, crmRefresh);
+
+router.patch("/quiz-code/:id", validateQuizAuthCodeLead, updateQuizLead, getAuthLeadAndPost, crmRefresh);
 
 module.exports = router;

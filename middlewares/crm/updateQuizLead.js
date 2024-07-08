@@ -117,6 +117,15 @@ const updateQuizLead = async (req, res, next) => {
         ],
       },
       {
+        field_id: 1820499,
+        field_name: "authCode",
+        values: [
+          {
+            value: req.body.authCode || "",
+          },
+        ],
+      },
+      {
         field_id: 1818295,
         field_name: "Мова для вивчення",
         values: [
@@ -213,6 +222,15 @@ const updateQuizLead = async (req, res, next) => {
         values: [
           {
             value: req.body.adult ? "" : req.body.knowledge,
+          },
+        ],
+      },
+      {
+        field_id: 1820545,
+        field_name: "authCode",
+        values: [
+          {
+            value: req.body.authCode || "",
           },
         ],
       },

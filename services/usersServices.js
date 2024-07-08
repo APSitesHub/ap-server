@@ -16,6 +16,9 @@ const signInUser = async (id, body) =>
 const updateUser = async (id, body) =>
   await Users.findByIdAndUpdate(id, body, { new: true });
 
+const updateUserByCrmId = async (crmId, body) =>
+  await Users.findOneAndUpdate(crmId, body, { new: true });
+
 module.exports = {
   allUsers,
   findUser,
@@ -24,4 +27,5 @@ module.exports = {
   deleteUser,
   signInUser,
   updateUser,
+  updateUserByCrmId,
 };

@@ -39,6 +39,7 @@ const users = new Schema(
     isBanned: {
       type: Boolean,
     },
+    authCode: { type: String },
   },
   {
     versionKey: false,

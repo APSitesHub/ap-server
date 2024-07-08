@@ -19,6 +19,7 @@ const userSchema = Joi.object({
   manager: Joi.string().empty(""),
   token: Joi.string(),
   isBanned: Joi.bool(),
+  authCode: Joi.string(),
 });
 
 const validateUser = ({ body }, res, next) => {

@@ -3,7 +3,7 @@ require("dotenv").config();
 const { getToken } = require("../../services/tokensServices");
 
 const getLead = async (req, res, _) => {
-  console.log(req.body);
+  console.log(6, req.body);
 
   try {
     const currentToken = await getToken();
