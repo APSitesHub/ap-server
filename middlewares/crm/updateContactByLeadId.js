@@ -9,7 +9,7 @@ const updateContactByLeadId = async (req, res, next) => {
   console.log(req.params);
   const updateLeadStatusRequest = {
     id: req.params.id,
-    status_id: 71135480,
+    status_id: 71135664,
   };
 
   const updateContactRequest = {

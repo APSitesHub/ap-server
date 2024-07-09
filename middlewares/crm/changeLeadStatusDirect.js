@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const changeLeadStatus = async (req, res) => {
+const changeLeadStatusDirect = async (req, res) => {
   console.log(req.body);
   const axios = require("axios");
   require("dotenv").config();
@@ -24,4 +24,4 @@ const changeLeadStatus = async (req, res) => {
   }
 };
 
-module.exports = changeLeadStatus;
+module.exports = changeLeadStatusDirect;

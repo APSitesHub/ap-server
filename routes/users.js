@@ -8,8 +8,10 @@ const checkUser = require("../middlewares/crm/checkUser");
 const updateLeadById = require("../middlewares/crm/updateLeadById");
 const getLeadDataFromCrm = require("../middlewares/crm/getLeadDataFromCrm");
 const updateContactByLeadId = require("../middlewares/crm/updateContactByLeadId");
-const changeLeadStatus = require("../middlewares/crm/changeLeadStatus");
+const changeLeadStatusQuiz = require("../middlewares/crm/changeLeadStatusQuiz");
+const changeLeadStatusDirect = require("../middlewares/crm/changeLeadStatusDirect");
 const updateUserFromGifts = require("../middlewares/crm/updateUserFromGifts");
+const getContactIdFromCrm = require("../middlewares/crm/getContactIdFromCrm");
 
 const addUser = require("../controllers/users/addUser");
 const getUser = require("../controllers/users/getUser");
@@ -39,9 +41,9 @@ router.post("/login", validateUser, loginUser);
 
 router.post("/refresh", refreshUserToken);
 
-router.post("/login-code", loginUserByAuthCode, changeLeadStatus);
+router.post("/login-code", loginUserByAuthCode, changeLeadStatusQuiz);
 
-router.post("/login-direct", loginUserByAuthCodeFromDirect, changeLeadStatus);
+router.post("/login-direct", loginUserByAuthCodeFromDirect, changeLeadStatusDirect);
 
 router.post("/refresh-code", refreshUserTokenByAuthCode);
 
@@ -51,7 +53,7 @@ router.put("/:id", validateUser, checkUser, updateLeadById, editUser);
 
 router.put(
   "/crm/:id",
-  getLeadDataFromCrm,
+  getContactIdFromCrm,
   updateContactByLeadId,
   editUserByCrmId
 );

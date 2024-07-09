@@ -4,12 +4,12 @@ const { getToken } = require("../../services/tokensServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const postQuizLead = async (req, res, next) => {
+const postQuizLeadNoForm = async (req, res, next) => {
   console.log("8", req.body);
 
   const postRequest = [
     {
-      name: req.body.name,
+      name: `Quiz Lead ${req.body.authCode}`,
       pipeline_id: req.body.pipeline_id,
       custom_fields_values: [
         {
@@ -121,6 +121,15 @@ const postQuizLead = async (req, res, next) => {
           ],
         },
         {
+          field_id: 1820499,
+          field_name: "authCode",
+          values: [
+            {
+              value: req.body.authCode || "",
+            },
+          ],
+        },
+        {
           field_id: 1818295,
           field_name: "Мова для вивчення",
           values: [
@@ -183,7 +192,7 @@ const postQuizLead = async (req, res, next) => {
                 field_name: "Work phone",
                 values: [
                   {
-                    value: req.body.phone,
+                    value: req.body.phone || "",
                     enum_code: "WORK",
                   },
                 ],
@@ -280,9 +289,9 @@ const postQuizLead = async (req, res, next) => {
     req.body.contactId = crmContactId;
     next();
   } catch (error) {
-    console.log(error);
+    console.log(res.error);
     return res.status(400).json(error);
   }
 };
 
-module.exports = postQuizLead;
+module.exports = postQuizLeadNoForm;
