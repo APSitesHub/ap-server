@@ -99,6 +99,15 @@ const updateQuizLead = async (req, res, next) => {
         ],
       },
       {
+        field_id: 557864,
+        field_name: "Дата і результат розмови 8",
+        values: [
+          {
+            value: req.body.name,
+          },
+        ],
+      },
+      {
         field_id: 1809275,
         field_name: "Логін до платформи",
         values: [

@@ -103,6 +103,15 @@ const prePostQuizLead = async (req, res, next) => {
           ],
         },
         {
+          field_id: 557864,
+          field_name: "Дата і результат розмови 8",
+          values: [
+            {
+              value: "Недозаповнений лід з квізу",
+            },
+          ],
+        },
+        {
           field_id: 1809275,
           field_name: "Логін до платформи",
           values: [
@@ -185,7 +194,6 @@ const prePostQuizLead = async (req, res, next) => {
         ],
         contacts: [
           {
-            name: req.body.name,
             custom_fields_values: [
               {
                 field_id: 556510,
