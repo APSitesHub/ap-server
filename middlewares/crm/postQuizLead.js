@@ -183,7 +183,7 @@ const postQuizLead = async (req, res, next) => {
                 field_name: "Work phone",
                 values: [
                   {
-                    value: req.body.phone,
+                    value: req.body.phone || "",
                     enum_code: "WORK",
                   },
                 ],
