@@ -11,6 +11,7 @@ const postQuizLead = async (req, res, next) => {
     {
       name: req.body.name,
       pipeline_id: req.body.pipeline_id,
+      status_id: 71311228,
       custom_fields_values: [
         {
           field_id: 556518,
