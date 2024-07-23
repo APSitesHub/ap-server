@@ -3,6 +3,7 @@ const Joi = require("joi");
 const trialUserSchema = Joi.object({
   name: Joi.string(),
   lang: Joi.string(),
+  userId: Joi.string(),
   visited: Joi.array().items(Joi.string()),
   visitedTime: Joi.array().items(Joi.string()),
   knowledge: Joi.string().empty(""),

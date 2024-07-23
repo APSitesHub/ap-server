@@ -1,12 +1,18 @@
 const jwt = require("jsonwebtoken");
-const { signInTrialUser, findTrialUser } = require("../../services/trialUsersServices");
+const {
+  signInTrialUser,
+  findTrialUser,
+} = require("../../services/trialUsersServices");
 
 const refreshTrialUserToken = async (req, res, next) => {
-  const { name, location } = req.body;
-  console.log(req.body);
-  const user = await findTrialUser({ name });
+  const { name, userId } = req.body;
+  console.log(9, req.body);
+  const user = await findTrialUser({
+    name: req.body.name,
+    userId: req.body.userId,
+  });
   console.log(user);
-  
+
   if (!user) {
     next();
   }
@@ -48,6 +54,7 @@ const refreshTrialUserToken = async (req, res, next) => {
   res.status(200).json({
     newToken,
     user: {
+      userId,
       name,
       visited,
       visitedTime,

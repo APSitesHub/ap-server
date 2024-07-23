@@ -6,7 +6,7 @@ const {
 } = require("../../services/trialUsersServices");
 
 const loginTrialUser = async (req, res, next) => {
-  const { name, lang, knowledge } = req.body;
+  const { name, userId, lang, knowledge } = req.body;
   console.log(req.body);
   let user = await findTrialUser({ name });
   console.log(user);
@@ -15,7 +15,7 @@ const loginTrialUser = async (req, res, next) => {
     user = await newTrialUser({ ...req.body });
   }
 
-  const payload = { id: user?._id || newUser._id};
+  const payload = { id: user?._id || newUser._id };
   const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });
   const visitDate = `${new Date().toLocaleDateString("uk-UA")}`;
 
@@ -46,6 +46,7 @@ const loginTrialUser = async (req, res, next) => {
     token,
     user: {
       name,
+      userId,
       visited,
       visitedTime,
       lang,

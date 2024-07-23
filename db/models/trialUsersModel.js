@@ -3,6 +3,7 @@ const { Schema, model } = require("mongoose");
 const trialUsers = new Schema(
   {
     name: { type: String },
+    userId: { type: String },
     lang: { type: String },
     visited: [String],
     visitedTime: [String],
