@@ -14,6 +14,7 @@ const collectionsRouter = require("./routes/collections");
 const ratingsRouter = require("./routes/ratings");
 const translationLeadsRouter = require("./routes/tr-leads");
 const tokensRouter = require("./routes/tokens");
+const trialUsersRouter = require("./routes/trialUsers");
 const usersRouter = require("./routes/users");
 
 const app = express();
@@ -36,6 +37,7 @@ app.use("/host-kahoots", hostKahootsRouter);
 app.use("/ratings", ratingsRouter);
 app.use("/tr-leads", translationLeadsRouter);
 app.use("/tokens", tokensRouter);
+app.use("/trialUsers", trialUsersRouter);
 app.use("/users", usersRouter);
 
 app.use((req, res) => {
