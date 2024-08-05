@@ -4,14 +4,14 @@ const { getToken } = require("../../services/tokensServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const   prePostQuizLead = async (req, res, next) => {
+const prePostQuizLead = async (req, res, next) => {
   console.log("8", req.body);
 
   const postRequest = [
     {
       name: `Недозаповнений лід з квізу`,
       pipeline_id: req.body.pipeline_id,
-      status_id: 71311228,
+      status_id: 54979891,
       custom_fields_values: [
         {
           field_id: 556518,
