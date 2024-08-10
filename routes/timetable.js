@@ -1,14 +1,16 @@
 const express = require("express");
 
-const { validateTimetable } = require("../schema/timetableSchema");
+const {
+  validateTimetable,
+  validateScheduleInTimetable,
+} = require("../schema/timetableSchema");
 
 const getTimetable = require("../controllers/timetable/getTimetable");
 const addTimetable = require("../controllers/timetable/addTimetable");
-const editTimetable = require("../controllers/timetable/editTimetable");
 const editTimetableLesson = require("../controllers/timetable/editTimetableLesson");
 const removeTimetable = require("../controllers/timetable/removeTimetable");
 const removeScheduleFromTimetable = require("../controllers/timetable/removeScheduleFromTimetable");
-
+const updateScheduleInTimetable = require("../controllers/timetable/updateScheduleInTimetable");
 
 const router = express.Router();
 
@@ -16,7 +18,7 @@ router.get("/", getTimetable);
 
 router.post("/", validateTimetable, addTimetable);
 
-router.put("/:id", validateTimetable, editTimetable);
+router.put("/:id", validateScheduleInTimetable, updateScheduleInTimetable);
 
 router.patch("/:id", editTimetableLesson);
 

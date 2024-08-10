@@ -19,14 +19,8 @@ const updateTimetable = async (id, body) =>
 
 const deleteTimetable = async (id) => await Timetable.findByIdAndDelete(id);
 
-const deleteSchedule = async (query, body) =>
-  await Timetable.findOneAndUpdate(
-    { _id: query._id },
-    {
-      $pull: { schedule: { _id: query.scheduleId } },
-    },
-    { safe: true }
-  );
+const editSchedule = async (id, body) =>
+  await Timetable.findByIdAndUpdate(id, body, { new: true });
 
 module.exports = {
   getAllTimetable,
@@ -34,5 +28,5 @@ module.exports = {
   newTimetable,
   updateTimetable,
   deleteTimetable,
-  deleteSchedule,
+  editSchedule,
 };
