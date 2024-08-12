@@ -14,6 +14,8 @@ const updateScheduleInTimetable = async (req, res) => {
     type: req.body.body.schedule[0].type,
     package: req.body.body.schedule[0].package,
     time: req.body.body.schedule[0].time,
+    lessonNumber: req.body.body.schedule[0].lessonNumber,
+    teacher: req.body.body.schedule[0].teacher,
   };
   return res.status(204).json(
     await editSchedule(req.params.id, {
