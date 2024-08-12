@@ -16,6 +16,8 @@ const timetable = new Schema(
         time: { type: String, required: [true, "No lesson time"] },
         package: { type: String, required: [true, "No minimum package"] },
         type: { type: String, required: [true, "No lesson type"] },
+        lessonNumber: { type: String },
+        teacher: { type: String },
       },
     ],
   },

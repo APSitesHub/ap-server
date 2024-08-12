@@ -9,6 +9,8 @@ const timetableSchema = Joi.object({
       time: Joi.string().required(),
       package: Joi.string().required(),
       type: Joi.string().required(),
+      lessonNumber: Joi.string().required(),
+      teacher: Joi.string().required(),
     })
   ),
 });
