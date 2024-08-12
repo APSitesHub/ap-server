@@ -11,6 +11,16 @@ const kahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  a0_2: Joi.object({
+    links: Joi.object({
+      a0_2_1: Joi.string().empty(""),
+      a0_2_2: Joi.string().empty(""),
+      a0_2_3: Joi.string().empty(""),
+      a0_2_4: Joi.string().empty(""),
+      a0_2_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   a1: Joi.object({
     links: Joi.object({
       a1_1: Joi.string().empty(""),

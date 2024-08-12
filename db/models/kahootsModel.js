@@ -11,6 +11,15 @@ const kahoots = new Schema(
         a0_5: String,
       },
     },
+    a0_2: {
+      links: {
+        a0_2_1: String,
+        a0_2_2: String,
+        a0_2_3: String,
+        a0_2_4: String,
+        a0_2_5: String,
+      },
+    },
     a1: {
       links: {
         a1_1: String,

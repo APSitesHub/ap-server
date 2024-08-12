@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const collectionsSchema = Joi.object({
   a0: Joi.string().empty(""),
+  a0_2: Joi.string().empty(""),
   a1: Joi.string().empty(""),
   a2: Joi.string().empty(""),
   b1: Joi.string().empty(""),

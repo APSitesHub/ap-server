@@ -3,6 +3,7 @@ const { Schema, model } = require("mongoose");
 const collections = new Schema(
   {
     a0: { type: String },
+    a0_2: { type: String },
     a1: { type: String },
     a2: { type: String },
     b1: { type: String },
