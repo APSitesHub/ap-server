@@ -101,6 +101,16 @@ const hostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  deutscha0_2: Joi.object({
+    links: Joi.object({
+      deutscha0_2_1: Joi.string().empty(""),
+      deutscha0_2_2: Joi.string().empty(""),
+      deutscha0_2_3: Joi.string().empty(""),
+      deutscha0_2_4: Joi.string().empty(""),
+      deutscha0_2_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   deutsch: Joi.object({
     links: Joi.object({
       deutsch_1: Joi.string().empty(""),
@@ -159,6 +169,16 @@ const hostKahootsSchema = Joi.object({
       polskia0_3: Joi.string().empty(""),
       polskia0_4: Joi.string().empty(""),
       polskia0_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  polskia0_2: Joi.object({
+    links: Joi.object({
+      polskia0_2_1: Joi.string().empty(""),
+      polskia0_2_2: Joi.string().empty(""),
+      polskia0_2_3: Joi.string().empty(""),
+      polskia0_2_4: Joi.string().empty(""),
+      polskia0_2_5: Joi.string().empty(""),
     }),
     replace: Joi.bool().required(),
   }),
