@@ -3,10 +3,12 @@ const Joi = require("joi");
 const userSchema = Joi.object({
   name: Joi.string(),
   mail: Joi.string().required(),
+  zoomMail: Joi.string().required(),
   password: Joi.string().required(),
   crmId: Joi.number(),
   contactId: Joi.number(),
   pupilId: Joi.string(),
+  marathonNumber: Joi.string(),
   adult: Joi.bool(),
   age: Joi.string().empty(""),
   lang: Joi.string(),
@@ -20,13 +22,16 @@ const userSchema = Joi.object({
   token: Joi.string(),
   isBanned: Joi.bool(),
   authCode: Joi.string(),
+  successRate: Joi.string(),
+  temperament: Joi.string(),
+  feedback: Joi.string(),
 });
 
 const validateUser = ({ body }, res, next) => {
   const { error } = userSchema.validate(body);
 
   if (error) return res.status(400).json(error.details[0].message);
-console.log('validated');
+  console.log("validated");
   next();
 };
 

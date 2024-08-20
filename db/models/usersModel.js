@@ -9,6 +9,7 @@ const users = new Schema(
       type: String,
       required: [true, "No mail"],
     },
+    zoomMail: { type: String },
     password: {
       type: String,
       required: [true, "No password"],
@@ -16,6 +17,7 @@ const users = new Schema(
     crmId: { type: Number },
     contactId: { type: Number },
     pupilId: { type: String },
+    marathonNumber: { type: String },
     adult: { type: Boolean },
     age: { type: String },
     lang: { type: String },
@@ -40,6 +42,9 @@ const users = new Schema(
       type: Boolean,
     },
     authCode: { type: String },
+    successRate: {type: String },
+    temperament: {type: String },
+    feedback: {type: String},
   },
   {
     versionKey: false,

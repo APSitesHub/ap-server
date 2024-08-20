@@ -47,11 +47,11 @@ const updateLeadById = async (req, res, next) => {
           values: [
             {
               value:
-                req.body.lang === "en"
+                req.body.lang === "en" || req.body.lang === "enkids"
                   ? "Англійська"
-                  : req.body.lang === "de"
+                  : req.body.lang === "de" || req.body.lang === "dekids"
                   ? "Німецька"
-                  : req.body.lang === "pl"
+                  : req.body.lang === "pl" || req.body.lang === "plkids"
                   ? "Польська"
                   : "",
             },
@@ -156,8 +156,8 @@ const updateLeadById = async (req, res, next) => {
         `api/v4/contacts/${req.body.contactId}`,
         updateContactRequest
       );
-      console.log(crm.data);
-      console.log(contact.data);
+      // console.log(crm.data);
+      // console.log(contact.data);
     } catch (error) {
       console.log(error);
       return res.status(400).json(error);
