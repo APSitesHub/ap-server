@@ -3,7 +3,7 @@ const Joi = require("joi");
 const userSchema = Joi.object({
   name: Joi.string(),
   mail: Joi.string().required(),
-  zoomMail: Joi.string().required(),
+  zoomMail: Joi.string(),
   password: Joi.string().required(),
   crmId: Joi.number(),
   contactId: Joi.number(),
