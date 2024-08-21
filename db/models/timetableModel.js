@@ -10,6 +10,10 @@ const timetable = new Schema(
       type: String,
       required: [true, "No level"],
     },
+    course: {
+      type: String,
+      required: [true, "No course"],
+    },
     schedule: [
       {
         day: { type: Number, required: [true, "No day number"] },

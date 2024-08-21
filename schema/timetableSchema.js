@@ -3,6 +3,7 @@ const Joi = require("joi");
 const timetableSchema = Joi.object({
   lang: Joi.string().required(),
   level: Joi.string().required(),
+  course: Joi.string().required(),
   schedule: Joi.array().items(
     Joi.object({
       day: Joi.number().required(),
