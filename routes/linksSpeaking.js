@@ -6,7 +6,7 @@ const auth = require("../middlewares/streams/auth");
 
 const getSpeakingLinks = require("../controllers/speakingLinks/getSpeakingLinks");
 const getOneSpeakingLink = require("../controllers/speakingLinks/getOneSpeakingLink");
-const addSpeakingLinks = require("../controllers/speakingLinks/addspeakingLinks");
+const addSpeakingLinks = require("../controllers/speakingLinks/addSpeakingLinks");
 const updateSpeakingLinks = require("../controllers/speakingLinks/updateSpeakingLinks");
 
 const router = express.Router();
