@@ -41,6 +41,7 @@ const refreshUserToken = async (req, res, next) => {
   const points = user.points;
   const pupilId = user.pupilId;
   const knowledge = user.knowledge;
+  const marathonNumber = user.marathonNumber;
 
   try {
     await signInUser(user._id, { visited, visitedTime, token: newToken });
@@ -60,6 +61,7 @@ const refreshUserToken = async (req, res, next) => {
       points,
       pupilId,
       knowledge,
+      marathonNumber,
     },
   });
 };
