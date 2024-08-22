@@ -29,6 +29,7 @@ app.use("/", router);
 app.use("/leads", leadsRouter);
 app.use("/admins", adminsRouter);
 app.use("/links", linksRouter);
+app.use("/speakings", linksRouter);
 app.use("/lessons", lessonsRouter);
 app.use("/timetable", timetableRouter);
 app.use("/kahoots", kahootsRouter);

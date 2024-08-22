@@ -4,19 +4,19 @@ const { validateSpeakingLinks } = require("../schema/linksSpeakingSchema");
 
 const auth = require("../middlewares/streams/auth");
 
-const getLinks = require("../controllers/links/getLinks");
-const addLinks = require("../controllers/links/addLinks");
-const updateLinks = require("../controllers/links/updateLinks");
-const getOneLink = require("../controllers/links/getOneLink");
+const getSpeakingLinks = require("../controllers/speakingLinks/getSpeakingLinks");
+const getOneSpeakingLink = require("../controllers/speakingLinks/getOneSpeakingLink");
+const addSpeakingLinks = require("../controllers/speakingLinks/addspeakingLinks");
+const updateSpeakingLinks = require("../controllers/speakingLinks/updateSpeakingLinks");
 
 const router = express.Router();
 
-router.get("/all", getLinks);
+router.get("/all", getSpeakingLinks);
 
-router.get("/", getOneLink);
+router.get("/", getOneSpeakingLink);
 
-router.post("/", auth, validateSpeakingLinks, addLinks);
+router.post("/", auth, validateSpeakingLinks, addSpeakingLinks);
 
-router.patch("/", auth, validateSpeakingLinks, updateLinks);
+router.patch("/", auth, validateSpeakingLinks, updateSpeakingLinks);
 
 module.exports = router;
