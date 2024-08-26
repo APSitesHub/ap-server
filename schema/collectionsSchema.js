@@ -42,6 +42,7 @@ const collectionsSchema = Joi.object({
   trials_kids: Joi.string().empty(""),
   test: Joi.string().empty(""),
   trendets: Joi.string().empty(""),
+  record: Joi.string().empty(""),
 });
 
 const validateCollections = ({ body }, res, next) => {

@@ -43,6 +43,7 @@ const collections = new Schema(
     trials_kids: { type: String },
     test: { type: String },
     trendets: { type: String },
+    record: { type: String },
   },
   {
     versionKey: false,
