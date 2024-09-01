@@ -35,6 +35,7 @@ const loginUser = async (req, res, next) => {
     ? user.visitedTime.shift() && user.visitedTime.push(visitTimeDate)
     : user.visitedTime.push(visitTimeDate);
 
+  const id = user._id;
   const visited = user.visited;
   const visitedTime = user.visitedTime;
   const name = user.name;
@@ -54,6 +55,7 @@ const loginUser = async (req, res, next) => {
   res.status(200).json({
     token,
     user: {
+      id,
       mail,
       name,
       visited,
