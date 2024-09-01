@@ -1,0 +1,37 @@
+const { Schema, model } = require("mongoose");
+
+const scUsers = new Schema(
+  {
+    name: { type: String },
+    mail: {
+      type: String,
+      required: [true, "No mail"],
+    },
+    zoomMail: { type: String },
+    password: {
+      type: String,
+      required: [true, "No password"],
+    },
+    crmId: { type: Number },
+    contactId: { type: Number },
+    adult: { type: Boolean },
+    age: { type: String },
+    lang: { type: String },
+    course: { type: String },
+    package: { type: String },
+    visited: [String],
+    visitedTime: [String],
+    knowledge: { type: String },
+    successRate: { type: String },
+    temperament: { type: String },
+    feedback: { type: String },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+  }
+);
+
+const ScUsers = model("scusers", scUsers);
+
+module.exports = ScUsers;
