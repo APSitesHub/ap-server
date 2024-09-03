@@ -13,8 +13,8 @@ const deleteScUser = async (id) => await ScUsers.findByIdAndDelete(id);
 const signInScUser = async (id, body) =>
   await ScUsers.findByIdAndUpdate(id, body, { new: true });
 
-const updateScUser = async (id, body) =>
-  await ScUsers.findByIdAndUpdate(id, body, { new: true });
+const updateScUser = async (query, body) =>
+  await ScUsers.findOneAndUpdate(query, body, { new: true });
 
 const updateScUserByCrmId = async (crmId, body) =>
   await ScUsers.findOneAndUpdate(crmId, body, { new: true });

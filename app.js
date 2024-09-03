@@ -17,6 +17,7 @@ const translationLeadsRouter = require("./routes/tr-leads");
 const tokensRouter = require("./routes/tokens");
 const trialUsersRouter = require("./routes/trialUsers");
 const usersRouter = require("./routes/users");
+const usersSpeakingRouter = require("./routes/usersSpeaking");
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use("/tr-leads", translationLeadsRouter);
 app.use("/tokens", tokensRouter);
 app.use("/trialUsers", trialUsersRouter);
 app.use("/users", usersRouter);
+app.use("/speakingusers", usersSpeakingRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });

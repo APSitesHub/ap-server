@@ -1,10 +1,10 @@
 const Joi = require("joi");
 
 const scUserSchema = Joi.object({
+  userId: Joi.string().required(),
   name: Joi.string(),
   mail: Joi.string().required(),
   zoomMail: Joi.string().empty(""),
-  password: Joi.string().required(),
   crmId: Joi.number(),
   contactId: Joi.number(),
   adult: Joi.bool(),
