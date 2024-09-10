@@ -34,15 +34,22 @@ const refreshUserToken = async (req, res, next) => {
     : user.visitedTime.push(visitTimeDate);
 
   const id = user._id;
+  const crmId = user.crmId;
+  const contactId = user.contactId;
   const visited = user.visited;
   const visitedTime = user.visitedTime;
   const name = user.name;
+  const zoomMail = user.zoomMail;
+  const age = user.age;
   const course = user.course;
   const lang = user.lang;
   const points = user.points;
   const pupilId = user.pupilId;
   const knowledge = user.knowledge;
   const marathonNumber = user.marathonNumber;
+  const temperament = user.temperament;
+  const successRate = user.successRate;
+  const feedback = user.feedback;
 
   try {
     await signInUser(user._id, { visited, visitedTime, token: newToken });
@@ -54,8 +61,12 @@ const refreshUserToken = async (req, res, next) => {
     newToken,
     user: {
       id,
+      crmId,
+      contactId,
       mail,
+      zoomMail,
       name,
+      age,
       visited,
       visitedTime,
       lang,
@@ -64,6 +75,9 @@ const refreshUserToken = async (req, res, next) => {
       pupilId,
       knowledge,
       marathonNumber,
+      temperament,
+      successRate,
+      feedback,
     },
   });
 };
