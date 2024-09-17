@@ -17,10 +17,13 @@ const {
 } = require("../schema/quizLeadAuthCodeSchema");
 
 const getLeads = require("../controllers/leads/getLeads");
+const getLeadsArray = require("../middlewares/crm/getLeadsArray");
 
 const router = express.Router();
 
 router.get("/", getLeads);
+
+router.get("/arr", getLeadsArray);
 
 router.post("/", validateLead, postLead, crmRefresh);
 

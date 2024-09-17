@@ -22,6 +22,6 @@ router.post("/new", validateScUser, addScUser);
 
 router.delete("/:id", removeScUser);
 
-router.patch("/:id", updateLeadByIdFromSpeakings, editScUser);
+router.put("/:id", updateLeadByIdFromSpeakings, editScUser);
 
 module.exports = router;
