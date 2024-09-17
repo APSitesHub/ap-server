@@ -51,6 +51,8 @@ router.patch("/:id", banUser);
 
 router.put("/:id", validateUser, checkUser, updateLeadById, editUser);
 
+router.patch("/sc/:id", editUser);
+
 router.put(
   "/crm/:id",
   getContactIdFromCrm,
