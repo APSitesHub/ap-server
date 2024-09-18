@@ -162,7 +162,9 @@ const postQuizLead = async (req, res, next) => {
       ],
       _embedded: {
         tags: [
-          { name: "Лід з сайту" },
+          req.body.tag.includes("%")
+            ? { name: "Зацікавлений лід" }
+            : { name: "Лід з сайту" },
           { name: req.body.tag },
           { name: req.body.utm_campaign },
           { name: req.body.utm_content },
