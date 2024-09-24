@@ -10,7 +10,7 @@ const removeScUser = require("../controllers/usersSpeaking/removeScUser");
 const editScUser = require("../controllers/usersSpeaking/editScUser");
 
 const checkScUser = require("../middlewares/speakings/checkScUser");
-// const updateLeadByIdFromSpeakings = require("../middlewares/crm/updateLeadByIdFromSpeakings");
+const updateLeadByIdFromSpeakings = require("../middlewares/crm/updateLeadByIdFromSpeakings");
 
 const router = express.Router();
 
@@ -23,5 +23,7 @@ router.post("/new", validateScUser, addScUser);
 router.delete("/:id", removeScUser);
 
 router.put("/:id", validateScUser, editScUser);
+
+router.patch("/:id", updateLeadByIdFromSpeakings, editScUser);
 
 module.exports = router;
