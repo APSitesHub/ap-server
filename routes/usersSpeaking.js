@@ -1,7 +1,5 @@
 const express = require("express");
 
-const checkIsAdmin = require("../middlewares/streams/checkIsAdmin");
-
 const { validateScUser } = require("../schema/scUsersSchema");
 
 const getAllScUsers = require("../controllers/usersSpeaking/getAllScUsers");
@@ -14,7 +12,7 @@ const updateLeadByIdFromSpeakings = require("../middlewares/crm/updateLeadByIdFr
 
 const router = express.Router();
 
-router.get("/admin", checkIsAdmin, getAllScUsers);
+router.get("/admin", getAllScUsers);
 
 router.get("/:id", checkScUser);
 
