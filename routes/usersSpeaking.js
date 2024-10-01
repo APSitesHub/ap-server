@@ -2,6 +2,7 @@ const express = require("express");
 
 const { validateScUser } = require("../schema/scUsersSchema");
 
+const getUsersByCourse = require("../controllers/usersSpeaking/getUsersByCourse");
 const getAllScUsers = require("../controllers/usersSpeaking/getAllScUsers");
 const addScUser = require("../controllers/usersSpeaking/addScUser");
 const removeScUser = require("../controllers/usersSpeaking/removeScUser");
@@ -11,6 +12,8 @@ const checkScUser = require("../middlewares/speakings/checkScUser");
 const updateLeadByIdFromSpeakings = require("../middlewares/crm/updateLeadByIdFromSpeakings");
 
 const router = express.Router();
+
+router.get("/", getUsersByCourse);
 
 router.get("/admin", getAllScUsers);
 

@@ -2,6 +2,8 @@ const ScUsers = require("../db/models/scUsersModel");
 
 const allScUsers = async () => await ScUsers.find({});
 
+const allCourseUsers = async (query) => await ScUsers.find(query);
+
 const findScUser = async (query) => await ScUsers.findOne(query);
 
 const findScUserByID = async (id) => await ScUsers.findById(id);
@@ -21,6 +23,7 @@ const updateScUserByCrmId = async (crmId, body) =>
 
 module.exports = {
   allScUsers,
+  allCourseUsers,
   findScUser,
   findScUserByID,
   newScUser,
