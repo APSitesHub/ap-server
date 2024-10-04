@@ -42,6 +42,7 @@ const refreshUserToken = async (req, res, next) => {
   const zoomMail = user.zoomMail;
   const age = user.age;
   const course = user.course;
+  const package = user.package;
   const lang = user.lang;
   const points = user.points;
   const pupilId = user.pupilId;
@@ -71,6 +72,7 @@ const refreshUserToken = async (req, res, next) => {
       visitedTime,
       lang,
       course,
+      package,
       points,
       pupilId,
       knowledge,

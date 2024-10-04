@@ -43,6 +43,7 @@ const loginUser = async (req, res, next) => {
   const name = user.name;
   const zoomMail = user.zoomMail;
   const course = user.course;
+  const package = user.package;
   const lang = user.lang;
   const points = user.points;
   const pupilId = user.pupilId;
@@ -73,6 +74,7 @@ const loginUser = async (req, res, next) => {
       visitedTime,
       lang,
       course,
+      package,
       points,
       pupilId,
       knowledge,
