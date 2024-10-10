@@ -18,6 +18,7 @@ const tokensRouter = require("./routes/tokens");
 const trialUsersRouter = require("./routes/trialUsers");
 const usersRouter = require("./routes/users");
 const usersSpeakingRouter = require("./routes/usersSpeaking");
+const universityLeadsRouter = require("./routes/universityLeads");
 
 const app = express();
 
@@ -25,7 +26,7 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
 app.use(cors());
-app.use(express.json({limit: '2mb'}));
+app.use(express.json({ limit: "2mb" }));
 
 app.use("/", router);
 app.use("/leads", leadsRouter);
@@ -43,6 +44,7 @@ app.use("/tokens", tokensRouter);
 app.use("/trialUsers", trialUsersRouter);
 app.use("/users", usersRouter);
 app.use("/speakingusers", usersSpeakingRouter);
+app.use("/uni-leads", universityLeadsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
