@@ -18,6 +18,7 @@ const {
 
 const getLeads = require("../controllers/leads/getLeads");
 const getLeadsArray = require("../middlewares/crm/getLeadsArray");
+const postHRLead = require("../middlewares/crm/postHRLead");
 
 const router = express.Router();
 
@@ -26,6 +27,8 @@ router.get("/", getLeads);
 router.get("/arr", getLeadsArray);
 
 router.post("/", validateLead, postLead, crmRefresh);
+
+router.post("/hr", validateLead, postHRLead, crmRefresh);
 
 router.patch(
   "/quiz/:id",
