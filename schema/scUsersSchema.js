@@ -15,9 +15,9 @@ const scUserSchema = Joi.object({
   visited: Joi.array().items(Joi.string()),
   visitedTime: Joi.array().items(Joi.string()),
   knowledge: Joi.string().empty(""),
-  successRate: Joi.string(),
-  temperament: Joi.string(),
-  feedback: Joi.string(),
+  successRate: Joi.string().empty(""),
+  temperament: Joi.string().empty(""),
+  feedback: Joi.string().empty(""),
 });
 
 const validateScUser = ({ body }, res, next) => {
