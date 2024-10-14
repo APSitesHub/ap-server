@@ -34,6 +34,7 @@ const linksSpeaking = new Schema(
     c1kids: { type: String },
     b1kidsbeginner: { type: String },
     b2kidsbeginner: { type: String },
+    dea0kids: { type: String },
     dea1kids: { type: String },
     pla1kids: { type: String },
     nmt_ukr: { type: String },

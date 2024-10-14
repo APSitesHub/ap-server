@@ -437,6 +437,21 @@ const kahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  dea0kids: Joi.object({
+    links: Joi.object({
+      dea0kids_1: Joi.string().empty(""),
+      dea0kids_2: Joi.string().empty(""),
+      dea0kids_3: Joi.string().empty(""),
+      dea0kids_4: Joi.string().empty(""),
+      dea0kids_5: Joi.string().empty(""),
+      dea0kids_6: Joi.string().empty(""),
+      dea0kids_7: Joi.string().empty(""),
+      dea0kids_8: Joi.string().empty(""),
+      dea0kids_9: Joi.string().empty(""),
+      dea0kids_10: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   dea1kids: Joi.object({
     links: Joi.object({
       dea1kids_1: Joi.string().empty(""),

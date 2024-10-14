@@ -38,6 +38,7 @@ const linksSchema = Joi.object({
   b1kidsbeginner: Joi.string().empty(""),
   b2kidsbeginner: Joi.string().empty(""),
   a1kidsfree: Joi.string().empty(""),
+  dea0kids: Joi.string().empty(""),
   dea1kids: Joi.string().empty(""),
   dekidsfree: Joi.string().empty(""),
   pla1kids: Joi.string().empty(""),

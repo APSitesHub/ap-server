@@ -32,6 +32,7 @@ const linksSpeakingSchema = Joi.object({
   c1kids: Joi.string().empty(""),
   b1kidsbeginner: Joi.string().empty(""),
   b2kidsbeginner: Joi.string().empty(""),
+  dea0kids: Joi.string().empty(""),
   dea1kids: Joi.string().empty(""),
   pla1kids: Joi.string().empty(""),
   nmt_ukr: Joi.string().empty(""),

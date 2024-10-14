@@ -401,6 +401,20 @@ const hostKahoots = new Schema(
         a1kidsfree_10: String,
       },
     },
+    dea0kids: {
+      links: {
+        dea0kids_1: String,
+        dea0kids_2: String,
+        dea0kids_3: String,
+        dea0kids_4: String,
+        dea0kids_5: String,
+        dea0kids_6: String,
+        dea0kids_7: String,
+        dea0kids_8: String,
+        dea0kids_9: String,
+        dea0kids_10: String,
+      },
+    },
     dea1kids: {
       links: {
         dea1kids_1: String,

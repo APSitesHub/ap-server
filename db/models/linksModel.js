@@ -39,6 +39,7 @@ const links = new Schema(
     b1kidsbeginner: { type: String },
     b2kidsbeginner: { type: String },
     a1kidsfree: { type: String },
+    dea0kids: { type: String },
     dea1kids: { type: String },
     dekidsfree: { type: String },
     pla1kids: { type: String },
