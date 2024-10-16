@@ -19,6 +19,7 @@ const trialUsersRouter = require("./routes/trialUsers");
 const usersRouter = require("./routes/users");
 const usersSpeakingRouter = require("./routes/usersSpeaking");
 const universityLeadsRouter = require("./routes/universityLeads");
+const testUsersSpeakingRouter = require("./routes/testUsersSpeaking");
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use("/tokens", tokensRouter);
 app.use("/trialUsers", trialUsersRouter);
 app.use("/users", usersRouter);
 app.use("/speakingusers", usersSpeakingRouter);
+app.use("/sctest", testUsersSpeakingRouter);
 app.use("/uni-leads", universityLeadsRouter);
 
 app.use((req, res) => {
