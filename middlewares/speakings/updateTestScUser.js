@@ -5,20 +5,17 @@ require("dotenv").config();
 const updateTestScUser = async (req, res, next) => {
   try {
     const users = await ScTest.find({ feedback: { $type: "string" } });
-    console.log(users.length);
+    const regex = /[#*]{3,}|\b\d{1,}\.\d{1,}\.\d{2,}\b/g;
 
     users.forEach(async (document) => {
-      // Split the feedback string based on the regex
       const feedbackArray = (document.feedback + "")
-        .split(/[#*]{3,}/g)
+        .split(regex)
         .map((str) => str.trim())
         .filter(Boolean);
-      console.log(feedbackArray);
 
-      // Update the document with the new array in the feedback field
       await ScTest.updateOne(
-        { _id: document._id }, // Filter to update the specific document
-        { $set: { feedback: feedbackArray } } // Set the new feedback value as an array
+        { _id: document._id },
+        { $set: { feedback: feedbackArray } }
       );
     });
   } catch (error) {
