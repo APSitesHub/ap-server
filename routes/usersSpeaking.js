@@ -23,7 +23,7 @@ router.post("/new", validateScUser, addScUser);
 
 router.delete("/:id", removeScUser);
 
-router.put("/:id", validateScUser, editScUser);
+router.put("/:id", editScUser);
 
 router.patch("/:id", updateLeadByIdFromSpeakings, editScUser);
 
