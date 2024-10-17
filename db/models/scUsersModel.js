@@ -24,7 +24,7 @@ const scUsers = new Schema(
     knowledge: { type: String },
     successRate: { type: String },
     temperament: { type: String },
-    feedback: { type: String },
+    feedback: [String],
   },
   {
     versionKey: false,

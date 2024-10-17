@@ -17,7 +17,7 @@ const scUserSchema = Joi.object({
   knowledge: Joi.string().empty(""),
   successRate: Joi.string().empty(""),
   temperament: Joi.string().empty(""),
-  feedback: Joi.string().empty(""),
+  feedback: Joi.array().items(Joi.string()),
 });
 
 const validateScUser = ({ body }, res, next) => {
