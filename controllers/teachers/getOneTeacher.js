@@ -1,7 +1,7 @@
 const { findTeacher } = require("../../services/teachersServices");
 
-const getTeacher = async (req, res) => {
+const getOneTeacher = async (req, res) => {
   return res.json(await findTeacher(req.body));
 };
 
-module.exports = getTeacher;
+module.exports = getOneTeacher;

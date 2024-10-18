@@ -3,7 +3,7 @@ const express = require("express");
 const { validateTeacher } = require("../schema/teachersSchema");
 
 const getAllTeachers = require("../controllers/teachers/getAllTeachers");
-const getTeacher = require("../controllers/teachers/getteacher");
+const getOneTeacher = require("../controllers/teachers/getOneTeacher");
 const addTeacher = require("../controllers/teachers/addTeacher");
 const removeTeacher = require("../controllers/teachers/removeTeacher");
 const loginTeacher = require("../controllers/teachers/loginTeacher");
@@ -12,7 +12,7 @@ const editTeacher = require("../controllers/teachers/editTeacher");
 
 const router = express.Router();
 
-router.get("/:id", getTeacher);
+router.get("/:id", getOneTeacher);
 
 router.get("/", getAllTeachers);
 
