@@ -1,12 +1,15 @@
 const jwt = require("jsonwebtoken");
-const { signInTeacher, findTeacher } = require("../../services/teachersServices");
+const {
+  signInTeacher,
+  findTeacher,
+} = require("../../services/teachersServices");
 
 const refreshTeacherToken = async (req, res, next) => {
   const { login } = req.body;
   console.log(req.body);
-  const user = await findTeacher({ login });
-  console.log(user);
-  if (!user) {
+  const teacher = await findTeacher({ login });
+  console.log(teacher);
+  if (!teacher) {
     next();
   }
   console.log(teacher.updatedAt.toDateString());

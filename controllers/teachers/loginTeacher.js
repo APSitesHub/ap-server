@@ -44,14 +44,14 @@ const loginTeacher = async (req, res, next) => {
   const name = teacher.name;
 
   try {
-    await signInTeacher(user._id, { token, visited, visitedTime });
+    await signInTeacher(teacher._id, { token, visited, visitedTime });
   } catch (error) {
     console.log(error);
   }
 
   res.status(200).json({
     token,
-    user: {
+    teacher: {
       id,
       login,
       name,
