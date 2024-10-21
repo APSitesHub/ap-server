@@ -5,7 +5,7 @@ const { validateAdminUser } = require("../schema/adminsSchema");
 const auth = require("../middlewares/streams/auth");
 const authKahoot = require("../middlewares/streams/authKahoot");
 const authUserAdmin = require("../middlewares/streams/authUserAdmin");
-const authCollectionsAdmin = require("../middlewares/streams/authCollectionsAdmin")
+const authCollectionsAdmin = require("../middlewares/streams/authCollectionsAdmin");
 
 const addAdmin = require("../controllers/admins/addAdmin");
 const getLinkAdmin = require("../controllers/admins/getLinkAdmin");
@@ -20,6 +20,9 @@ const refreshUserAdminToken = require("../controllers/admins/refreshUserAdminTok
 const getCollectionsAdmin = require("../controllers/admins/getCollectionsAdmin");
 const refreshCollectionAdminToken = require("../controllers/admins/refreshCollectionAdminToken");
 const loginCollectionAdmin = require("../controllers/admins/loginCollectionAdmin");
+const loginTeacherAdmin = require("../controllers/admins/loginTeacherAdmin");
+const getTeacherAdmin = require("../controllers/admins/getTeacherAdmin");
+const refreshTeacherAdminToken = require("../controllers/admins/refreshTeacherAdminToken");
 
 const router = express.Router();
 
@@ -28,6 +31,8 @@ router.get("/", auth, getLinkAdmin);
 router.get("/kahoot", authKahoot, getKahootAdmin);
 
 router.get("/users", authUserAdmin, getUserAdmin);
+
+router.get("/teachers", authUserAdmin, getTeacherAdmin);
 
 router.get("/collections", authCollectionsAdmin, getCollectionsAdmin);
 
@@ -39,6 +44,8 @@ router.post("/login/kahoot", validateAdminUser, loginKahootAdmin);
 
 router.post("/login/users", validateAdminUser, loginUserAdmin);
 
+router.post("/login/teachers", validateAdminUser, loginTeacherAdmin);
+
 router.post("/login/collections", validateAdminUser, loginCollectionAdmin);
 
 router.post("/refresh", refreshAdminToken);
@@ -46,6 +53,8 @@ router.post("/refresh", refreshAdminToken);
 router.post("/refresh/kahoot", refreshKahootAdminToken);
 
 router.post("/refresh/users", refreshUserAdminToken);
+
+router.post("/refresh/teachers", refreshTeacherAdminToken);
 
 router.post("/refresh/collections", refreshCollectionAdminToken);
 
