@@ -1,8 +1,11 @@
-const { deleteUser, findUserByID } = require("../../services/usersServices");
+const {
+  deleteTeacher,
+  findTeacherByID,
+} = require("../../services/teachersServices");
 
 const removeTeacher = async (req, res) => {
-  console.log(await findUserByID(req.params.id));
-  res.status(204).json(await deleteUser(req.params.id));
+  console.log(await findTeacherByID(req.params.id));
+  res.status(204).json(await deleteTeacher(req.params.id));
 };
 
 module.exports = removeTeacher;

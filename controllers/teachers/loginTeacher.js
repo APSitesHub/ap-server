@@ -1,17 +1,20 @@
 const jwt = require("jsonwebtoken");
-const { signInTeacher } = require("../../services/teachersServices");
+const {
+  signInTeacher,
+  findTeacher,
+} = require("../../services/teachersServices");
 
 const loginTeacher = async (req, res, next) => {
   const { login, password } = req.body;
   console.log(req.body);
-  const user = await findTeacher({ login });
-  console.log(user);
-  if (!user) {
-    console.log("!no such user");
+  const teacher = await findTeacher({ login });
+  console.log(teacher);
+  if (!teacher) {
+    console.log("!no such teacher");
     res.status(401).json("Login or password is wrong");
   }
 
-  const validatedPassword = password === user.password;
+  const validatedPassword = password === teacher.password;
   if (!validatedPassword) {
     console.log("!passwords don't match");
     res.status(401).json("Login or password is wrong");
@@ -40,7 +43,6 @@ const loginTeacher = async (req, res, next) => {
   const visitedTime = teacher.visitedTime;
   const name = teacher.name;
 
-
   try {
     await signInTeacher(user._id, { token, visited, visitedTime });
   } catch (error) {
@@ -55,7 +57,6 @@ const loginTeacher = async (req, res, next) => {
       name,
       visited,
       visitedTime,
-
     },
   });
 };
