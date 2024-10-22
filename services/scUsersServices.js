@@ -2,7 +2,14 @@ const ScUsers = require("../db/models/scUsersModel");
 
 const allScUsers = async () => await ScUsers.find({});
 
-const allCourseUsers = async (query) => await ScUsers.find(query);
+const allCourseUsers = async (query) =>
+  await ScUsers.find(query)
+    .where("feedback")
+    .slice(-1)
+    .where("visited")
+    .slice(-1)
+    .where("visitedTime")
+    .slice(-1);
 
 const findScUser = async (query) => await ScUsers.findOne(query);
 
