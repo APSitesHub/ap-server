@@ -24,7 +24,6 @@ const userSchema = Joi.object({
   authCode: Joi.string(),
   successRate: Joi.string(),
   temperament: Joi.string(),
-  feedback: Joi.string(),
 });
 
 const validateUser = ({ body }, res, next) => {

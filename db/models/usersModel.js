@@ -42,9 +42,8 @@ const users = new Schema(
       type: Boolean,
     },
     authCode: { type: String },
-    successRate: {type: String },
-    temperament: {type: String },
-    feedback: {type: String},
+    successRate: { type: String },
+    temperament: { type: String },
   },
   {
     versionKey: false,
