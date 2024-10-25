@@ -26,12 +26,13 @@ const loginUserByAuthCode = require("../controllers/users/loginUserByAuthCode");
 const refreshUserTokenByAuthCode = require("../controllers/users/refreshUserTokenByAuthCode");
 const loginUserByAuthCodeFromDirect = require("../controllers/users/loginUserByAuthCodeFromDirect");
 const addUserByCrmId = require("../controllers/users/addUserByCrmId");
+const authUserAdmin = require("../middlewares/streams/authUserAdmin");
 
 const router = express.Router();
 
 router.get("/", authUser, getUser);
 
-router.get("/admin", checkIsAdmin, getAllUsers);
+router.get("/admin", authUserAdmin, getAllUsers);
 
 router.post("/new", validateUser, addUser);
 

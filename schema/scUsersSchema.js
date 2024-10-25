@@ -17,6 +17,11 @@ const scUserSchema = Joi.object({
   knowledge: Joi.string().empty(""),
   successRate: Joi.string().empty(""),
   temperament: Joi.string().empty(""),
+  grammar: Joi.number(),
+  lexis: Joi.number(),
+  speaking: Joi.number(),
+  listening: Joi.number(),
+  activity: Joi.number(),
   feedback: Joi.array().items(Joi.string()),
 });
 

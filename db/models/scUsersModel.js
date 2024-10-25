@@ -25,6 +25,11 @@ const scUsers = new Schema(
     successRate: { type: String },
     temperament: { type: String },
     feedback: [String],
+    grammar: { type: Number },
+    lexis: { type: Number },
+    speaking: { type: Number },
+    listening: { type: Number },
+    activity: { type: Number },
   },
   {
     versionKey: false,

@@ -2,6 +2,8 @@ const express = require("express");
 
 const { validateTeacher } = require("../schema/teachersSchema");
 
+const authTeacherAdmin = require("../middlewares/streams/authTeacherAdmin");
+
 const getAllTeachers = require("../controllers/teachers/getAllTeachers");
 const getOneTeacher = require("../controllers/teachers/getOneTeacher");
 const addTeacher = require("../controllers/teachers/addTeacher");
@@ -13,9 +15,9 @@ const addTeachersBulk = require("../controllers/teachers/addTeachersBulk");
 
 const router = express.Router();
 
-router.get("/:id", getOneTeacher);
+router.get("/:id", authTeacherAdmin, getOneTeacher);
 
-router.get("/", getAllTeachers);
+router.get("/", authTeacherAdmin, getAllTeachers);
 
 router.post("/new", validateTeacher, addTeacher);
 

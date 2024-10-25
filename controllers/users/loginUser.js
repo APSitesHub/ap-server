@@ -14,7 +14,7 @@ const loginUser = async (req, res, next) => {
   const validatedPassword = password === user.password;
   if (!validatedPassword) {
     console.log("!passwords don't match");
-    res.status(401).json("Login or password is wrong");
+    return res.status(401).json("Login or password is wrong");
   }
 
   const payload = { id: user._id };

@@ -11,6 +11,12 @@ const allCourseUsers = async (query) =>
     .where("visitedTime")
     .slice(-1);
 
+const ratingScUsers = async () =>
+  await ScUsers.find({})
+    .select("_id name visitedTime lang course")
+    .where("visitedTime")
+    .slice(-1);
+
 const findScUser = async (query) => await ScUsers.findOne(query);
 
 const findScUserByID = async (id) => await ScUsers.findById(id);
@@ -38,4 +44,5 @@ module.exports = {
   signInScUser,
   updateScUser,
   updateScUserByCrmId,
+  ratingScUsers,
 };

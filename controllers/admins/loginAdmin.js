@@ -12,7 +12,7 @@ const loginAdmin = async (req, res, next) => {
 
   const validatedPassword = await bcrypt.compare(password, admin.password);
   if (!validatedPassword) {
-    res.status(401).json("Login or password is wrong");
+    return res.status(401).json("Login or password is wrong");
   }
 
   const payload = { id: admin._id };
