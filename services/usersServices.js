@@ -1,6 +1,11 @@
 const Users = require("../db/models/usersModel");
 
-const allUsers = async () => await Users.find({});
+const allUsers = async () =>
+  await Users.find({})
+    .where("visited")
+    .slice(-1)
+    .where("visitedTime")
+    .slice(-1);
 
 const findUser = async (query) => await Users.findOne(query);
 

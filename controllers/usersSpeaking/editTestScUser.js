@@ -1,9 +1,9 @@
-const { updateScUser } = require("../../services/scUsersServices");
+const { updateTestScUser } = require("../../services/testScUsersServices");
 
-const editScUser = async (req, res) => {
+const editTestScUser = async (req, res) => {
   const { feedback, ...data } = req.body;
   res.status(200).json(
-    await updateScUser(
+    await updateTestScUser(
       { userId: req.params.id },
       {
         $set: data, // Update all other fields
@@ -14,4 +14,4 @@ const editScUser = async (req, res) => {
   );
 };
 
-module.exports = editScUser;
+module.exports = editTestScUser;

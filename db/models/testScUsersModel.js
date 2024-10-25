@@ -1,23 +1,19 @@
 const { Schema, model } = require("mongoose");
 
-const users = new Schema(
+const testScUsers = new Schema(
   {
-    name: {
+    userId: {
       type: String,
+      required: [true, "No userId"],
     },
+    name: { type: String },
     mail: {
       type: String,
       required: [true, "No mail"],
     },
     zoomMail: { type: String },
-    password: {
-      type: String,
-      required: [true, "No password"],
-    },
     crmId: { type: Number },
     contactId: { type: Number },
-    pupilId: { type: String },
-    marathonNumber: { type: String },
     adult: { type: Boolean },
     age: { type: String },
     lang: { type: String },
@@ -25,25 +21,10 @@ const users = new Schema(
     package: { type: String },
     visited: [String],
     visitedTime: [String],
-    points: {
-      type: String,
-    },
-    knowledge: {
-      type: String,
-    },
-    manager: {
-      type: String,
-      required: [true, "No manager"],
-    },
-    token: {
-      type: String,
-    },
-    isBanned: {
-      type: Boolean,
-    },
-    authCode: { type: String },
+    knowledge: { type: String },
     successRate: { type: String },
     temperament: { type: String },
+    feedback: [String],
   },
   {
     versionKey: false,
@@ -51,6 +32,6 @@ const users = new Schema(
   }
 );
 
-const Users = model("users", users);
+const ScTest = model("sctest", testScUsers);
 
-module.exports = Users;
+module.exports = ScTest;

@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const scUserSchema = Joi.object({
+const testScUserSchema = Joi.object({
   userId: Joi.string().required(),
   name: Joi.string(),
   mail: Joi.string().required(),
@@ -20,8 +20,8 @@ const scUserSchema = Joi.object({
   feedback: Joi.array().items(Joi.string()),
 });
 
-const validateScUser = ({ body }, res, next) => {
-  const { error } = scUserSchema.validate(body);
+const validateTestScUser = ({ body }, res, next) => {
+  const { error } = testScUserSchema.validate(body);
 
   if (error) return res.status(400).json(error.details[0].message);
   console.log("validated");
@@ -29,5 +29,5 @@ const validateScUser = ({ body }, res, next) => {
 };
 
 module.exports = {
-  validateScUser,
+  validateTestScUser,
 };

@@ -20,6 +20,10 @@ const linksSpeakingSchema = Joi.object({
   polskia2: Joi.string().empty(""),
   polskib1: Joi.string().empty(""),
   polskib2: Joi.string().empty(""),
+  kidspre: Joi.string().empty(""),
+  kidsbeg: Joi.string().empty(""),
+  kidsmid: Joi.string().empty(""),
+  kidshigh: Joi.string().empty(""),
   a0kids: Joi.string().empty(""),
   a1kids: Joi.string().empty(""),
   a2kids: Joi.string().empty(""),
@@ -28,8 +32,14 @@ const linksSpeakingSchema = Joi.object({
   c1kids: Joi.string().empty(""),
   b1kidsbeginner: Joi.string().empty(""),
   b2kidsbeginner: Joi.string().empty(""),
+  dea0kids: Joi.string().empty(""),
   dea1kids: Joi.string().empty(""),
   pla1kids: Joi.string().empty(""),
+  nmt_ukr: Joi.string().empty(""),
+  nmt_en: Joi.string().empty(""),
+  nmt_math: Joi.string().empty(""),
+  nmt_history: Joi.string().empty(""),
+  preschool: Joi.string().empty(""),
 });
 
 const validateSpeakingLinks = ({ body }, res, next) => {

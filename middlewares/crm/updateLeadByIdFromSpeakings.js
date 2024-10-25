@@ -4,6 +4,8 @@ const { getToken } = require("../../services/tokensServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
+const regex = /\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}:\d{2}:/g;
+
 const updateLeadByIdFromSpeakings = async (req, res, next) => {
   if (req.body.crmId) {
     const updateRequest = {
@@ -39,7 +41,9 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           field_name: "Фідбек",
           values: [
             {
-              value: req.body.feedback || "",
+              value:
+                req.body.feedback.replace(regex, "").trim().replace(",", ":") ||
+                "",
             },
           ],
         },
