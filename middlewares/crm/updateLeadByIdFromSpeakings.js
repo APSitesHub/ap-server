@@ -47,6 +47,76 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
             },
           ],
         },
+        {
+          field_id: 1823753,
+          field_name: "Граматика",
+          values: [
+            {
+              value:
+                (req.body.grammar === "3"
+                  ? "Дуже добре"
+                  : req.body.grammar === "2"
+                  ? "Добре"
+                  : "Потребує покращення") || "",
+            },
+          ],
+        },
+        {
+          field_id: 1823755,
+          field_name: "Лексика",
+          values: [
+            {
+              value:
+                (req.body.lexis === "3"
+                  ? "Дуже добре"
+                  : req.body.lexis === "2"
+                  ? "Добре"
+                  : "Потребує покращення") || "",
+            },
+          ],
+        },
+        {
+          field_id: 1823757,
+          field_name: "Говоріння/вимова",
+          values: [
+            {
+              value:
+                (req.body.speaking === "3"
+                  ? "Дуже добре"
+                  : req.body.speaking === "2"
+                  ? "Добре"
+                  : "Потребує покращення") || "",
+            },
+          ],
+        },
+        {
+          field_id: 1823759,
+          field_name: "Слухання",
+          values: [
+            {
+              value:
+                (req.body.listening === "3"
+                  ? "Дуже добре"
+                  : req.body.listening === "2"
+                  ? "Добре"
+                  : "Потребує покращення") || "",
+            },
+          ],
+        },
+        {
+          field_id: 1823761,
+          field_name: "Активність на уроці",
+          values: [
+            {
+              value:
+                (req.body.activity === "3"
+                  ? "Дуже добре"
+                  : req.body.activity === "2"
+                  ? "Добре"
+                  : "Потребує покращення") || "",
+            },
+          ],
+        },
       ],
     };
 
