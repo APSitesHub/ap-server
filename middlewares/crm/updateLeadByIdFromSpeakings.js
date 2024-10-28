@@ -53,9 +53,9 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           values: [
             {
               value:
-                (req.body.grammar === "3"
+                (req.body.grammar === 3
                   ? "Дуже добре"
-                  : req.body.grammar === "2"
+                  : req.body.grammar === 2
                   ? "Добре"
                   : "Потребує покращення") || "",
             },
@@ -67,9 +67,9 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           values: [
             {
               value:
-                (req.body.lexis === "3"
+                (req.body.lexis === 3
                   ? "Дуже добре"
-                  : req.body.lexis === "2"
+                  : req.body.lexis === 2
                   ? "Добре"
                   : "Потребує покращення") || "",
             },
@@ -81,9 +81,9 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           values: [
             {
               value:
-                (req.body.speaking === "3"
+                (req.body.speaking === 3
                   ? "Дуже добре"
-                  : req.body.speaking === "2"
+                  : req.body.speaking === 2
                   ? "Добре"
                   : "Потребує покращення") || "",
             },
@@ -95,9 +95,9 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           values: [
             {
               value:
-                (req.body.listening === "3"
+                (req.body.listening === 3
                   ? "Дуже добре"
-                  : req.body.listening === "2"
+                  : req.body.listening === 2
                   ? "Добре"
                   : "Потребує покращення") || "",
             },
@@ -109,9 +109,9 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           values: [
             {
               value:
-                (req.body.activity === "3"
+                (req.body.activity === 3
                   ? "Дуже добре"
-                  : req.body.activity === "2"
+                  : req.body.activity === 2
                   ? "Добре"
                   : "Потребує покращення") || "",
             },
