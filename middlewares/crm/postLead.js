@@ -6,6 +6,8 @@ const { newLead } = require("../../services/leadsServices");
 axios.defaults.baseURL = process.env.BASE_URL;
 
 const postLead = async (req, res, _) => {
+  console.log("origin", req.headers.origin);
+
   const postRequest = [
     {
       name: `Website Lead ${req.body.name}`,
@@ -104,7 +106,21 @@ const postLead = async (req, res, _) => {
         },
       ],
       _embedded: {
-        tags: req.body.tag
+        tags: !req.headers.origin.includes("academy.")
+          ? [{ name: "Лід з сайту" }, { name: req.body.tag }]
+          : (!req.headers.origin.includes("academy.") &&
+              req.body.utm_content) ||
+            req.body.utm_medium ||
+            req.body.utm_campaign ||
+            req.body.utm_source ||
+            req.body.utm_term ||
+            req.body.utm_referrer ||
+            req.body.referrer ||
+            req.body.gclientid ||
+            req.body.gclid ||
+            req.body.fbclid
+          ? [{ name: "Лід з сайту, органіка" }]
+          : req.body.tag
           ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
           : req.body.utm_content ||
             req.body.utm_medium ||
