@@ -118,9 +118,9 @@ const postLead = async (req, res, _) => {
             req.body.gclientid ||
             req.body.gclid ||
             req.body.fbclid)
-            ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
-            : !req.headers.origin.includes("academy.")
             ? [{ name: "Лід з сайту" }, { name: req.body.tag }]
+            : !req.headers.origin.includes("academy.")
+            ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
             : req.body.tag
             ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
             : req.body.utm_content ||
