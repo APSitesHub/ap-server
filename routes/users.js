@@ -27,6 +27,7 @@ const refreshUserTokenByAuthCode = require("../controllers/users/refreshUserToke
 const loginUserByAuthCodeFromDirect = require("../controllers/users/loginUserByAuthCodeFromDirect");
 const addUserByCrmId = require("../controllers/users/addUserByCrmId");
 const authUserAdmin = require("../middlewares/streams/authUserAdmin");
+const getPlatformToken = require("../middlewares/platform/getPlatformToken");
 
 const router = express.Router();
 
@@ -38,13 +39,17 @@ router.post("/new", validateUser, addUser);
 
 router.delete("/:id", removeUser);
 
-router.post("/login", validateUser, loginUser);
+router.post("/login", validateUser, getPlatformToken, loginUser);
 
-router.post("/refresh", refreshUserToken);
+router.post("/refresh", getPlatformToken, refreshUserToken);
 
 router.post("/login-code", loginUserByAuthCode, changeLeadStatusQuiz);
 
-router.post("/login-direct", loginUserByAuthCodeFromDirect, changeLeadStatusDirect);
+router.post(
+  "/login-direct",
+  loginUserByAuthCodeFromDirect,
+  changeLeadStatusDirect
+);
 
 router.post("/refresh-code", refreshUserTokenByAuthCode);
 

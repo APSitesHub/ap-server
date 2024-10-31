@@ -51,6 +51,7 @@ const refreshUserToken = async (req, res, next) => {
   const temperament = user.temperament;
   const successRate = user.successRate;
   const feedback = user.feedback;
+  const platformToken = req.body.authToken;
 
   try {
     await signInUser(user._id, { visited, visitedTime, token: newToken });
@@ -80,6 +81,7 @@ const refreshUserToken = async (req, res, next) => {
       temperament,
       successRate,
       feedback,
+      platformToken,
     },
   });
 };

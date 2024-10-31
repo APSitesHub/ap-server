@@ -53,6 +53,7 @@ const loginUser = async (req, res, next) => {
   const temperament = user.temperament;
   const successRate = user.successRate;
   const feedback = user.feedback;
+  const platformToken = req.body.authToken;
 
   try {
     await signInUser(user._id, { token, visited, visitedTime });
@@ -82,6 +83,7 @@ const loginUser = async (req, res, next) => {
       temperament,
       successRate,
       feedback,
+      platformToken,
     },
   });
 };
