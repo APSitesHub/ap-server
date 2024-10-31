@@ -29,12 +29,17 @@ const getPlatformToken = async (req, res, next) => {
       `https://edvibe.com/school-api/api/UserAuth/LoginPupil`,
       updateLeadStatusRequest
     );
+    console.log(33, platformToken.data);
+    if (!platformToken.data.data.sessionToken) {
+      console.log(14, "!No such student");
+    }
     console.log(24, platformToken.data.data.sessionToken);
 
     req.body.authToken = platformToken.data.data.sessionToken;
     next();
   } catch (error) {
-    console.log(error.code);
+    console.log(42, error);
+    next();
   }
 };
 

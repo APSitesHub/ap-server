@@ -3,7 +3,7 @@ const { signInUser, findUser } = require("../../services/usersServices");
 
 const loginUser = async (req, res, next) => {
   const { mail, password } = req.body;
-  console.log(req.body);
+  console.log(6, req.body);
   const user = await findUser({ mail });
   console.log(user);
   if (!user) {
