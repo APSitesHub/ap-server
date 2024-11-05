@@ -104,6 +104,15 @@ const postQuizLead = async (req, res, next) => {
           ],
         },
         {
+          field_id: 1822925,
+          field_name: "Час дзвінка",
+          values: [
+            {
+              value: req.body.time || "",
+            },
+          ],
+        },
+        {
           field_id: 1809275,
           field_name: "Логін до платформи",
           values: [

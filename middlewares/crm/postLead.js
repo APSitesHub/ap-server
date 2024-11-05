@@ -104,6 +104,15 @@ const postLead = async (req, res, _) => {
             },
           ],
         },
+        {
+          field_id: 1822925,
+          field_name: "Час дзвінка",
+          values: [
+            {
+              value: req.body.time || "",
+            },
+          ],
+        },
       ],
       _embedded: {
         tags:

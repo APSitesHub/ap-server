@@ -3,6 +3,7 @@ const Joi = require("joi");
 const leadSchema = Joi.object({
   name: Joi.string().min(3).max(50).required(),
   phone: Joi.string().min(10).max(20).required(),
+  time: Joi.string().min(3).max(50).empty(""),
   tag: Joi.string().empty(""),
   lang: Joi.string().empty(""),
   crmId: Joi.number(),
