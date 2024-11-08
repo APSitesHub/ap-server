@@ -1,7 +1,8 @@
 const express = require("express");
+const { newUser } = require("../services/usersServices");
 
 const router = express.Router();
-router.post("/kommo", (req, res) => {
+router.post("/kommo", async (req, res) => {
   console.log("Webhook received");
   console.log(req.body.leads.update[0].pipeline_id);
 
@@ -9,8 +10,8 @@ router.post("/kommo", (req, res) => {
     console.log("Webhook received event from correct pipeline (7001587)!");
     console.log(req.body.leads.update[0]);
     const databaseObject = req.body.leads.update[0];
-    console.log({
-      crmId: databaseObject.id,
+    req.body.request = {
+      crmId: +databaseObject.id,
       name: databaseObject.name,
       mail: databaseObject.custom_fields.find((field) =>
         Object.values(field).includes("Логін до платформи")
@@ -27,8 +28,12 @@ router.post("/kommo", (req, res) => {
       age: databaseObject.custom_fields.find((field) =>
         Object.values(field).includes("Скільки років?")
       ).values[0].value,
-    });
-    console.log(typeof databaseObject.id);
+      manager: +databaseObject.responsible_user_id,
+    };
+
+    if (+databaseObject.id === 19755581) {
+      res.status(201).json(await newUser({ ...req.body.request }));
+    }
   }
 
   return res.status(200).json({ message: "OK" });
