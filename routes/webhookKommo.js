@@ -12,11 +12,11 @@ router.post("/kommo", (req, res) => {
     console.log({
       crmId: databaseObject.id,
       name: databaseObject.name,
-      mail: databaseObject.custom_fields.find((field) => Object.keys(field).includes('Логін до платформи')).values[0].value,
-      password: databaseObject.custom_fields.find((field) => Object.keys(field).includes('Пароль до платформи')).values[0].value,
-      course: databaseObject.custom_fields.find((field) => Object.keys(field).includes('Потоки Річний курс')).values[0].value,
-      lang: databaseObject.custom_fields.find((field) => Object.keys(field).includes('Мова для вивчення')).values[0].value,
-      age: databaseObject.custom_fields.find((field) => Object.keys(field).includes('Скільки років?')).values[0].value,
+      mail: databaseObject.custom_fields.find((field) => Object.values(field).includes('Логін до платформи')).values[0].value,
+      password: databaseObject.custom_fields.find((field) => Object.values(field).includes('Пароль до платформи')).values[0].value,
+      course: databaseObject.custom_fields.find((field) => Object.values(field).includes('Потоки Річний курс')).values[0].value,
+      lang: databaseObject.custom_fields.find((field) => Object.values(field).includes('Мова для вивчення')).values[0].value,
+      age: databaseObject.custom_fields.find((field) => Object.values(field).includes('Скільки років?')).values[0].value,
     });
   }
 
