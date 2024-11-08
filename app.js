@@ -1,6 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 const router = require("./routes/main");
 const leadsRouter = require("./routes/leads");
@@ -21,6 +22,7 @@ const teachersRouter = require("./routes/teachers");
 const usersSpeakingRouter = require("./routes/usersSpeaking");
 const universityLeadsRouter = require("./routes/universityLeads");
 const testUsersSpeakingRouter = require("./routes/testUsersSpeaking");
+const wewbhookKommo = require("./routes/wewbhookKommo");
 
 const app = express();
 
@@ -29,7 +31,7 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json({ limit: "2mb" }));
-
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", router);
 app.use("/leads", leadsRouter);
 app.use("/admins", adminsRouter);
@@ -49,6 +51,7 @@ app.use("/teachers", teachersRouter);
 app.use("/speakingusers", usersSpeakingRouter);
 app.use("/sctest", testUsersSpeakingRouter);
 app.use("/uni-leads", universityLeadsRouter);
+app.use("/webhooktest", wewbhookKommo);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
