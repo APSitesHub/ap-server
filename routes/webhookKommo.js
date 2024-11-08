@@ -32,7 +32,7 @@ router.post("/kommo", async (req, res) => {
     };
 
     if (+databaseObject.id === 19755581) {
-      res.status(201).json(await newUser({ ...req.body.request }));
+      return res.status(201).json(await newUser({ ...req.body.request }));
     }
   }
 
