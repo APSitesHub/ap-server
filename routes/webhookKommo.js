@@ -7,6 +7,7 @@ router.post("/kommo", (req, res) => {
 
   if (req.body.leads.update[0].pipeline_id === "7001587") {
     console.log("Webhook received event from correct pipeline (7001587)!");
+    console.log(req.body.leads.update[0]);
   }
 
   return res.status(200).json({ message: "OK" });
