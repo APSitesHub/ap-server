@@ -8,7 +8,8 @@ const {
 const addTimetable = async (req, res) => {
   const { lang, level } = req.body;
   const matchingTimetable = await findTimetable({ lang, level });
-  if (!matchingTimetable.course) {
+  
+  if (matchingTimetable && !matchingTimetable.course) {
     await updateTimetableWithoutCourse(matchingTimetable._id, {
       course: req.body.course,
     });
