@@ -18,7 +18,7 @@ router.post("/kommo", async (req, res) => {
       ).values[0].value,
       course: databaseObject.custom_fields
         .find((field) => Object.values(field).includes("Потоки Річний курс"))
-        .values[0].value.slice(0, 2)
+        .values[0].value.slice(0, 3)
         .replace(".", ""),
       lang:
         databaseObject.custom_fields.find((field) =>
@@ -85,10 +85,10 @@ router.post("/kommo", async (req, res) => {
       console.log(userExists);
 
       userExists
-        ? res.status(201).json(await newUser({ ...req.body.request }))
-        : res
+        ? res
             .status(201)
-            .json(await updateUser(userExists._id, { ...req.body.request }));
+            .json(await updateUser(userExists._id, { ...req.body.request }))
+        : res.status(201).json(await newUser({ ...req.body.request }));
     }
   }
 
