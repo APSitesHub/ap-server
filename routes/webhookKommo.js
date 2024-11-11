@@ -1,11 +1,8 @@
 const express = require("express");
-const { newUser } = require("../services/usersServices");
+const { newUser, findUser, updateUser } = require("../services/usersServices");
 
 const router = express.Router();
 router.post("/kommo", async (req, res) => {
-  console.log("Webhook received");
-  console.log(req.body.leads.update[0].pipeline_id);
-
   if (req.body.leads.update[0].pipeline_id === "7001587") {
     console.log("Webhook received event from correct pipeline (7001587)!");
     console.log(req.body.leads.update[0]);
@@ -19,12 +16,64 @@ router.post("/kommo", async (req, res) => {
       password: databaseObject.custom_fields.find((field) =>
         Object.values(field).includes("Пароль до платформи")
       ).values[0].value,
-      course: databaseObject.custom_fields.find((field) =>
-        Object.values(field).includes("Потоки Річний курс")
-      ).values[0].value,
-      lang: databaseObject.custom_fields.find((field) =>
-        Object.values(field).includes("Мова для вивчення")
-      ).values[0].value,
+      course: databaseObject.custom_fields
+        .find((field) => Object.values(field).includes("Потоки Річний курс"))
+        .values[0].value.slice(0, 2)
+        .replace(".", ""),
+      lang:
+        databaseObject.custom_fields.find((field) =>
+          Object.values(field).includes("Мова для вивчення")
+        ).values[0].value === "Англійська" &&
+        databaseObject.custom_fields
+          .find((field) => Object.values(field).includes("Потоки Річний курс"))
+          .values[0].value.includes("Дорослі")
+          ? "en"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Мова для вивчення")
+            ).values[0].value === "Німецька" &&
+            databaseObject.custom_fields
+              .find((field) =>
+                Object.values(field).includes("Потоки Річний курс")
+              )
+              .values[0].value.includes("Дорослі")
+          ? "de"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Мова для вивчення")
+            ).values[0].value === "Польська" &&
+            databaseObject.custom_fields
+              .find((field) =>
+                Object.values(field).includes("Потоки Річний курс")
+              )
+              .values[0].value.includes("Дорослі")
+          ? "pl"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Мова для вивчення")
+            ).values[0].value === "Англійська" &&
+            databaseObject.custom_fields
+              .find((field) =>
+                Object.values(field).includes("Потоки Річний курс")
+              )
+              .values[0].value.includes("Діти")
+          ? "enkids"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Мова для вивчення")
+            ).values[0].value === "Німецька" &&
+            databaseObject.custom_fields
+              .find((field) =>
+                Object.values(field).includes("Потоки Річний курс")
+              )
+              .values[0].value.includes("Діти")
+          ? "dekids"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Мова для вивчення")
+            ).values[0].value === "Польська" &&
+            databaseObject.custom_fields
+              .find((field) =>
+                Object.values(field).includes("Потоки Річний курс")
+              )
+              .values[0].value.includes("Діти")
+          ? "plkids"
+          : "",
       age: databaseObject.custom_fields.find((field) =>
         Object.values(field).includes("Скільки років?")
       ).values[0].value,
@@ -32,7 +81,14 @@ router.post("/kommo", async (req, res) => {
     };
 
     if (+databaseObject.id === 19755581) {
-      return res.status(201).json(await newUser({ ...req.body.request }));
+      const userExists = await findUser({ crmId: +databaseObject.id });
+      console.log(userExists);
+
+      userExists
+        ? res.status(201).json(await newUser({ ...req.body.request }))
+        : res
+            .status(201)
+            .json(await updateUser(userExists._id, { ...req.body.request }));
     }
   }
 
