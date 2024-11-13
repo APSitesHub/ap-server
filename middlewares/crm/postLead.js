@@ -134,6 +134,7 @@ const postLead = async (req, res, _) => {
                 { name: req.body.utm_campaign },
                 { name: req.body.utm_term },
                 { name: req.body.utm_content },
+                { name: req.body.fbclid },
               ]
             : !req.headers.origin.includes("academy.")
               ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
@@ -155,6 +156,7 @@ const postLead = async (req, res, _) => {
                       { name: req.body.utm_campaign },
                       { name: req.body.utm_term },
                       { name: req.body.utm_content },
+                      { name: req.body.fbclid },
                     ]
                   : [{ name: "Лід з сайту, органіка" }],
         contacts: [
