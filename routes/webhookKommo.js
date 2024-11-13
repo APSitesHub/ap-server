@@ -11,10 +11,10 @@ router.post("/kommo", async (req, res) => {
       crmId: +databaseObject.id,
       name: databaseObject.name,
       mail: databaseObject.custom_fields.find((field) =>
-        Object.values(field).includes("Логін до платформи")
+        Object.values(field).includes("Логін до платформи"),
       ).values[0].value,
       password: databaseObject.custom_fields.find((field) =>
-        Object.values(field).includes("Пароль до платформи")
+        Object.values(field).includes("Пароль до платформи"),
       ).values[0].value,
       course: databaseObject.custom_fields
         .find((field) => Object.values(field).includes("Потоки Річний курс"))
@@ -22,60 +22,60 @@ router.post("/kommo", async (req, res) => {
         .replace(".", ""),
       lang:
         databaseObject.custom_fields.find((field) =>
-          Object.values(field).includes("Мова для вивчення")
+          Object.values(field).includes("Мова для вивчення"),
         ).values[0].value === "Англійська" &&
         databaseObject.custom_fields
           .find((field) => Object.values(field).includes("Потоки Річний курс"))
           .values[0].value.includes("Дорослі")
           ? "en"
           : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Німецька" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Дорослі")
-          ? "de"
-          : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Польська" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Дорослі")
-          ? "pl"
-          : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Англійська" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Діти")
-          ? "enkids"
-          : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Німецька" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Діти")
-          ? "dekids"
-          : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Польська" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Діти")
-          ? "plkids"
-          : "",
+                Object.values(field).includes("Мова для вивчення"),
+              ).values[0].value === "Німецька" &&
+              databaseObject.custom_fields
+                .find((field) =>
+                  Object.values(field).includes("Потоки Річний курс"),
+                )
+                .values[0].value.includes("Дорослі")
+            ? "de"
+            : databaseObject.custom_fields.find((field) =>
+                  Object.values(field).includes("Мова для вивчення"),
+                ).values[0].value === "Польська" &&
+                databaseObject.custom_fields
+                  .find((field) =>
+                    Object.values(field).includes("Потоки Річний курс"),
+                  )
+                  .values[0].value.includes("Дорослі")
+              ? "pl"
+              : databaseObject.custom_fields.find((field) =>
+                    Object.values(field).includes("Мова для вивчення"),
+                  ).values[0].value === "Англійська" &&
+                  databaseObject.custom_fields
+                    .find((field) =>
+                      Object.values(field).includes("Потоки Річний курс"),
+                    )
+                    .values[0].value.includes("Діти")
+                ? "enkids"
+                : databaseObject.custom_fields.find((field) =>
+                      Object.values(field).includes("Мова для вивчення"),
+                    ).values[0].value === "Німецька" &&
+                    databaseObject.custom_fields
+                      .find((field) =>
+                        Object.values(field).includes("Потоки Річний курс"),
+                      )
+                      .values[0].value.includes("Діти")
+                  ? "dekids"
+                  : databaseObject.custom_fields.find((field) =>
+                        Object.values(field).includes("Мова для вивчення"),
+                      ).values[0].value === "Польська" &&
+                      databaseObject.custom_fields
+                        .find((field) =>
+                          Object.values(field).includes("Потоки Річний курс"),
+                        )
+                        .values[0].value.includes("Діти")
+                    ? "plkids"
+                    : "",
       age: databaseObject.custom_fields.find((field) =>
-        Object.values(field).includes("Скільки років?")
+        Object.values(field).includes("Скільки років?"),
       ).values[0].value,
       manager: +databaseObject.responsible_user_id,
     };
@@ -92,6 +92,11 @@ router.post("/kommo", async (req, res) => {
     }
   }
 
+  return res.status(200).json({ message: "OK" });
+});
+
+router.post("/google-sheets", async (req, res) => {
+  console.log(req.body);
   return res.status(200).json({ message: "OK" });
 });
 module.exports = router;
