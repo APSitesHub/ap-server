@@ -42,7 +42,7 @@ const updateLeadByIdFromSpeakings = async (req, res, next) => {
           values: [
             {
               value:
-                req.body.feedback.replace(regex, "").trim().replace(",", ":") ||
+                req.body.feedback.replace(regex, "").trim().replace(",", ":").split(' ').slice(1).join(' ') ||
                 "",
             },
           ],
