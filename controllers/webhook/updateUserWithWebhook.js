@@ -11,7 +11,7 @@ const updateUserWithWebhook = async (req, res) => {
     const databaseObject = req.body.leads.update[0];
     req.body.request = {
       crmId: +databaseObject.id,
-      name: databaseObject.name,
+      name: databaseObject.name.replace("Осн", "").trim().trimEnd(),
       mail:
         databaseObject.custom_fields.find((field) =>
           Object.values(field).includes("Логін до платформи")
