@@ -20,68 +20,44 @@ const updateUserWithWebhook = async (req, res) => {
         databaseObject.custom_fields.find((field) =>
           Object.values(field).includes("Пароль до платформи")
         ).values[0].value || "",
-      course: databaseObject.custom_fields
-        .find((field) => Object.values(field).includes("Потоки Річний курс"))
-        .values[0].value.slice(0, 3)
-        .replace(".", "") || '',
-      lang:
-        databaseObject.custom_fields.find((field) =>
-          Object.values(field).includes("Мова для вивчення")
-        ).values[0].value === "Англійська" &&
+      course:
         databaseObject.custom_fields
           .find((field) => Object.values(field).includes("Потоки Річний курс"))
-          .values[0].value.includes("Дорослі")
+          .values[0].value.slice(0, 3)
+          .replace(".", "") || "",
+      lang:
+        databaseObject.custom_fields.find((field) =>
+          Object.values(field).includes("Вид послуги")
+        ).values[0].value === "Англійська"
           ? "en"
           : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Німецька" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Дорослі")
-          ? "de"
-          : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Польська" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Дорослі")
-          ? "pl"
-          : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Англійська" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Діти")
+              Object.values(field).includes("Вид послуги")
+            ).values[0].value === "Англійська діти"
           ? "enkids"
           : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Німецька" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Діти")
+              Object.values(field).includes("Вид послуги")
+            ).values[0].value === "Німецька"
+          ? "de"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Вид послуги")
+            ).values[0].value === "Німецька діти"
           ? "dekids"
           : databaseObject.custom_fields.find((field) =>
-              Object.values(field).includes("Мова для вивчення")
-            ).values[0].value === "Польська" &&
-            databaseObject.custom_fields
-              .find((field) =>
-                Object.values(field).includes("Потоки Річний курс")
-              )
-              .values[0].value.includes("Діти")
+              Object.values(field).includes("Вид послуги")
+            ).values[0].value === "Польська"
+          ? "pl"
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Вид послуги")
+            ).values[0].value === "Польська діти"
           ? "plkids"
-          : "",
-      age: databaseObject.custom_fields.find((field) =>
-        Object.values(field).includes("Скільки років?")
-      ).values[0].value || '',
-      manager: +databaseObject.responsible_user_id || '',
+          : databaseObject.custom_fields.find((field) =>
+              Object.values(field).includes("Вид послуги")
+            ).values[0].value || "",
+      age:
+        databaseObject.custom_fields.find((field) =>
+          Object.values(field).includes("Скільки років?")
+        ).values[0].value || "",
+      manager: +databaseObject.responsible_user_id || "",
     };
 
     if (+databaseObject.status_id === 58542315) {
