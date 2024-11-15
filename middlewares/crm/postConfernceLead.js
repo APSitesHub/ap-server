@@ -5,14 +5,51 @@ const { newLead } = require("../../services/leadsServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const postMCLead = async (req, res, _) => {
+const postConferenceLead = async (req, res, _) => {
+  console.log("origin", req.headers.origin);
+
   const postRequest = [
     {
-      name: `${req.body.name}`,
-      // tried to set lead status, but due to automated lead categorizing it does not work properly
-      // status_id: 55468371,
-      pipeline_id: 9271664,
+      name: `Website Lead ${req.body.name}`,
+      status_id: 76882104,
+      pipeline_id: 7001587,
       custom_fields_values: [
+        {
+          field_id: 1824389,
+          field_name: "Звідки про нас дізнались",
+          values: [
+            {
+              value: req.body.source || "",
+            },
+          ],
+        },
+        {
+          field_id: 1824387,
+          field_name: "Роль на конференції",
+          values: [
+            {
+              value: req.body.role || "",
+            },
+          ],
+        },
+        {
+          field_id: 558988,
+          field_name: "Місто",
+          values: [
+            {
+              value: req.body.city || "",
+            },
+          ],
+        },
+        {
+          field_id: 557652,
+          field_name: "Скільки років?",
+          values: [
+            {
+              value: req.body.age || "",
+            },
+          ],
+        },
         {
           field_id: 556518,
           field_name: "utm_content",
@@ -103,9 +140,61 @@ const postMCLead = async (req, res, _) => {
             },
           ],
         },
+        {
+          field_id: 1822925,
+          field_name: "Час дзвінка",
+          values: [
+            {
+              value: req.body.time || "",
+            },
+          ],
+        },
       ],
       _embedded: {
-        tags: [{ name: "Лід з сайту" }, { name: req.body.tag }],
+        tags:
+          !req.headers.origin.includes("academy.") &&
+          (req.body.utm_content ||
+            req.body.utm_medium ||
+            req.body.utm_campaign ||
+            req.body.utm_source ||
+            req.body.utm_term ||
+            req.body.utm_referrer ||
+            req.body.referrer ||
+            req.body.gclientid ||
+            req.body.gclid ||
+            req.body.fbclid)
+            ? [
+                { name: "Лід з сайту" },
+                { name: req.body.tag },
+                { name: req.body.utm_source },
+                { name: req.body.utm_campaign },
+                { name: req.body.utm_term },
+                { name: req.body.utm_content },
+                { name: req.body.fbclid },
+              ]
+            : !req.headers.origin.includes("academy.")
+              ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
+              : req.body.tag
+                ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
+                : req.body.utm_content ||
+                    req.body.utm_medium ||
+                    req.body.utm_campaign ||
+                    req.body.utm_source ||
+                    req.body.utm_term ||
+                    req.body.utm_referrer ||
+                    req.body.referrer ||
+                    req.body.gclientid ||
+                    req.body.gclid ||
+                    req.body.fbclid
+                  ? [
+                      { name: "Лід з сайту" },
+                      { name: req.body.utm_source },
+                      { name: req.body.utm_campaign },
+                      { name: req.body.utm_term },
+                      { name: req.body.utm_content },
+                      { name: req.body.fbclid },
+                    ]
+                  : [{ name: "Лід з сайту, органіка" }],
         contacts: [
           {
             name: req.body.name,
@@ -148,11 +237,11 @@ const postMCLead = async (req, res, _) => {
     axios.defaults.headers.common["Authorization"] =
       `Bearer ${currentToken[0].access_token}`;
     const crmLead = await axios.post("api/v4/leads/complex", postRequest);
-    const crmLeadId = crmLead.data[0].id;
-    return res.status(201).json(await newLead({ ...lead, crmId: crmLeadId }));
+
+    return res.status(201);
   } catch (error) {
     return res.status(400).json(error);
   }
 };
 
-module.exports = postMCLead;
+module.exports = postConferenceLead;
