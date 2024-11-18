@@ -145,9 +145,8 @@ const postMCLead = async (req, res, _) => {
 
   try {
     const currentToken = await getToken();
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${currentToken[0].access_token}`;
+    axios.defaults.headers.common["Authorization"] =
+      `Bearer ${currentToken[0].access_token}`;
     const crmLead = await axios.post("api/v4/leads/complex", postRequest);
     const crmLeadId = crmLead.data[0].id;
     return res.status(201).json(await newLead({ ...lead, crmId: crmLeadId }));
