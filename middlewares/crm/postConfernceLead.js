@@ -1,13 +1,11 @@
 const axios = require("axios");
 require("dotenv").config();
 const { getToken } = require("../../services/tokensServices");
-const { newLead } = require("../../services/leadsServices");
+const { google } = require("googleapis");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
 const postConferenceLead = async (req, res, _) => {
-  console.log("origin", req.headers.origin);
-
   const postRequest = [
     {
       name: `Website Lead ${req.body.name}`,
@@ -215,30 +213,77 @@ const postConferenceLead = async (req, res, _) => {
       },
     },
   ];
-
+  const currentToken = await getToken();
+  axios.defaults.headers.common["Authorization"] =
+    `Bearer ${currentToken[0].access_token}`;
+  const crmLead = await axios.post("api/v4/leads/complex", postRequest);
   const lead = {
+    id: crmLead.data[0].id,
     name: req.body.name,
     phone: req.body.phone,
-    tag: req.body.tag,
-    utm_content: req.body.utm_content,
-    utm_medium: req.body.utm_medium,
-    utm_campaign: req.body.utm_campaign,
-    utm_source: req.body.utm_source,
-    utm_term: req.body.utm_term,
-    utm_referrer: req.body.utm_referrer,
-    referrer: req.body.referrer,
-    gclientid: req.body.gclientid,
-    gclid: req.body.gclid,
-    fbclid: req.body.fbclid,
+    city: req.body.city,
+    role: req.body.role,
+    age: req.body.age,
+    source: req.body.source,
+    tags: [
+      req.body.tag,
+      req.body.utm_content,
+      req.body.utm_medium,
+      req.body.utm_campaign,
+      req.body.utm_source,
+      req.body.utm_term,
+      req.body.utm_referrer,
+      req.body.referrer,
+      req.body.gclientid,
+      req.body.gclid,
+      req.body.fbclid,
+    ],
   };
-
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_PRIVATE_KEY;
+  const googleSheetId = process.env.GOOGLE_SHEET_ID;
+  const googleSheetPage = "Аркуш1";
+  // authenticate the service account
+  const googleAuth = new google.auth.JWT(
+    clientEmail,
+    null,
+    privateKey.replace(/\\n/g, "\n"),
+    "https://www.googleapis.com/auth/spreadsheets",
+  );
   try {
-    const currentToken = await getToken();
-    axios.defaults.headers.common["Authorization"] =
-      `Bearer ${currentToken[0].access_token}`;
-    const crmLead = await axios.post("api/v4/leads/complex", postRequest);
+    // google sheet instance
+    const sheetInstance = await google.sheets({
+      version: "v4",
+      auth: googleAuth,
+    });
+    // read data in the range in a sheet
+    const newRow = [
+      [
+        lead.id,
+        lead.tags.join(", "),
+        lead.name,
+        lead.phone,
+        lead.city,
+        lead.age,
+        lead.role,
+        lead.source,
+      ],
+    ];
 
-    return res.status(201);
+    // Додаємо новий рядок у таблицю
+    await sheetInstance.spreadsheets.values
+      .append({
+        spreadsheetId: googleSheetId,
+        range: googleSheetPage,
+        valueInputOption: "USER_ENTERED",
+        resource: {
+          values: newRow,
+        },
+      })
+      .catch((error) => {
+        console.log("Помилка додавання нового рядка у таблицю", error);
+      });
+    return res.status(201).json(lead);
   } catch (error) {
     return res.status(400).json(error);
   }
