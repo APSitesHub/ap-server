@@ -13,6 +13,15 @@ const postConferenceLead = async (req, res, _) => {
       pipeline_id: 7001587,
       custom_fields_values: [
         {
+          field_id: 1807468,
+          field_name: "Телефон",
+          values: [
+            {
+              value: req.body.phone || "",
+            },
+          ],
+        },
+        {
           field_id: 1824389,
           field_name: "Звідки про нас дізнались",
           values: [
@@ -193,23 +202,6 @@ const postConferenceLead = async (req, res, _) => {
                       { name: req.body.fbclid },
                     ]
                   : [{ name: "Лід з сайту, органіка" }],
-        contacts: [
-          {
-            name: req.body.name,
-            custom_fields_values: [
-              {
-                field_id: 556510,
-                field_name: "Work phone",
-                values: [
-                  {
-                    value: req.body.phone,
-                    enum_code: "WORK",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
       },
     },
   ];
