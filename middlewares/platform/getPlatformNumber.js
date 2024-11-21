@@ -17,16 +17,16 @@ const getPlatformNumber = async (req, _, next) => {
 
       if (login) {
         const marathonOne = await axios.get(
-          `https://edvibe.com/school-api/api/Marathon/GetMarathonStudents?MarathonId=37835&SearchTerm=${login}`
+          `https://online.ap.education/school-api/api/Marathon/GetMarathonStudents?MarathonId=37835&SearchTerm=${login}`
         );
 
-        console.log(23, marathonOne);
+        console.log(23, marathonOne.data);
 
         const marathonTwo = await axios.get(
-          `https://edvibe.com/school-api/api/Marathon/GetMarathonStudents?MarathonId=49509&SearchTerm=${login}`
+          `https://online.ap.education/school-api/api/Marathon/GetMarathonStudents?MarathonId=49509&SearchTerm=${login}`
         );
 
-        console.log(29, marathonTwo);
+        console.log(29, marathonTwo.data);
 
         req.body.marathonNumber =
           marathonOne.data.length > 0
