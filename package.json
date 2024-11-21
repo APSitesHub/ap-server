@@ -1,6 +1,6 @@
 {
   "name": "ap-server",
-  "version": "1.0.98",
+  "version": "1.0.98.1",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
