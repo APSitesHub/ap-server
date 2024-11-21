@@ -57,6 +57,7 @@ const updateUserWithWebhook = async (req, res) => {
         databaseObject.custom_fields.find((field) =>
           Object.values(field).includes("Скільки років?")
         ).values[0].value || "",
+      marathonNumber: req.body.marathonNumber || "",
       manager: +databaseObject.responsible_user_id || "",
     };
 

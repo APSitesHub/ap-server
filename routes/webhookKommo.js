@@ -3,6 +3,6 @@ const updateUserWithWebhook = require("../controllers/webhook/updateUserWithWebh
 
 const router = express.Router();
 
-router.post("/kommo", updateUserWithWebhook);
+router.post("/kommo", getPlatformNumber, updateUserWithWebhook);
 
 module.exports = router;
