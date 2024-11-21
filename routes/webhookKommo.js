@@ -4,6 +4,6 @@ const getPlatformNumberAndPupilId = require("../middlewares/platform/getPlatform
 
 const router = express.Router();
 
-router.post("/kommo", getPlatformNumberAndPupilId, updateUserWithWebhook);
+router.post("/kommo", getPlatformNumberAndPupilId, getResponsibleUser, updateUserWithWebhook);
 
 module.exports = router;

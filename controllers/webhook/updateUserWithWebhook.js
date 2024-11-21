@@ -57,7 +57,7 @@ const updateUserWithWebhook = async (req, res) => {
         ).values[0].value || "",
       marathonNumber: req.body.marathonNumber || "",
       pupilId: req.body.pupilId || "",
-      manager: +databaseObject.responsible_user_id || "",
+      manager: req.body.manager || "",
     };
 
     if (+databaseObject.status_id === 58542315) {
