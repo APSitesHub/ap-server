@@ -6,8 +6,6 @@ const {
 
 const updateUserWithWebhook = async (req, res) => {
   if (req.body.leads.update[0].pipeline_id === "7001587") {
-    console.log("Webhook received event from correct pipeline (7001587)!");
-    console.log(10, req.body.leads.update[0]);
     const databaseObject = req.body.leads.update[0];
     req.body.request = {
       crmId: +databaseObject.id,
@@ -58,14 +56,15 @@ const updateUserWithWebhook = async (req, res) => {
           Object.values(field).includes("Скільки років?")
         ).values[0].value || "",
       marathonNumber: req.body.marathonNumber || "",
+      pupilId: req.body.pupilId || "",
       manager: +databaseObject.responsible_user_id || "",
     };
 
     if (+databaseObject.status_id === 58542315) {
       const userExists = await findUser({ crmId: +databaseObject.id });
-      console.log(87, userExists);
+      console.log(65, userExists);
 
-      userExists
+      return userExists
         ? res
             .status(201)
             .json(await updateUser(userExists._id, { ...req.body.request }))

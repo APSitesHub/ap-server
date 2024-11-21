@@ -1,9 +1,9 @@
 const express = require("express");
 const updateUserWithWebhook = require("../controllers/webhook/updateUserWithWebhook");
-const getPlatformNumber = require("../middlewares/platform/getPlatformNumber");
+const getPlatformNumberAndPupilId = require("../middlewares/platform/getPlatformNumberAndPupilId");
 
 const router = express.Router();
 
-router.post("/kommo", getPlatformNumber, updateUserWithWebhook);
+router.post("/kommo", getPlatformNumberAndPupilId, updateUserWithWebhook);
 
 module.exports = router;

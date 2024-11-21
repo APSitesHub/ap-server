@@ -1,8 +1,10 @@
 const axios = require("axios");
 
-const getPlatformNumber = async (req, _, next) => {
+const getPlatformNumberAndPupilId = async (req, _, next) => {
   if (req.body.leads.update[0].pipeline_id === "7001587") {
-    console.log(5, 'getPlatformNumber');
+    console.log("Webhook received event from correct pipeline (7001587)!");
+    console.log(6, "getPlatformNumber");
+    console.log(7, req.body.leads.update[0]);
 
     try {
       axios.defaults.headers.common[
@@ -13,20 +15,30 @@ const getPlatformNumber = async (req, _, next) => {
         Object.values(field).includes("Логін до платформи")
       ).values[0].value;
 
-      console.log(16, login);
+      console.log(18, login);
 
       if (login) {
         const marathonOne = await axios.get(
           `https://online.ap.education/school-api/api/Marathon/GetMarathonStudents?MarathonId=37835&SearchTerm=${login}`
         );
 
-        console.log(23, marathonOne.data, 'length', marathonOne.data.data.length);
+        console.log(
+          26,
+          marathonOne.data,
+          "length",
+          marathonOne.data.data.length
+        );
 
         const marathonTwo = await axios.get(
           `https://online.ap.education/school-api/api/Marathon/GetMarathonStudents?MarathonId=49509&SearchTerm=${login}`
         );
 
-        console.log(29, marathonTwo.data, 'length', marathonTwo.data.data.length);
+        console.log(
+          37,
+          marathonTwo.data,
+          "length",
+          marathonTwo.data.data.length
+        );
 
         req.body.marathonNumber =
           marathonOne.data.data.length > 0
@@ -34,13 +46,20 @@ const getPlatformNumber = async (req, _, next) => {
             : marathonTwo.data.data.length > 0
             ? "2"
             : "";
+
+        req.body.pupilId =
+          marathonOne.data.data.length > 0
+            ? marathonOne.data.data[0].pupilId
+            : marathonTwo.data.data.length > 0
+            ? marathonTwo.data.data[0].pupilId
+            : "";
         next();
       }
     } catch (error) {
-      console.log(33, 'error from getPlatformNumber', error);
+      console.log(59, "error from getPlatformNumber", error);
       next();
     }
   }
 };
 
-module.exports = getPlatformNumber;
+module.exports = getPlatformNumberAndPupilId;
