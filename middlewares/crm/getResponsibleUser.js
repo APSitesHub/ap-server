@@ -4,7 +4,7 @@ const { getToken } = require("../../services/tokensServices");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const getResponsibleUser = async (req, res, _) => {
+const getResponsibleUser = async (req, _, next) => {
   const databaseObject = req.body.leads.update[0];
 
   try {
