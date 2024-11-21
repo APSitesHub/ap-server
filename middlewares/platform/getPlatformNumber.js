@@ -20,13 +20,13 @@ const getPlatformNumber = async (req, _, next) => {
           `https://online.ap.education/school-api/api/Marathon/GetMarathonStudents?MarathonId=37835&SearchTerm=${login}`
         );
 
-        console.log(23, marathonOne.data);
+        console.log(23, marathonOne.data, 'length', marathonOne.data.length);
 
         const marathonTwo = await axios.get(
           `https://online.ap.education/school-api/api/Marathon/GetMarathonStudents?MarathonId=49509&SearchTerm=${login}`
         );
 
-        console.log(29, marathonTwo.data);
+        console.log(29, marathonTwo.data, 'length', marathonTwo.data.length);
 
         req.body.marathonNumber =
           marathonOne.data.length > 0
