@@ -21,7 +21,8 @@ const leadSchema = Joi.object({
 const leadConfernceSchema = Joi.object({
   name: Joi.string().min(3).max(50).required(),
   phone: Joi.string().min(10).max(20).required(),
-  city: Joi.string().min(1).max(20).required(),
+  city: Joi.string().min(1).required(),
+  email: Joi.string().email().required(),
   age: Joi.number().min(1).max(100).required(),
   source: Joi.string().min(1).max(100).required(),
   role: Joi.string().min(1).max(100).required(),

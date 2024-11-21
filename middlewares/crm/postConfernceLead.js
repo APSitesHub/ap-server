@@ -13,6 +13,15 @@ const postConferenceLead = async (req, res, _) => {
       pipeline_id: 7001587,
       custom_fields_values: [
         {
+          field_id: 1824489,
+          field_name: "Email",
+          values: [
+            {
+              value: req.body.email || "",
+            },
+          ],
+        },
+        {
           field_id: 1807468,
           field_name: "Телефон",
           values: [
@@ -217,6 +226,7 @@ const postConferenceLead = async (req, res, _) => {
     role: req.body.role,
     age: req.body.age,
     source: req.body.source,
+    email: req.body.email,
     tags: [
       req.body.tag,
       req.body.utm_content,
@@ -259,6 +269,7 @@ const postConferenceLead = async (req, res, _) => {
         lead.age,
         lead.role,
         lead.source,
+        lead.email,
       ],
     ];
 
