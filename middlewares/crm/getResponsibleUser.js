@@ -16,10 +16,13 @@ const getResponsibleUser = async (req, res, _) => {
       `/api/v4/users/${databaseObject.responsible_user_id}`
     );
 
-    req.body.manager = crmResponsibleUser.data.name; 
+    console.log(crmResponsibleUser.data.name);
+
+    req.body.manager = crmResponsibleUser.data.name;
+    next();
   } catch (error) {
     console.log(error);
-    return res.status(400).json(error);
+    next();
   }
 };
 
