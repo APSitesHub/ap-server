@@ -5,7 +5,7 @@ const { getToken } = require("../../services/tokensServices");
 axios.defaults.baseURL = process.env.BASE_URL;
 
 const getResponsibleUser = async (req, _, next) => {
-  const databaseObject = req.body.leads.update[0];
+  const crmObject = req.body.leads.update[0];
 
   try {
     const currentToken = await getToken();
@@ -13,7 +13,7 @@ const getResponsibleUser = async (req, _, next) => {
       "Authorization"
     ] = `Bearer ${currentToken[0].access_token}`;
     const crmResponsibleUser = await axios.get(
-      `/api/v4/users/${databaseObject.responsible_user_id}`
+      `/api/v4/users/${crmObject.responsible_user_id}`
     );
 
     console.log(crmResponsibleUser.data.name);

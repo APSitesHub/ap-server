@@ -2,6 +2,8 @@ const { getToken } = require("../../services/tokensServices");
 const axios = require("axios");
 
 const getLeadsForGoogleSheets = async (req, res, next) => {
+  console.log("me log from google middleware", req.body.crmId);
+
   try {
     const SERVICE_PIPELINE_ID = 7001587;
     const STATUS_WAIT_PAYMENT_ID = 71921048;
@@ -13,11 +15,12 @@ const getLeadsForGoogleSheets = async (req, res, next) => {
       return res.status(400).json({ error: "crmId is required" });
     }
 
-    axios.defaults.headers.common["Authorization"] =
-      `Bearer ${currentToken[0].access_token}`;
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${currentToken[0].access_token}`;
 
     const crmLead = await axios.get(
-      `https://apeducation.kommo.com/api/v4/leads/${crmId}`,
+      `https://apeducation.kommo.com/api/v4/leads/${crmId}`
     );
 
     if (
