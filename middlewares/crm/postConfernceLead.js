@@ -237,6 +237,7 @@ const postConferenceLead = async (req, res, _) => {
     age: req.body.age,
     source: req.body.source,
     email: req.body.email,
+    job: req.body.job,
     tags: [
       req.body.tag,
       req.body.utm_content,
@@ -280,6 +281,7 @@ const postConferenceLead = async (req, res, _) => {
         lead.role,
         lead.source,
         lead.email,
+        lead.job,
       ],
     ];
 
