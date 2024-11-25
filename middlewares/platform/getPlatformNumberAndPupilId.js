@@ -12,9 +12,11 @@ const getPlatformNumberAndPupilId = async (req, res, next) => {
           .find((field) => Object.values(field).includes("Потоки Річний курс"))
           .values[0].value.includes("не річний курс")
       ) {
+        console.log(
+          "Not all required fields present and/or valid, aborting request in platform middleware"
+        );
         return res.status(200).json({
-          message:
-            "Not all required fields present and/or valid, aborting request in platform middleware",
+          message: "OK",
         });
       }
 
