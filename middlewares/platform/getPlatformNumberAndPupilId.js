@@ -69,7 +69,7 @@ const getPlatformNumberAndPupilId = async (req, res, next) => {
         next();
       }
     } catch (error) {
-      console.log(59, "error from getPlatformNumber", error);
+      console.log(59, `error from getPlatformNumber while processing lead ${req.body.leads.update[0].id}`, error);
       next();
     }
   }
