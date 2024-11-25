@@ -142,7 +142,9 @@ const updateContractLead = async (req, res, _) => {
   } catch (err) {
     console.log(err.response);
     console.log(JSON.stringify(err.response.data["validation-errors"]));
-    return res.status(400).json(err);
+    return res
+      .status(400)
+      .json(`Error with update contract fields lead ${req.body.leadId}`);
   }
 };
 
