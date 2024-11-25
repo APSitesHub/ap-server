@@ -7,6 +7,17 @@ const getPlatformNumberAndPupilId = async (req, _, next) => {
     console.log(7, req.body.leads.update[0]);
 
     try {
+      if (
+        req.body.leads.update[0].custom_fields
+          .find((field) => Object.values(field).includes("Потоки Річний курс"))
+          .values[0].value.includes("не річний курс")
+      ) {
+        return res.status(200).json({
+          message:
+            "Not all required fields present and/or valid, aborting request in platform middleware",
+        });
+      }
+
       axios.defaults.headers.common[
         "Authorization"
       ] = `${process.env.PLATFORM_KEY}`;
