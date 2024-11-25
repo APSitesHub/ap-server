@@ -13,6 +13,16 @@ const postConferenceLead = async (req, res, _) => {
       pipeline_id: 7001587,
       custom_fields_values: [
         {
+          field_id: 1824627,
+          field_name: "Робота",
+          values: [
+            {
+              value: req.body.job || "",
+            },
+          ],
+        },
+
+        {
           field_id: 1824489,
           field_name: "Email",
           values: [
