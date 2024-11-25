@@ -43,6 +43,8 @@ const leadConfernceSchema = Joi.object({
 });
 
 const contractLeadSchema = Joi.object({
+  leadId: Joi.number(),
+  isChild: Joi.boolean(),
   fields_fullName: Joi.string()
     .trim()
     .min(1)
@@ -110,28 +112,14 @@ const contractLeadSchema = Joi.object({
       "string.pattern.base":
         "Введіть повне ПІБ дитини (прізвище, ім'я та по батькові).",
     }),
-
   fields_childDOB: Joi.string()
-    .pattern(/^\d{2}\.\d{2}\.\d{4}$/)
-    .optional()
-    .custom((value, helpers) => {
-      const [day, month, year] = value.split(".").map(Number);
-      const date = new Date(year, month - 1, day);
-      if (
-        date.getDate() !== day ||
-        date.getMonth() !== month - 1 ||
-        date.getFullYear() !== year
-      ) {
-        return helpers.message(
-          "Неправильний формат дати. Використовуйте формат ДД.ММ.РРРР (02.12.2015).",
-        );
-      }
-      return value;
-    })
     .messages({
       "string.pattern.base":
-        "Неправильний формат дати. Використовуйте формат ДД.ММ.РРРР (02.12.2015).",
-    }),
+        "Date must be in the format YYYY-MM-DDTHH:MM:SS+TZ.",
+    })
+    .optional(),
+  fields_address: Joi.string().required(),
+  fields_currentAddress: Joi.string().required(),
 });
 
 const validateLead = ({ body }, res, next) => {
