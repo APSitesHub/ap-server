@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const getPlatformNumberAndPupilId = async (req, _, next) => {
+const getPlatformNumberAndPupilId = async (req, res, next) => {
   if (req.body.leads.update[0].pipeline_id === "7001587") {
     console.log("Webhook received event from correct pipeline (7001587)!");
     console.log(6, "getPlatformNumber");
