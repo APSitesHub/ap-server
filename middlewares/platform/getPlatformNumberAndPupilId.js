@@ -66,10 +66,18 @@ const getPlatformNumberAndPupilId = async (req, res, next) => {
             : marathonTwo.data.data.length > 0
             ? marathonTwo.data.data[0].pupilId
             : "";
+
+        console.log("marathonNumber in getter", req.body.marathonNumber);
+
+        console.log("pupilId in getter", req.body.pupilId);
         next();
       }
     } catch (error) {
-      console.log(59, `error from getPlatformNumber while processing lead ${req.body.leads.update[0].id}`, error);
+      console.log(
+        59,
+        `error from getPlatformNumber while processing lead ${req.body.leads.update[0].id}`,
+        error
+      );
       next();
     }
   }

@@ -19,6 +19,7 @@ const getResponsibleUser = async (req, _, next) => {
     console.log(crmResponsibleUser.data.name);
 
     req.body.manager = crmResponsibleUser.data.name;
+    console.log("manager in getter", req.body.manager);
     next();
   } catch (error) {
     console.log(error);

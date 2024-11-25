@@ -5,6 +5,10 @@ const {
 } = require("../../services/usersServices");
 
 const updateUserWithWebhook = async (req, res) => {
+  console.log("marathonNumber in updater", req.body.marathonNumber);
+  console.log("manager in updater", req.body.manager);
+  console.log("pupilId in updater", req.body.pupilId);
+
   try {
     if (req.body.leads.update[0].pipeline_id === "7001587") {
       const databaseObject = req.body.leads.update[0];
