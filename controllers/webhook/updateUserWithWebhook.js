@@ -68,17 +68,17 @@ const updateUserWithWebhook = async (req, res) => {
       };
 
       if (
-        +databaseObject.status_id === 58542315 ||
-        +databaseObject.status_id === 58435371 ||
-        +databaseObject.status_id === 58435391 ||
-        +databaseObject.status_id === 75659060 ||
-        +databaseObject.status_id === 75659064 ||
-        +databaseObject.status_id === 75659068 ||
-        +databaseObject.status_id === 65411360 ||
-        +databaseObject.status_id === 72736296 ||
-        +databaseObject.status_id === 72736300 ||
-        +databaseObject.status_id === 75398860 ||
-        +databaseObject.status_id === 75398868
+        +databaseObject.status_id === 58542315 
+        // || +databaseObject.status_id === 58435371 ||
+        // +databaseObject.status_id === 58435391 ||
+        // +databaseObject.status_id === 75659060 ||
+        // +databaseObject.status_id === 75659064 ||
+        // +databaseObject.status_id === 75659068 ||
+        // +databaseObject.status_id === 65411360 ||
+        // +databaseObject.status_id === 72736296 ||
+        // +databaseObject.status_id === 72736300 ||
+        // +databaseObject.status_id === 75398860 ||
+        // +databaseObject.status_id === 75398868
       ) {
         const userExists = await findUser({ crmId: +databaseObject.id });
         console.log(
