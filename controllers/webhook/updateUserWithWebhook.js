@@ -67,8 +67,25 @@ const updateUserWithWebhook = async (req, res) => {
         manager: req.body.manager || "",
       };
 
-      if (+databaseObject.status_id === 58542315) {
+      if (
+        +databaseObject.status_id === 58542315 ||
+        +databaseObject.status_id === 58435371 ||
+        +databaseObject.status_id === 58435391 ||
+        +databaseObject.status_id === 75659060 ||
+        +databaseObject.status_id === 75659064 ||
+        +databaseObject.status_id === 75659068 ||
+        +databaseObject.status_id === 65411360 ||
+        +databaseObject.status_id === 72736296 ||
+        +databaseObject.status_id === 72736300 ||
+        +databaseObject.status_id === 75398860
+      ) {
         const userExists = await findUser({ crmId: +databaseObject.id });
+        console.log(
+          `processing event in lead ${+databaseObject.id} from stage ${
+            databaseObject.status_id
+          }`
+        );
+
         console.log(65, userExists);
 
         return userExists
