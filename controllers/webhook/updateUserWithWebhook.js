@@ -18,7 +18,7 @@ const updateUserWithWebhook = async (req, res) => {
         mail:
           databaseObject.custom_fields.find((field) =>
             Object.values(field).includes("Логін до платформи")
-          ).values[0].value || "",
+          ).values[0].value.trim().trimEnd().toLowerCase() || "",
         password:
           databaseObject.custom_fields.find((field) =>
             Object.values(field).includes("Пароль до платформи")
@@ -77,7 +77,8 @@ const updateUserWithWebhook = async (req, res) => {
         +databaseObject.status_id === 65411360 ||
         +databaseObject.status_id === 72736296 ||
         +databaseObject.status_id === 72736300 ||
-        +databaseObject.status_id === 75398860
+        +databaseObject.status_id === 75398860 ||
+        +databaseObject.status_id === 75398868
       ) {
         const userExists = await findUser({ crmId: +databaseObject.id });
         console.log(
