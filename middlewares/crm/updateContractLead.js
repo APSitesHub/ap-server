@@ -140,7 +140,7 @@ const updateContractLead = async (req, res, _) => {
         task_type_id: 1,
         text: `Заповнив форму. Перевір поля договору`,
         complete_till: Math.floor(new Date().getTime() / 1000),
-        entity_id: req.body.leadId,
+        entity_id: +req.body.leadId,
         entity_type: "leads",
         request_id: `fill_form_for_contract_id:${req.body.leadId}`,
       },
@@ -156,7 +156,10 @@ const updateContractLead = async (req, res, _) => {
         },
       )
       .catch((err) => {
-        console.error("Error to aplay task after fill contract form", err);
+        console.error(
+          "Error to aplay task after fill contract form",
+          JSON.stringify(err.response.data["validation-errors"]),
+        );
       });
 
     console.log(test.status);
