@@ -135,6 +135,29 @@ const updateContractLead = async (req, res, _) => {
       `https://apeducation.kommo.com/api/v4/leads/${req.body.leadId}`,
       JSON.stringify(patchRequest),
     );
+    const taskData = [
+      {
+        task_type_id: 1,
+        text: `Заповнив форму. Перевір поля договору`,
+        complete_till: Math.floor(new Date().getTime() / 1000),
+        entity_id: req.body.leadId,
+        entity_type: "leads",
+        request_id: `fill_form_for_contract_id:${req.body.leadId}`,
+      },
+    ];
+    await axios
+      .post(
+        "https://apeducation.kommo.com/api/v4/tasks",
+        taskData, // Тіло запиту
+        {
+          headers: {
+            "Content-Type": "application/json", // Заголовок для JSON-запиту
+          },
+        },
+      )
+      .catch((err) => {
+        console.error("Error to aplay task after fill contract form", err);
+      });
 
     console.log(test.status);
     console.log(test.data);
