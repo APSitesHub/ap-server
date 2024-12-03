@@ -101,8 +101,8 @@ const contractLeadSchema = Joi.object({
       "string.pattern.base": "Невірний формат номера телефону.",
     }),
 
-  fields_deliveryService: Joi.string().optional(),
-  fields_deliveryAddress: Joi.string().optional(),
+  fields_deliveryService: Joi.string().allow("").optional(),
+  fields_deliveryAddress: Joi.string().allow("").optional(),
 
   fields_childName: Joi.string()
     .trim()
