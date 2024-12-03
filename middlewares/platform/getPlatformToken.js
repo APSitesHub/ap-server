@@ -26,7 +26,7 @@ const getPlatformToken = async (req, res, next) => {
       "Authorization"
     ] = `${process.env.PLATFORM_KEY}`;
     const platformToken = await axios.post(
-      `https://edvibe.com/school-api/api/UserAuth/LoginPupil`,
+      `https://online.ap.education/school-api/api/UserAuth/LoginPupil`,
       updateLeadStatusRequest
     );
     console.log(33, platformToken.data);
