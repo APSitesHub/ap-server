@@ -218,9 +218,6 @@ router.post("/found_teacher", async (req, res) => {
     console.error(
       `Error with lead ${req.body.leads.add[0].id} ERROR: ${JSON.stringify(err)}`,
     );
-    return res
-      .status(400)
-      .json({ message: `Error with lead ${req.body.leads.add[0].id}` });
   }
   return res.status(200).json({ message: "OK" });
 });
