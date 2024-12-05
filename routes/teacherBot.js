@@ -118,6 +118,8 @@ router.post("/found_teacher", async (req, res) => {
     const crmLead = await axios.get(
       `https://apeducation.kommo.com/api/v4/leads/${req.body.leads.add[0].id}`,
     );
+    console.log(`Get lead from CRM for search Teacher is:`);
+    console.log(crmLead.data);
     const customFields = crmLead.data.custom_fields_values;
     if (!Array.isArray(customFields) || !customFields.length) {
       console.error(`Lead do not have custom fields for found teacher`);
