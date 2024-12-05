@@ -228,8 +228,8 @@ router.post("/found_teacher", async (req, res) => {
 });
 
 function convertToISODate(data) {
-  console.log("-----------");
-  const timestampInMillis = data * 1000;
+  console.log(`------${data}-----`);
+  const timestampInMillis = +data * 1000;
   const date = new Date(timestampInMillis);
 
   // Конвертація до Київського часового поясу
