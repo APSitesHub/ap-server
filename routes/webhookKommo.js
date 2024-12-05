@@ -4,7 +4,6 @@ const getPlatformNumberAndPupilId = require("../middlewares/platform/getPlatform
 const getResponsibleUser = require("../middlewares/crm/getResponsibleUser");
 const getLeadsForGoogleSheets = require("../middlewares/crm/getLeadsCRM");
 const updateLeadPaidStatus = require("../middlewares/crm/updatePaidLeadStatus");
-
 const router = express.Router();
 
 router.post(
@@ -15,5 +14,4 @@ router.post(
 );
 
 router.post("/google_kommo", getLeadsForGoogleSheets, updateLeadPaidStatus);
-
 module.exports = router;
