@@ -114,7 +114,7 @@ router.post("/found_teacher", async (req, res) => {
     const currentToken = await getToken();
     axios.defaults.headers.common["Authorization"] =
       `Bearer ${currentToken[0].access_token}`;
-
+    console.log(`Found Teacher for ${req.body.leads.add[0].id}`);
     const crmLead = await axios.get(
       `https://apeducation.kommo.com/api/v4/leads/${req.body.leads.add[0].id}`,
     );
