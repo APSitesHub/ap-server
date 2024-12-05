@@ -231,30 +231,23 @@ router.post("/found_teacher", async (req, res) => {
 function convertToISODate(data) {
   console.log(`------${data}-----`);
   const timestampInMillis = +data * 1000;
+
+  // Створення дати в UTC
   const date = new Date(timestampInMillis);
 
   // Конвертація до Київського часового поясу
-  const options = {
-    timeZone: "Europe/Kyiv",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  };
+  const dateInKyiv = new Date(
+    date.toLocaleString("en-US", { timeZone: "Europe/Kyiv" }),
+  );
 
-  console.log(options);
-  const formattedDate = new Date(timestampInMillis)
-    .toISOString()
-    .slice(0, 16)
-    .replace("T", " ");
-  console.log(formattedDate);
-  // const parts = formatter.formatToParts(date);
-  // console.log(date);
-  // // Формування рядка у форматі 'YYYY-MM-DDTHH:MM'
-  // const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value}T${parts[6].value}:${parts[8].value}`;
-  // console.log(formattedDate);
+  // Форматування до 'YYYY-MM-DD HH:MM'
+  const year = dateInKyiv.getFullYear();
+  const month = String(dateInKyiv.getMonth() + 1).padStart(2, "0");
+  const day = String(dateInKyiv.getDate()).padStart(2, "0");
+  const hours = String(dateInKyiv.getHours()).padStart(2, "0");
+  const minutes = String(dateInKyiv.getMinutes()).padStart(2, "0");
+
+  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
   console.log("-----------");
   return formattedDate;
 }
