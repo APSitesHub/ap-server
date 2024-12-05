@@ -129,14 +129,17 @@ const updateContractLead = async (req, res, _) => {
   try {
     axios.defaults.headers.common["Authorization"] =
       `Bearer ${currentToken[0].access_token}`;
-    console.log(req.body.leadId);
-    console.log(req.body.fields_childDOB);
     const test = await axios.patch(
       `https://apeducation.kommo.com/api/v4/leads/${req.body.leadId}`,
       JSON.stringify(patchRequest),
     );
+
+    const crmLead = await axios.get(
+      `https://apeducation.kommo.com/api/v4/leads/${req.body.leadId}`,
+    );
     const taskData = [
       {
+        responsible_user_id: crmLead.data.responsible_user_id,
         task_type_id: 1,
         text: `Заповнив форму. Перевір поля договору`,
         complete_till: Math.floor(new Date().getTime() / 1000),
