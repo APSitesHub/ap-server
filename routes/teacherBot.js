@@ -174,12 +174,12 @@ router.post("/found_teacher", async (req, res) => {
           break;
       }
     });
-
+    console.log(`Lead data for found teacher ${userInfoForLesson}`);
     const serviceIds =
       ServicesMap?.[userInfoForLesson.lesson_language]?.[
         userInfoForLesson.teacherLvl
       ]?.[userInfoForLesson.lessonType];
-
+    console.log(`Lead service for found teacher ${serviceIds}`);
     const dateTime = userInfoForLesson.dateTimeLesson;
     const isChildren = Boolean(userInfoForLesson.isChildren);
     const bookableStaff = await getBookableStaff(
@@ -187,6 +187,7 @@ router.post("/found_teacher", async (req, res) => {
       dateTime,
       isChildren,
     );
+    console.log(`Teacher was found from ALtegio`);
     const list = bookableStaff.map((employee) => employee.name).join(", ");
     let taskMsg = "";
     if (!list.length) {
