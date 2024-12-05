@@ -245,13 +245,16 @@ function convertToISODate(data) {
   };
 
   console.log(options);
-  const formatter = new Intl.DateTimeFormat("en-CA", options); // en-CA форматує як YYYY-MM-DD
-  console.log(formatter);
-  const parts = formatter.formatToParts(date);
-  console.log(date);
-  // Формування рядка у форматі 'YYYY-MM-DDTHH:MM'
-  const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value}T${parts[6].value}:${parts[8].value}`;
+  const formattedDate = new Date(timestampInMillis)
+    .toISOString()
+    .slice(0, 16)
+    .replace("T", " ");
   console.log(formattedDate);
+  // const parts = formatter.formatToParts(date);
+  // console.log(date);
+  // // Формування рядка у форматі 'YYYY-MM-DDTHH:MM'
+  // const formattedDate = `${parts[0].value}-${parts[2].value}-${parts[4].value}T${parts[6].value}:${parts[8].value}`;
+  // console.log(formattedDate);
   console.log("-----------");
   return formattedDate;
 }
