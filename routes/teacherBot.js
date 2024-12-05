@@ -1,7 +1,7 @@
 const express = require("express");
 const { getToken } = require("../services/tokensServices");
 const axios = require("axios");
-const { config } = require("googleapis/build/src/apis/config");
+const { DateTime } = require("luxon");
 
 const ServicesMap = {
   ENG: {
@@ -229,26 +229,10 @@ router.post("/found_teacher", async (req, res) => {
 });
 
 function convertToISODate(data) {
-  console.log(`------${data}-----`);
-  const timestampInMillis = +data * 1000;
+  const date = DateTime.fromSeconds(+data, { zone: "Europe/Kyiv" });
+  const formattedDate = date.toFormat("yyyy-LL-dd'T'HH:mm");
 
-  // Створення дати в UTC
-  const date = new Date(timestampInMillis);
-
-  // Конвертація до Київського часового поясу
-  const dateInKyiv = new Date(
-    date.toLocaleString("en-US", { timeZone: "Europe/Kyiv" }),
-  );
-
-  // Форматування до 'YYYY-MM-DD HH:MM'
-  const year = dateInKyiv.getFullYear();
-  const month = String(dateInKyiv.getMonth() + 1).padStart(2, "0");
-  const day = String(dateInKyiv.getDate()).padStart(2, "0");
-  const hours = String(dateInKyiv.getHours()).padStart(2, "0");
-  const minutes = String(dateInKyiv.getMinutes()).padStart(2, "0");
-
-  const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
-  console.log("-----------");
+  console.log(formattedDate);
   return formattedDate;
 }
 
