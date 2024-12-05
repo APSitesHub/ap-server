@@ -23,6 +23,7 @@ const usersSpeakingRouter = require("./routes/usersSpeaking");
 const universityLeadsRouter = require("./routes/universityLeads");
 const testUsersSpeakingRouter = require("./routes/testUsersSpeaking");
 const webhookKommo = require("./routes/webhookKommo");
+const teacherBot = require("./routes/teacherBot");
 
 const app = express();
 
@@ -52,6 +53,7 @@ app.use("/speakingusers", usersSpeakingRouter);
 app.use("/sctest", testUsersSpeakingRouter);
 app.use("/uni-leads", universityLeadsRouter);
 app.use("/webhooktest", webhookKommo);
+app.use("/srm_bot", teacherBot);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
