@@ -130,7 +130,9 @@ router.post("/found_teacher", async (req, res) => {
     let userInfoForLesson = {
       responsibleUserId: crmLead.data.responsible_user_id,
     };
+    console.log(userInfoForLesson);
     customFields.forEach((filed) => {
+      console.log(userInfoForLesson);
       switch (filed.field_id) {
         case RESPONSIBLE_MANGER_ID:
           userInfoForLesson = {
