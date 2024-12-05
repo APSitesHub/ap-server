@@ -120,6 +120,7 @@ router.post("/found_teacher", async (req, res) => {
     );
     const customFields = crmLead.data.custom_fields_values;
     if (!Array.isArray(customFields) || !customFields.length) {
+      console.error(`Lead do not have custom fields for found teacher`);
       return res
         .status(400)
         .json({ message: `Lead do not have custom fields` });
@@ -214,6 +215,9 @@ router.post("/found_teacher", async (req, res) => {
       },
     );
   } catch (err) {
+    console.error(
+      `Error with lead ${req.body.leads.add[0].id} ERROR: ${JSON.stringify(err)}`,
+    );
     return res
       .status(400)
       .json({ message: `Error with lead ${req.body.leads.add[0].id}` });
