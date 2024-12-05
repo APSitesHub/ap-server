@@ -1,6 +1,7 @@
 const express = require("express");
 const { getToken } = require("../services/tokensServices");
 const axios = require("axios");
+const { config } = require("googleapis/build/src/apis/config");
 
 const ServicesMap = {
   ENG: {
@@ -243,6 +244,7 @@ function convertToISODate(data) {
     hour12: false,
   };
 
+  console.log(options);
   const formatter = new Intl.DateTimeFormat("en-CA", options); // en-CA форматує як YYYY-MM-DD
   console.log(formatter);
   const parts = formatter.formatToParts(date);
