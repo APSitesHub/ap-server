@@ -99,7 +99,8 @@ const ServicesMap = {
 const router = express.Router();
 router.post("/found_teacher", async (req, res) => {
   const RESPONSIBLE_MANGER_ID = 557260;
-  const DATE_TIME_LESSON = 1824843;
+  const DATE_TIME_LESSON_START = 1824843;
+  const DATE_TIME_LESSON_END = 1824931;
   const LESSON_TYPE = 1824839;
   const LESSON_LEVEL = 1824721;
   const LESSON_LANGUAGE = 1824775;
@@ -137,10 +138,18 @@ router.post("/found_teacher", async (req, res) => {
             responsibleManager: filed.values[0].value,
           };
           break;
-        case DATE_TIME_LESSON:
+        case DATE_TIME_LESSON_START:
           userInfoForLesson = {
             ...userInfoForLesson,
             dateTimeLesson: convertToISODate(filed.values[0].value),
+          };
+          break;
+        case DATE_TIME_LESSON_END:
+          userInfoForLesson = {
+            ...userInfoForLesson,
+            dateTimeLesson: filed.values[0].value
+              ? convertToISODate(filed.values[0].value)
+              : "",
           };
           break;
         case LESSON_TYPE:
@@ -228,11 +237,26 @@ function convertToISODate(data) {
   return formattedDate;
 }
 
-async function getBookableStaff(serviceIds, dateTime, isChildren) {
+async function getBookableStaff(
+  serviceIds,
+  dateTimeStart,
+  dateTimeEnd,
+  isChildren,
+) {
   const companyId = process.env.ALTEGIO_COMPANY_ID;
   const companyToken = process.env.ALTEGIO_COMPANY_TOKEN;
   const firedStatus = "ЗВІЛЬНЕНО";
   const withoutChildrenStatus = "NO CHILDREN";
+  const paramsOptions = dateTimeEnd
+    ? {
+        service_ids: serviceIds,
+        date_from: dateTimeStart,
+        date_to: dateTimeEnd,
+      }
+    : {
+        service_ids: serviceIds, // Фільтр по service ID
+        datetime: dateTimeStart,
+      };
   try {
     const apiUrl = `https://api.alteg.io/api/v1/book_staff/${companyId}`;
     const response = await axios.get(apiUrl, {
@@ -241,10 +265,7 @@ async function getBookableStaff(serviceIds, dateTime, isChildren) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${companyToken}`,
       },
-      params: {
-        service_ids: serviceIds, // Фільтр по service ID
-        datetime: dateTime, // Фільтр по даті
-      },
+      params: paramsOptions,
     });
     if (!response.data.success) {
       throw new Error("API call unsuccessful");
