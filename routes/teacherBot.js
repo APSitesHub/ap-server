@@ -119,8 +119,6 @@ router.post("/found_teacher", async (req, res) => {
     const crmLead = await axios.get(
       `https://apeducation.kommo.com/api/v4/leads/${req.body.leads.add[0].id}`,
     );
-    console.log(`Get lead from CRM for search Teacher is:`);
-    console.log(crmLead.data);
     const customFields = crmLead.data.custom_fields_values;
     if (!Array.isArray(customFields) || !customFields.length) {
       console.error(`Lead do not have custom fields for found teacher`);
@@ -131,9 +129,7 @@ router.post("/found_teacher", async (req, res) => {
     let userInfoForLesson = {
       responsibleUserId: crmLead.data.responsible_user_id,
     };
-    console.log(userInfoForLesson);
     customFields.forEach((filed) => {
-      console.log(userInfoForLesson);
       switch (filed.field_id) {
         case RESPONSIBLE_MANGER_ID:
           userInfoForLesson = {
@@ -184,7 +180,6 @@ router.post("/found_teacher", async (req, res) => {
       ServicesMap?.[userInfoForLesson.lesson_language]?.[
         userInfoForLesson.teacherLvl
       ]?.[userInfoForLesson.lessonType];
-    console.log(`Lead service for found teacher ${serviceIds}`);
     const dateTime = userInfoForLesson.dateTimeLesson;
     const isChildren = Boolean(userInfoForLesson.isChildren);
     const bookableStaff = await getBookableStaff(
@@ -192,7 +187,6 @@ router.post("/found_teacher", async (req, res) => {
       dateTime,
       isChildren,
     );
-    console.log(`Teacher was found from ALtegio`);
     const list = bookableStaff.map((employee) => employee.name).join(", ");
     let taskMsg = "";
     if (!list.length) {
@@ -229,14 +223,8 @@ router.post("/found_teacher", async (req, res) => {
 });
 
 function convertToISODate(data) {
-  console.log("---------------");
-  console.log(data);
   const date = DateTime.fromMillis(+data * 1000, { zone: "Europe/Kiev" });
-  console.log(date);
   const formattedDate = date.toFormat("yyyy-LL-dd'T'HH:mm");
-
-  console.log(formattedDate);
-  console.log("---------------");
   return formattedDate;
 }
 
@@ -247,9 +235,6 @@ async function getBookableStaff(serviceIds, dateTime, isChildren) {
   const withoutChildrenStatus = "NO CHILDREN";
   try {
     const apiUrl = `https://api.alteg.io/api/v1/book_staff/${companyId}`;
-    console.log(apiUrl);
-    console.log(serviceIds);
-    console.log("DATE: ", dateTime);
     const response = await axios.get(apiUrl, {
       headers: {
         Accept: "application/vnd.api.v2+json",
