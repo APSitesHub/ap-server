@@ -122,10 +122,17 @@ const contractLeadSchema = Joi.object({
   fields_currentAddress: Joi.string().required(),
 });
 
+const leadCertificateSchema = Joi.object({
+  name: Joi.string().min(3).max(50).required(),
+  phone: Joi.string().min(10).max(20).required(),
+  work: Joi.string().required(),
+  job: Joi.string().required(),
+  email: Joi.string().email().required(),
+});
+
 const validateLead = ({ body }, res, next) => {
   const { error } = leadSchema.validate(body);
   if (error) return res.status(400).json(error.details[0].message);
-
   next();
 };
 
@@ -141,8 +148,15 @@ const validateLeadContract = ({ body }, res, next) => {
   next();
 };
 
+const validateLeadCertificate = ({ body }, res, next) => {
+  const { error } = leadCertificateSchema.validate(body);
+  if (error) return res.status(400).json(error.details[0].message);
+  next();
+};
+
 module.exports = {
   validateLead,
   validateLeadConference,
   validateLeadContract,
+  validateLeadCertificate
 };
