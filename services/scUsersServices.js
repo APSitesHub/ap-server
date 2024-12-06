@@ -1,6 +1,6 @@
 const ScUsers = require("../db/models/scUsersModel");
 
-const allScUsers = async () => await ScUsers.find({});
+const allScUsers = async () => await ScUsers.find({}).select("_id name lang course feedback");
 
 const allCourseUsers = async (query) =>
   await ScUsers.find(query)
