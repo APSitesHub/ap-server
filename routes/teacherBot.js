@@ -231,7 +231,7 @@ router.post("/found_teacher", async (req, res) => {
 function convertToISODate(data) {
   console.log("---------------");
   console.log(data);
-  const date = DateTime.fromSeconds(+data * 1000, { zone: "Europe/Kyiv" });
+  const date = DateTime.fromMillis(+data * 1000, { zone: "Europe/Kiev" });
   console.log(date);
   const formattedDate = date.toFormat("yyyy-LL-dd'T'HH:mm");
 
