@@ -2,6 +2,12 @@ const Teachers = require("../db/models/teachersModel");
 
 const allTeachers = async () => await Teachers.find({});
 
+const allEnTeachers = async () => await Teachers.find({$or: [{lang: 'en'}, {lang: 'en de'}]});
+
+const allDeTeachers = async () => await Teachers.find({$or: [{lang: 'de'}, {lang: 'en de'}]});
+
+const allPlTeachers = async () => await Teachers.find({lang: 'pl'});
+
 const findTeacher = async (query) => await Teachers.findOne(query);
 
 const findTeacherByID = async (id) => await Teachers.findById(id);
@@ -18,6 +24,9 @@ const updateTeacher = async (id, body) =>
 
 module.exports = {
   allTeachers,
+  allEnTeachers,
+  allDeTeachers,
+  allPlTeachers,
   findTeacher,
   findTeacherByID,
   newTeacher,
