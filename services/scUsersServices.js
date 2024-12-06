@@ -1,6 +1,16 @@
 const ScUsers = require("../db/models/scUsersModel");
 
-const allScUsers = async () => await ScUsers.find({}).select("_id name lang course feedback");
+const allScUsers = async () =>
+  await ScUsers.find({}).select("_id name lang course feedback");
+
+const allScEnUsers = async () =>
+  await ScUsers.find({$or: [{lang: 'en'}, {lang: 'enkids'}]}).select("_id name lang course feedback");
+
+const allScDeUsers = async () =>
+  await ScUsers.find({$or: [{lang: 'de'}, {lang: 'dekids'}]}).select("_id name lang course feedback");
+
+const allScPlUsers = async () =>
+  await ScUsers.find({$or: [{lang: 'pl'}, {lang: 'plkids'}]}).select("_id name lang course feedback");
 
 const allCourseUsers = async (query) =>
   await ScUsers.find(query)
@@ -36,6 +46,9 @@ const updateScUserByCrmId = async (crmId, body) =>
 
 module.exports = {
   allScUsers,
+  allScEnUsers,
+  allScDeUsers,
+  allScPlUsers,
   allCourseUsers,
   findScUser,
   findScUserByID,

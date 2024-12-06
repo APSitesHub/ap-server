@@ -13,6 +13,10 @@ const teachers = new Schema(
       type: String,
       required: [true, "No password"],
     },
+    lang: {
+      type: String,
+      required: [true, "No language"],
+    },
     visited: [String],
     visitedTime: [String],
     token: {

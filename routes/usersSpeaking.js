@@ -4,6 +4,9 @@ const { validateScUser } = require("../schema/scUsersSchema");
 
 const getUsersByCourse = require("../controllers/usersSpeaking/getUsersByCourse");
 const getAllScUsers = require("../controllers/usersSpeaking/getAllScUsers");
+const getAllScUsersEn = require("../controllers/usersSpeaking/getAllScUsersEn");
+const getAllScUsersDe = require("../controllers/usersSpeaking/getAllScUsersDe");
+const getAllScUsersPl = require("../controllers/usersSpeaking/getAllScUsersPl");
 const addScUser = require("../controllers/usersSpeaking/addScUser");
 const removeScUser = require("../controllers/usersSpeaking/removeScUser");
 const editScUser = require("../controllers/usersSpeaking/editScUser");
@@ -17,6 +20,12 @@ const router = express.Router();
 router.get("/", getUsersByCourse);
 
 router.get("/admin", getAllScUsers);
+
+router.get("/admin/en", getAllScUsersEn);
+
+router.get("/admin/de", getAllScUsersDe);
+
+router.get("/admin/pl", getAllScUsersPl);
 
 router.get("/rating", getScUsersForRating);
 
