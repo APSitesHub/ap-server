@@ -9,7 +9,6 @@ const postHRLead = async (req, res, _) => {
   const postRequest = [
     {
       name: `${req.body.name}`,
-      // tried to set lead status, but due to automated lead categorizing it does not work properly
       // status_id: 55468371,
       pipeline_id: 7009587,
       custom_fields_values: [
@@ -145,11 +144,27 @@ const postHRLead = async (req, res, _) => {
 
   try {
     const currentToken = await getToken();
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${currentToken[0].access_token}`;
+    axios.defaults.headers.common["Authorization"] =
+      `Bearer ${currentToken[0].access_token}`;
     const crmLead = await axios.post("api/v4/leads/complex", postRequest);
     const crmLeadId = crmLead.data[0].id;
+    if (req.body.position) {
+      const notesBody = [
+        {
+          entity_id: crmLeadId,
+          note_type: "common",
+          params: {
+            text: req.body.position,
+          },
+        },
+      ];
+      await axios
+        .post("api/v4/leads/notes", notesBody)
+        .catch((err) =>
+          console.log(err.response.data["validation-errors"][0].errors),
+        );
+    }
+    console.log({ ...lead, crmId: crmLeadId });
     return res.status(201).json(await newLead({ ...lead, crmId: crmLeadId }));
   } catch (error) {
     return res.status(400).json(error);
