@@ -55,6 +55,7 @@ const links = new Schema(
     preschool: { type: String },
     test: { type: String },
     trendets: { type: String },
+    apconf: { type: String },
   },
   {
     versionKey: false,

@@ -56,6 +56,7 @@ const collections = new Schema(
     test: { type: String },
     trendets: { type: String },
     record: { type: String },
+    apconf: { type: String },
   },
   {
     versionKey: false,

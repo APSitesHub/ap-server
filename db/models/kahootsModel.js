@@ -580,6 +580,15 @@ const kahoots = new Schema(
         test_5: String,
       },
     },
+    apconf: {
+      links: {
+        apconf_1: String,
+        apconf_2: String,
+        apconf_3: String,
+        apconf_4: String,
+        apconf_5: String,
+      },
+    },
   },
   {
     versionKey: false,

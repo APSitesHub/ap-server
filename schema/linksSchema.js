@@ -54,6 +54,7 @@ const linksSchema = Joi.object({
   preschool: Joi.string().empty(""),
   test: Joi.string().empty(""),
   trendets: Joi.string().empty(""),
+  apconf: Joi.string().empty(""),
 });
 
 const validateLinks = ({ body }, res, next) => {
