@@ -273,7 +273,7 @@ async function getBookableStaff(
     const bookableStaff = response.data.data.filter((employee) => {
       const employeeName = employee.name.toUpperCase();
       return (
-        employee.bookable && !employeeName.includes(firedStatus.toUpperCase())
+        Boolean(employee.bookable) && !employeeName.includes(firedStatus.toUpperCase())
       );
     });
     if (isChildren) {
@@ -284,6 +284,7 @@ async function getBookableStaff(
 
     return bookableStaff;
   } catch (error) {
+    console.log(error);
     console.error("Error fetching bookable staff:", error.message);
   }
 }
