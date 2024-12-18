@@ -3,7 +3,6 @@ const express = require("express");
 const { validateUser } = require("../schema/usersSchema");
 
 const authUser = require("../middlewares/streams/authUser");
-const checkIsAdmin = require("../middlewares/streams/checkIsAdmin");
 const checkUser = require("../middlewares/crm/checkUser");
 const updateLeadById = require("../middlewares/crm/updateLeadById");
 const getLeadDataFromCrm = require("../middlewares/crm/getLeadDataFromCrm");
@@ -15,7 +14,11 @@ const getContactIdFromCrm = require("../middlewares/crm/getContactIdFromCrm");
 
 const addUser = require("../controllers/users/addUser");
 const getUser = require("../controllers/users/getUser");
-const {getAllUsers, getAllUsersPlatformData}  = require("../controllers/users/getAllUsers");
+const {
+  getAllUsers,
+  getAllUsersPlatformData,
+  getC1SpeakingUsers,
+} = require("../controllers/users/getAllUsers");
 const loginUser = require("../controllers/users/loginUser");
 const refreshUserToken = require("../controllers/users/refreshUserToken");
 const removeUser = require("../controllers/users/removeUser");
@@ -35,7 +38,10 @@ const router = express.Router();
 router.get("/", authUser, getUser);
 
 router.get("/admin", authUserAdmin, getAllUsers);
-router.get('/getAllUsersPlatform', authAPI, getAllUsersPlatformData);
+
+router.get("/a-c1", authUserAdmin, getC1SpeakingUsers);
+
+router.get("/getAllUsersPlatform", authAPI, getAllUsersPlatformData);
 
 router.post("/new", validateUser, addUser);
 
