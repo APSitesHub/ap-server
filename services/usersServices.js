@@ -9,7 +9,7 @@ const allUsers = async () =>
 
 const allC1Users = async () =>
   await Users.find({ course: "10" }).select(
-    "-visitedTime -zoomMail -adult -token -createdAt -updatedAt"
+    "-visitedTime -adult -token -createdAt -updatedAt"
   );
 
 const allUsersPlatform = async () => {
