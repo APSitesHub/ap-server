@@ -589,6 +589,33 @@ const hostKahoots = new Schema(
         apconf_5: String,
       },
     },
+    pedagogium: {
+      links: {
+        pedagogium_1: String,
+        pedagogium_2: String,
+        pedagogium_3: String,
+        pedagogium_4: String,
+        pedagogium_5: String,
+      },
+    },
+    wstijo: {
+      links: {
+        wstijo_1: String,
+        wstijo_2: String,
+        wstijo_3: String,
+        wstijo_4: String,
+        wstijo_5: String,
+      },
+    },
+    wsbmir: {
+      links: {
+        wsbmir_1: String,
+        wsbmir_2: String,
+        wsbmir_3: String,
+        wsbmir_4: String,
+        wsbmir_5: String,
+      },
+    },
   },
   {
     versionKey: false,
