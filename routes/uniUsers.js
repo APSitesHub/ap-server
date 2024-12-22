@@ -4,9 +4,9 @@ const checkUser = require("../middlewares/crm/checkUser.js");
 // const updateLeadById = require("../middlewares/crm/updateLeadById.js");
 
 const authUserAdmin = require("../middlewares/streams/authUserAdmin.js");
-const getPlatformToken = require("../middlewares/platform/getPlatformToken.js");
 
 const authUniUser = require("../middlewares/uniStreams/authUniUser.js");
+const getUniPlatformToken = require("../middlewares/platform/getUniPlatformToken.js");
 
 const { validateUniUser } = require("../schema/uniUsersSchema.js");
 
@@ -28,13 +28,16 @@ router.post("/new", validateUniUser, addUniUser);
 
 router.delete("/:id", removeUniUser);
 
-router.post("/login", validateUniUser, getPlatformToken, loginUniUser);
+router.post("/login", validateUniUser, getUniPlatformToken, loginUniUser);
 
-router.post("/refresh", getPlatformToken, refreshUniUserToken);
+router.post("/refresh", getUniPlatformToken, refreshUniUserToken);
 
-router.put("/:id", validateUniUser, 
-  checkUser, 
-  // updateLeadById, 
-  editUniUser);
+router.put(
+  "/:id",
+  validateUniUser,
+  checkUser,
+  // updateLeadById,
+  editUniUser
+);
 
 module.exports = router;
