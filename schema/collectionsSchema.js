@@ -56,9 +56,6 @@ const collectionsSchema = Joi.object({
   trendets: Joi.string().empty(""),
   record: Joi.string().empty(""),
   apconf: Joi.string().empty(""),
-  pedagogium: Joi.string().empty(""),
-  wstijo: Joi.string().empty(""),
-  wsbmir: Joi.string().empty(""),
 });
 
 const validateCollections = ({ body }, res, next) => {

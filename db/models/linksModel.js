@@ -56,9 +56,6 @@ const links = new Schema(
     test: { type: String },
     trendets: { type: String },
     apconf: { type: String },
-    pedagogium: { type: String },
-    wstijo: { type: String },
-    wsbmir: { type: String },
   },
   {
     versionKey: false,

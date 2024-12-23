@@ -57,9 +57,6 @@ const collections = new Schema(
     trendets: { type: String },
     record: { type: String },
     apconf: { type: String },
-    pedagogium: { type: String },
-    wstijo: { type: String },
-    wsbmir: { type: String },
   },
   {
     versionKey: false,

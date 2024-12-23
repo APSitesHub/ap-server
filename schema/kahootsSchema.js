@@ -642,36 +642,6 @@ const kahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
-  pedagogium: Joi.object({
-    links: Joi.object({
-      pedagogium_1: Joi.string().empty(""),
-      pedagogium_2: Joi.string().empty(""),
-      pedagogium_3: Joi.string().empty(""),
-      pedagogium_4: Joi.string().empty(""),
-      pedagogium_5: Joi.string().empty(""),
-    }),
-    replace: Joi.bool().required(),
-  }),
-  wstijo: Joi.object({
-    links: Joi.object({
-      wstijo_1: Joi.string().empty(""),
-      wstijo_2: Joi.string().empty(""),
-      wstijo_3: Joi.string().empty(""),
-      wstijo_4: Joi.string().empty(""),
-      wstijo_5: Joi.string().empty(""),
-    }),
-    replace: Joi.bool().required(),
-  }),
-  wsbmir: Joi.object({
-    links: Joi.object({
-      wsbmir_1: Joi.string().empty(""),
-      wsbmir_2: Joi.string().empty(""),
-      wsbmir_3: Joi.string().empty(""),
-      wsbmir_4: Joi.string().empty(""),
-      wsbmir_5: Joi.string().empty(""),
-    }),
-    replace: Joi.bool().required(),
-  }),
 });
 
 const validateKahoots = ({ body }, res, next) => {

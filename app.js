@@ -25,6 +25,10 @@ const testUsersSpeakingRouter = require("./routes/testUsersSpeaking");
 const webhookKommo = require("./routes/webhookKommo");
 const teacherBot = require("./routes/teacherBot");
 const uniUsers = require("./routes/uniUsers");
+const uniLinks = require("./routes/uniLinks");
+const uniKahoots = require("./routes/uniKahoots");
+const uniHostKahoots = require("./routes/uniHostKahoots");
+const uniCollections = require("./routes/uniCollections");
 
 const app = express();
 
@@ -56,6 +60,10 @@ app.use("/uni-leads", universityLeadsRouter);
 app.use("/webhooktest", webhookKommo);
 app.use("/srm_bot", teacherBot);
 app.use("/uniusers", uniUsers);
+app.use("/unilinks", uniLinks);
+app.use("/unikahoots", uniKahoots);
+app.use("/unihostkahoots", uniHostKahoots);
+app.use("/unicollections", uniCollections);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
