@@ -24,6 +24,7 @@ const universityLeadsRouter = require("./routes/universityLeads");
 const testUsersSpeakingRouter = require("./routes/testUsersSpeaking");
 const webhookKommo = require("./routes/webhookKommo");
 const teacherBot = require("./routes/teacherBot");
+const altegioRouter= require("./routes/altegio");
 
 const app = express();
 
@@ -54,6 +55,7 @@ app.use("/sctest", testUsersSpeakingRouter);
 app.use("/uni-leads", universityLeadsRouter);
 app.use("/webhooktest", webhookKommo);
 app.use("/srm_bot", teacherBot);
+app.use("/booking", altegioRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
