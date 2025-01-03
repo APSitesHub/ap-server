@@ -8,7 +8,7 @@ const allUsers = async () =>
     .slice(-1);
 
 const allC1Users = async () =>
-  await Users.find({ course: "10" }).select(
+  await Users.find({ course: { $regex: "10", $options: "i" } }).select(
     "-visitedTime -adult -token -createdAt -updatedAt"
   );
 
