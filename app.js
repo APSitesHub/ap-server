@@ -29,6 +29,7 @@ const uniLinks = require("./routes/uniLinks");
 const uniKahoots = require("./routes/uniKahoots");
 const uniHostKahoots = require("./routes/uniHostKahoots");
 const uniCollections = require("./routes/uniCollections");
+const uniTimetables = require("./routes/uniTimetable");
 
 const app = express();
 
@@ -64,6 +65,7 @@ app.use("/unilinks", uniLinks);
 app.use("/unikahoots", uniKahoots);
 app.use("/unihostkahoots", uniHostKahoots);
 app.use("/unicollections", uniCollections);
+app.use("/unitimetable", uniTimetables);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
