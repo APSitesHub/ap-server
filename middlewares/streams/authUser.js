@@ -4,6 +4,7 @@ require("dotenv").config();
 
 const authUser = async (req, res, next) => {
   const { authorization = "" } = req.headers;
+  console.log(req.headers);
   const [bearer, token] = authorization.split(" ");
 
   if (bearer !== "Bearer") {
@@ -13,7 +14,6 @@ const authUser = async (req, res, next) => {
   try {
     const verify = jwt.verify(token, process.env.SECRET);
     const { id } = verify;
-
     const user = await Users.findById(id);
     if (!user || !user.token || user.token !== token) {
       return res.status(401).json("Not authorized");

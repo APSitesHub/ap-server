@@ -44,6 +44,16 @@ const users = new Schema(
     authCode: { type: String },
     successRate: { type: String },
     temperament: { type: String },
+    allow_online_booking: {
+        type: Number, default: 0
+    },
+    available_online_booking: {
+      type: Number, default: 0
+    },
+    online_booking_count: {
+      type: Number, default: 0
+    },
+    onlineBookingHistory: [String],
   },
   {
     versionKey: false,

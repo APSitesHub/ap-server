@@ -75,13 +75,15 @@ async function getAvailableDateForBooking(req, res) {
  */
 async function getAvailableEmployeesForBooking(req, res) {
     try {
+        const user = req.body.user;
         const serviceIds = req.query.service_ids; // Extract service IDs from query (array)
         const datetime = req.query.datetime; // Extract datetime from query
 
         // Fetch available employees using the service
         const employees = await GetAvailableEmployees(
             serviceIds ? (Array.isArray(serviceIds) ? serviceIds : [serviceIds]) : [],
-            datetime
+            datetime, 
+            user
         );
 
         return res.status(200).json({ status: 'success', employees });
@@ -109,10 +111,39 @@ async function GetSessionsAvailableForBooking (req, res) {
     }
 }
 
+async function GetConfigForBooking (req, res) {
+    try {
+        const response = {
+            allowOnlineBooking: req.body.user.allow_online_booking,
+            availableOnlineBooking: req.body.user.available_online_booking,
+            onlineBookingCount: req.body.user.online_booking_count,
+            onlineBookingVisitedCount: req.body.user.onlineBookingHistory.length ?? 0,
+        }
+        return res.status(200).json(response);
+    } catch (error) {
+        console.error('Error fetching available sessions:', error);
+        return res.status(500).json({ status: 'error', message: error.message });
+    }
+}
 
-    module.exports = {
+async function CreateBooking(req, res) {
+    try{
+        const requestBody = req.body;
+        const response = await CreateBookingSessionEntry(requestBody);
+        return res.status(201).json(response);
+    }catch (error) {
+        console.error('Error Create Booking Session entry:', error);
+        return res.status(500).json({ status: 'error', message: error.message });
+    }
+    
+}
+
+
+module.exports = {
     GetListAvailableServices,
     getAvailableDateForBooking,
     getAvailableEmployeesForBooking,
-        GetSessionsAvailableForBooking
+    GetSessionsAvailableForBooking,
+    GetConfigForBooking,
+    CreateBooking
 }

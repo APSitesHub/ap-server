@@ -1,21 +1,22 @@
 const express = require("express");
-const auth = require("../middlewares/streams/auth");
+const authUser = require("../middlewares/streams/authUser");
+const authMiddleware = require("../middlewares/streams/authTEST");
 const {GetListAvailableServices, getAvailableDateForBooking, getAvailableEmployeesForBooking,
-    GetSessionsAvailableForBooking
+    GetSessionsAvailableForBooking, GetConfigForBooking
 } = require("../controllers/altegio/altegio");
 const router = express.Router();
+const auth = require("../middlewares/streams/auth");
 
-router.get("/book_services", GetListAvailableServices);
-router.get("/book_dates", getAvailableDateForBooking);
-router.get("/book_staff", getAvailableEmployeesForBooking);
-router.get("/book_times", GetSessionsAvailableForBooking)
 
-router.get("/book_services", auth, (req, res) => {
-    res.status(200).json({ status: "success" });
-});
+router.get("/book_services",authMiddleware, GetListAvailableServices);
+router.get("/book_dates",authMiddleware, getAvailableDateForBooking);
+router.get("/book_staff",authMiddleware, getAvailableEmployeesForBooking);
+router.get("/book_times",authMiddleware, GetSessionsAvailableForBooking);
+router.get("/book_config",authMiddleware,  GetConfigForBooking);
 
-router.get("/book_services", auth, (req, res) => {
-    res.status(200).json({ status: "success" });
-})
+router.post("/book", authMiddleware, )
+// router.get("/book_services", auth, (req, res) => {
+//     res.status(200).json({ status: "success" });
+// })
 
 module.exports = router;

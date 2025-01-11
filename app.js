@@ -25,6 +25,7 @@ const testUsersSpeakingRouter = require("./routes/testUsersSpeaking");
 const webhookKommo = require("./routes/webhookKommo");
 const teacherBot = require("./routes/teacherBot");
 const altegioRouter= require("./routes/altegio");
+const { updateUser } = require("./services/usersServices");
 
 const app = express();
 

@@ -125,6 +125,7 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
- .idea/*
+.idea/*
+
 
 magnetic-lore-441516-n7-a337a42e3c15.json

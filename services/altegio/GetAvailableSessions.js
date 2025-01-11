@@ -14,9 +14,9 @@ async function GetAvailableSessions(filters = {}) {
     const companyId = process.env.ALTEGIO_COMPANY_ID;
     const companyToken = process.env.ALTEGIO_COMPANY_TOKEN;
     const apiUrl = `https://api.alteg.io/api/v1/book_times/${companyId}/${filters.staffId}/${filters.datetime}`;
-    // const queryParam = filters = {
-    //     ...filters,
-    // }
+    const queryParam = filters = {
+        ...filters,
+    }
 
 
     try {
@@ -26,18 +26,18 @@ async function GetAvailableSessions(filters = {}) {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${companyToken}`,
             },
-            // params: queryParam, // Filters such as service_ids[], staff_id, date, date_from, date_to
+            params: queryParam, // Filters such as service_ids[], staff_id, date, date_from, date_to
         });
 
         if (response.data.success) {
             console.log(response.data.data);
             return response.data.data
         } else {
-            // console.error('API call unsuccessful:', response.data);
+            console.error('API call unsuccessful:', response.data);
             return null;
         }
     } catch (error) {
-        // console.error('Error fetching available sessions:', error);
+        console.error('Error fetching available sessions:', error);
         return null;
     }
 }
