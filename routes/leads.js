@@ -12,12 +12,14 @@ const postQuizLead = require("../middlewares/crm/postQuizLead");
 const postQuizLeadNoForm = require("../middlewares/crm/postQuizLeadNoForm");
 const postConferenceLead = require("../middlewares/crm/postConfernceLead.js");
 const updateContractLead = require("../middlewares/crm/updateContractLead.js");
+const postLeadEvent = require("../middlewares/crm/postLeadEvent.js");
 
 const {
   validateLead,
   validateLeadConference,
   validateLeadContract,
   validateLeadCertificate,
+  validateLeadEvent,
 } = require("../schema/leadSchema");
 const { validateQuizLead } = require("../schema/quizLeadSchema");
 const {
@@ -56,6 +58,7 @@ router.post(
   crmRefresh,
 );
 
+router.post("/event", validateLeadEvent, postLeadEvent, crmRefresh);
 router.patch(
   "/quiz/:id",
   validateQuizLead,

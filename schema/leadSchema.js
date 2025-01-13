@@ -131,6 +131,24 @@ const leadCertificateSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
+const leadEventSchema = Joi.object({
+  name: Joi.string().min(1).max(100).required(),
+  phone: Joi.string().min(10).max(20).required(),
+  childName: Joi.string().optional().empty(""),
+  age: Joi.string().required(),
+  eventType: Joi.string().required(),
+  utm_content: Joi.string().empty(""),
+  utm_medium: Joi.string().empty(""),
+  utm_campaign: Joi.string().empty(""),
+  utm_source: Joi.string().empty(""),
+  utm_term: Joi.string().empty(""),
+  utm_referrer: Joi.string().empty(""),
+  referrer: Joi.string().empty(""),
+  gclientid: Joi.string().empty(""),
+  gclid: Joi.string().empty(""),
+  fbclid: Joi.string().empty(""),
+});
+
 const validateLead = ({ body }, res, next) => {
   const { error } = leadSchema.validate(body);
   if (error) return res.status(400).json(error.details[0].message);
@@ -155,9 +173,16 @@ const validateLeadCertificate = ({ body }, res, next) => {
   next();
 };
 
+const validateLeadEvent = ({ body }, res, next) => {
+  const { error } = leadEventSchema.validate(body);
+  if (error) return res.status(400).json(error.details[0].message);
+  next();
+};
+
 module.exports = {
   validateLead,
   validateLeadConference,
   validateLeadContract,
   validateLeadCertificate,
+  validateLeadEvent
 };
