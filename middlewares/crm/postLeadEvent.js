@@ -10,7 +10,7 @@ const postLeadEvent = async (req, res, _) => {
   const postRequest = [
     {
       ...(req.body.childName ? { name: `Event ${req.body.childName}` } : { name: `Event ${req.body.name}` }),
-      status_id: 79110820,
+      status_id: 71881904,
       pipeline_id: 7001587,
       custom_fields_values: [
         {
