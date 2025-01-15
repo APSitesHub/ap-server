@@ -192,6 +192,16 @@ const hostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  polskia0_3: Joi.object({
+    links: Joi.object({
+      polskia0_3_1: Joi.string().empty(""),
+      polskia0_3_2: Joi.string().empty(""),
+      polskia0_3_3: Joi.string().empty(""),
+      polskia0_3_4: Joi.string().empty(""),
+      polskia0_3_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   polski: Joi.object({
     links: Joi.object({
       polski_1: Joi.string().empty(""),

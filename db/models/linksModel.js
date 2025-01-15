@@ -21,6 +21,7 @@ const links = new Schema(
     deutscha2free: { type: String },
     polskia0: { type: String },
     polskia0_2: { type: String },
+    polskia0_3: { type: String },
     polski: { type: String },
     polskia2: { type: String },
     polskib1: { type: String },

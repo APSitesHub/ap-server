@@ -20,6 +20,7 @@ const collectionsSchema = Joi.object({
   deutscha2free: Joi.string().empty(""),
   polskia0: Joi.string().empty(""),
   polskia0_2: Joi.string().empty(""),
+  polskia0_3: Joi.string().empty(""),
   polski: Joi.string().empty(""),
   polskia2: Joi.string().empty(""),
   polskib1: Joi.string().empty(""),

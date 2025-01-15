@@ -174,6 +174,15 @@ const kahoots = new Schema(
         polskia0_2_5: String,
       },
     },
+    polskia0_3: {
+      links: {
+        polskia0_3_1: String,
+        polskia0_3_2: String,
+        polskia0_3_3: String,
+        polskia0_3_4: String,
+        polskia0_3_5: String,
+      },
+    },
     polski: {
       links: {
         polski_1: String,
