@@ -173,8 +173,17 @@ const postLeadEvent = async (req, res, _) => {
         console.log(err.response.data["validation-errors"][0].errors),
       );
     const crmLeadId = crmLead.data[0].id;
-    return res.status(201).json({ crmId: crmLeadId });
+    console.log(crmLeadId);
+    const leadPage = await axios.get(
+          `https://apeducation.kommo.com/ajax/leads/detail/${crmLeadId}`
+        );   
+         const engPage = leadPage.data
+          .match("https:\\/\\/button.kommo.com\\/[a-zA-Z]+\\/[a-zA-Z]+")[0]
+          .replace("\\", "");
+        console.log(engPage);
+    return res.status(201).json({ crmId: crmLeadId, link: engPage });
   } catch (error) {
+      console.log(error);
     return res.status(400).json(error);
   }
 };
