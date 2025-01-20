@@ -12,7 +12,4 @@ function CreateBookingSessionEntry ( requestBody ) {
     const bookingSession = requestBody.bookingSession;
     const companyId = process.env.ALTEGIO_COMPANY_ID;
     const companyToken = process.env.ALTEGIO_COMPANY_TOKEN;
-    
-
-
 }

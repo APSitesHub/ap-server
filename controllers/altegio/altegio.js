@@ -126,11 +126,12 @@ async function GetConfigForBooking (req, res) {
     }
 }
 
+// TODO Implement CreateBookingSessionEntry
 async function CreateBooking(req, res) {
     try{
-        const requestBody = req.body;
-        const response = await CreateBookingSessionEntry(requestBody);
-        return res.status(201).json(response);
+        // const requestBody = req.body;
+        // const response = await CreateBookingSessionEntry(requestBody);
+        return res.status(201).json('response');
     }catch (error) {
         console.error('Error Create Booking Session entry:', error);
         return res.status(500).json({ status: 'error', message: error.message });

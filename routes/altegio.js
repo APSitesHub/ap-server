@@ -1,11 +1,9 @@
 const express = require("express");
-const authUser = require("../middlewares/streams/authUser");
 const authMiddleware = require("../middlewares/streams/authTEST");
 const {GetListAvailableServices, getAvailableDateForBooking, getAvailableEmployeesForBooking,
     GetSessionsAvailableForBooking, GetConfigForBooking
 } = require("../controllers/altegio/altegio");
 const router = express.Router();
-const auth = require("../middlewares/streams/auth");
 
 
 router.get("/book_services",authMiddleware, GetListAvailableServices);
