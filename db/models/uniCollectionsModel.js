@@ -8,6 +8,8 @@ const uniCollections = new Schema(
     wstijo_prep: { type: String },
     wsbmir_logistics: { type: String },
     wsbmir_prep: { type: String },
+    ewspa_logistics: { type: String },
+    ewspa_prep: { type: String },
   },
   {
     versionKey: false,
