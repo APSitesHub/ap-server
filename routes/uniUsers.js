@@ -17,6 +17,7 @@ const removeUniUser = require("../controllers/uniUsers/removeUniUser.js");
 const loginUniUser = require("../controllers/uniUsers/loginUniUser.js");
 const refreshUniUserToken = require("../controllers/uniUsers/refreshUniUserToken.js");
 const editUniUser = require("../controllers/uniUsers/editUniUser.js");
+const getAttendance = require("../controllers/uniUsers/getUniUsersAttendance.js");
 
 const router = express.Router();
 
@@ -39,5 +40,7 @@ router.put(
   // updateLeadById,
   editUniUser
 );
+
+router.get("/attendance", getAttendance);
 
 module.exports = router;

@@ -21,6 +21,11 @@ const signInUniUser = async (id, body) =>
 const updateUniUser = async (id, body) =>
   await UniUsers.findByIdAndUpdate(id, body, { new: true });
 
+const getUniUsersAttendance = async () =>
+  await UniUsers.find({}).select(
+    "-visitedTime -marathonId -password -pupilId -contactId -crmId -token"
+  );
+
 module.exports = {
   allUniUsers,
   findUniUser,
@@ -29,4 +34,5 @@ module.exports = {
   deleteUniUser,
   signInUniUser,
   updateUniUser,
+  getUniUsersAttendance,
 };
