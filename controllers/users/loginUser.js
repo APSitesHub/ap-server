@@ -8,7 +8,7 @@ const loginUser = async (req, res, next) => {
   console.log(user);
   if (!user) {
     console.log("!no such user");
-    res.status(401).json("Login or password is wrong");
+    return res.status(401).json("Login or password is wrong");
   }
 
   const validatedPassword = password === user.password;

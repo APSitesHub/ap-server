@@ -1,14 +1,17 @@
 const jwt = require("jsonwebtoken");
-const { findUniUser, signInUniUser } = require("../../services/uniUsersServices");
+const {
+  findUniUser,
+  signInUniUser,
+} = require("../../services/uniUsersServices");
 
 const loginUniUser = async (req, res) => {
   const { mail, password } = req.body;
-  console.log(6, 'platform', req.body);
+  console.log(6, "platform", req.body);
   const user = await findUniUser({ mail });
   console.log(user);
   if (!user) {
     console.log("!no such user");
-    res.status(401).json("Login or password is wrong");
+    return res.status(401).json("Login or password is wrong");
   }
 
   const validatedPassword = password === user.password;
