@@ -1,18 +1,23 @@
 const jwt = require("jsonwebtoken");
-const { signInKahootAdmin, findKahootAdmin } = require("../../services/adminsServices");
+const {
+  signInKahootAdmin,
+  findKahootAdmin,
+} = require("../../services/adminsServices");
 
 const refreshKahootAdminToken = async (_, res, next) => {
-
   const admin = await findKahootAdmin();
   console.log(admin);
   if (!admin) {
     next();
   }
-  console.log(
-    admin.updatedAt.toDateString()
-  );
-  const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
-  if (!isTokenOK) {
+  console.log(admin.updatedAt.toDateString());
+  try {
+    const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
+    if (!isTokenOK) {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
     next();
   }
   const payload = { id: admin._id };
@@ -20,7 +25,7 @@ const refreshKahootAdminToken = async (_, res, next) => {
 
   await signInKahootAdmin(admin._id, { token: newToken });
 
-  res.status(200).json({ newToken, admin: 'KahootAdmin' });
+  res.status(200).json({ newToken, admin: "KahootAdmin" });
 };
 
 module.exports = refreshKahootAdminToken;

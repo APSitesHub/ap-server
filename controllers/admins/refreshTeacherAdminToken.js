@@ -11,8 +11,13 @@ const refreshTeacherAdminToken = async (_, res, next) => {
     next();
   }
   console.log(admin.updatedAt.toDateString());
-  const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
-  if (!isTokenOK) {
+  try {
+    const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
+    if (!isTokenOK) {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
     next();
   }
   const payload = { id: admin._id };

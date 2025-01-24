@@ -2,17 +2,19 @@ const jwt = require("jsonwebtoken");
 const { signInAdmin, findAdmin } = require("../../services/adminsServices");
 
 const refreshAdminToken = async (_, res, next) => {
-
   const admin = await findAdmin();
   console.log(admin);
   if (!admin) {
     next();
   }
-  console.log(
-    admin.updatedAt.toDateString()
-  );
-  const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
-  if (!isTokenOK) {
+  console.log(admin.updatedAt.toDateString());
+  try {
+    const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
+    if (!isTokenOK) {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
     next();
   }
   const payload = { id: admin._id };
@@ -20,7 +22,7 @@ const refreshAdminToken = async (_, res, next) => {
 
   await signInAdmin(admin._id, { token: newToken });
 
-  res.status(200).json({ newToken, admin: 'LinkAdmin' });
+  res.status(200).json({ newToken, admin: "LinkAdmin" });
 };
 
 module.exports = refreshAdminToken;

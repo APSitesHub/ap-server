@@ -13,8 +13,14 @@ const refreshTeacherToken = async (req, res, next) => {
     next();
   }
   console.log(teacher.updatedAt.toDateString());
-  const isTokenOK = jwt.verify(teacher.token, process.env.SECRET);
-  if (!isTokenOK) {
+
+  try {
+    const isTokenOK = jwt.verify(teacher.token, process.env.SECRET);
+    if (!isTokenOK) {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
     next();
   }
 
