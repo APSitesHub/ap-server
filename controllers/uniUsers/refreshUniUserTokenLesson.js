@@ -1,31 +1,36 @@
 const jwt = require("jsonwebtoken");
-const { findUniUser, signInUniUser } = require("../../services/uniUsersServices");
+const {
+  findUniUser,
+  signInUniUser,
+} = require("../../services/uniUsersServices");
 
-const loginUniUser = async (req, res) => {
-  const { mail, password } = req.body;
-  console.log(6, 'platform', req.body);
+const refreshUniUserTokenLesson = async (req, res, next) => {
+  const { mail } = req.body;
+  console.log(6, "lesson", req.body);
+
   const user = await findUniUser({ mail });
   console.log(user);
   if (!user) {
-    console.log("!no such user");
-    res.status(401).json("Login or password is wrong");
+    next();
   }
+  console.log(user.updatedAt.toDateString());
 
-  const validatedPassword = password === user.password;
-  if (!validatedPassword) {
-    console.log("!passwords don't match");
-    return res.status(401).json("Login or password is wrong");
+  try {
+    const isTokenOK = jwt.verify(user.token, process.env.SECRET);
+  } catch (error) {
+    console.log(error);
+    next();
   }
 
   const payload = { id: user._id };
-  const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });
+  const newToken = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });
   const visitDate = `${new Date().toLocaleDateString("uk-UA")}`;
 
-  user.visited.includes(visitDate)
+  user.visited.includes(`${visitDate} lesson`)
     ? user.visited
     : user.visited.length === 365
-    ? user.visited.shift() && user.visited.push(visitDate)
-    : user.visited.push(visitDate);
+    ? user.visited.shift() && user.visited.push(`${visitDate} lesson`)
+    : user.visited.push(`${visitDate} lesson`);
 
   const visitTimeDate = `${new Date().toISOString()}`;
 
@@ -46,13 +51,13 @@ const loginUniUser = async (req, res) => {
   const platformToken = req.body.authToken;
 
   try {
-    await signInUniUser(user._id, { token, visited, visitedTime });
+    await signInUniUser(user._id, { visited, visitedTime, token: newToken });
   } catch (error) {
     console.log(error);
   }
 
   res.status(200).json({
-    token,
+    newToken,
     user: {
       id,
       crmId,
@@ -68,4 +73,4 @@ const loginUniUser = async (req, res) => {
   });
 };
 
-module.exports = loginUniUser;
+module.exports = refreshUniUserTokenLesson;

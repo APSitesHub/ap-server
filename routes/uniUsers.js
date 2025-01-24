@@ -15,9 +15,15 @@ const getAllUniUsers = require("../controllers/uniUsers/getAllUniUsers.js");
 const addUniUser = require("../controllers/uniUsers/addUniUser.js");
 const removeUniUser = require("../controllers/uniUsers/removeUniUser.js");
 const loginUniUser = require("../controllers/uniUsers/loginUniUser.js");
+const loginUniUserLesson = require("../controllers/uniUsers/loginUniUserLesson.js");
 const refreshUniUserToken = require("../controllers/uniUsers/refreshUniUserToken.js");
+const refreshUniUserTokenLesson = require("../controllers/uniUsers/refreshUniUserTokenLesson.js");
 const editUniUser = require("../controllers/uniUsers/editUniUser.js");
-const getAttendance = require("../controllers/uniUsers/getUniUsersAttendance.js");
+const getAttendance = require("../controllers/uniUsers/getPedagogiumUsersAttendance.js");
+const getPedagogiumUsersAttendance = require("../controllers/uniUsers/getPedagogiumUsersAttendance.js");
+const getWSTIJOUsersAttendance = require("../controllers/uniUsers/getWSTIJOUsersAttendance.js");
+const getWSBMIRUsersAttendance = require("../controllers/uniUsers/getWSBMIRUsersAttendance.js");
+const getEWSPAUsersAttendance = require("../controllers/uniUsers/getEWSPAUsersAttendance.js");
 
 const router = express.Router();
 
@@ -31,7 +37,16 @@ router.delete("/:id", removeUniUser);
 
 router.post("/login", validateUniUser, getUniPlatformToken, loginUniUser);
 
+router.post(
+  "/login/lesson",
+  validateUniUser,
+  getUniPlatformToken,
+  loginUniUserLesson
+);
+
 router.post("/refresh", getUniPlatformToken, refreshUniUserToken);
+
+router.post("/refresh/lesson", getUniPlatformToken, refreshUniUserTokenLesson);
 
 router.put(
   "/:id",
@@ -41,6 +56,12 @@ router.put(
   editUniUser
 );
 
-router.get("/attendance", getAttendance);
+router.get("/attendance/pedagogium", getPedagogiumUsersAttendance);
+
+router.get("/attendance/wstijo", getWSTIJOUsersAttendance);
+
+router.get("/attendance/wsbmir", getWSBMIRUsersAttendance);
+
+router.get("/attendance/ewspa", getEWSPAUsersAttendance);
 
 module.exports = router;

@@ -1,17 +1,26 @@
 const jwt = require("jsonwebtoken");
-const { findUniUser, signInUniUser } = require("../../services/uniUsersServices");
+const {
+  findUniUser,
+  signInUniUser,
+} = require("../../services/uniUsersServices");
 
 const refreshUniUserToken = async (req, res, next) => {
   const { mail } = req.body;
-  console.log(req.body);
+  console.log(6, "platform", req.body);
   const user = await findUniUser({ mail });
   console.log(user);
   if (!user) {
     next();
   }
   console.log(user.updatedAt.toDateString());
-  const isTokenOK = jwt.verify(user.token, process.env.SECRET);
-  if (!isTokenOK) {
+  
+  try {
+    const isTokenOK = jwt.verify(user.token, process.env.SECRET);
+    if (!isTokenOK) {
+      next();
+    }
+  } catch (error) {
+    console.log(error);
     next();
   }
 
