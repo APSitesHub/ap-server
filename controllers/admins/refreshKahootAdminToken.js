@@ -13,9 +13,7 @@ const refreshKahootAdminToken = async (_, res, next) => {
   console.log(admin.updatedAt.toDateString());
   try {
     const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
-    if (!isTokenOK) {
-      next();
-    }
+    console.log("verify jwt", isTokenOK);
   } catch (error) {
     console.log(error);
     next();

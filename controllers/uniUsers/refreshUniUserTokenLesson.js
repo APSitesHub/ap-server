@@ -17,6 +17,7 @@ const refreshUniUserTokenLesson = async (req, res, next) => {
 
   try {
     const isTokenOK = jwt.verify(user.token, process.env.SECRET);
+    console.log("verify jwt", isTokenOK);
   } catch (error) {
     console.log(error);
     next();

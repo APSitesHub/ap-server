@@ -13,12 +13,10 @@ const refreshUniUserToken = async (req, res, next) => {
     next();
   }
   console.log(user.updatedAt.toDateString());
-  
+
   try {
     const isTokenOK = jwt.verify(user.token, process.env.SECRET);
-    if (!isTokenOK) {
-      next();
-    }
+    console.log("verify jwt", isTokenOK);
   } catch (error) {
     console.log(error);
     next();
