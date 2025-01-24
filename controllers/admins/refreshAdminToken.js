@@ -13,7 +13,6 @@ const refreshAdminToken = async (_, res, next) => {
     console.log("verify jwt", isTokenOK);
   } catch (error) {
     console.log(error);
-    next();
   }
   const payload = { id: admin._id };
   const newToken = jwt.sign(payload, process.env.SECRET, { expiresIn: "4h" });

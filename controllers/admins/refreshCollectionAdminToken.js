@@ -17,7 +17,6 @@ const refreshCollectionAdminToken = async (_, res, next) => {
     console.log("verify jwt", isTokenOK);
   } catch (error) {
     console.log(error);
-    next();
   }
 
   const payload = { id: admin._id };

@@ -22,7 +22,6 @@ const refreshTrialUserToken = async (req, res, next) => {
     console.log("verify jwt", isTokenOK);
   } catch (error) {
     console.log(error);
-    next();
   }
 
   const payload = { id: user._id };
