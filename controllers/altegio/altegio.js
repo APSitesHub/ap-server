@@ -2,6 +2,7 @@ const { GetAvailableServices } = require("../../services/altegio/GetAvailableSer
 const GetAvailableDate = require("../../services/altegio/GetAvailableDate");
 const {GetAvailableEmployees} = require("../../services/altegio/GetAvailableEmployees");
 const GetAvailableSessions = require("../../services/altegio/GetAvailableSessions");
+const CreateBookingSession = require("../../services/altegio/CreateBookingSessionEntry")
 const {DateTime} = require("luxon");
 
 /**
@@ -128,15 +129,57 @@ async function GetConfigForBooking (req, res) {
 
 // TODO Implement CreateBookingSessionEntry
 async function CreateBooking(req, res) {
-    try{
-        // const requestBody = req.body;
-        // const response = await CreateBookingSessionEntry(requestBody);
-        return res.status(201).json('response');
-    }catch (error) {
-        console.error('Error Create Booking Session entry:', error);
-        return res.status(500).json({ status: 'error', message: error.message });
+    const userData = {
+        language: req.body.lang,
+        employee: req.body.teacherId,
+        date: req.body.date,
+        time: req.body.time,
     }
+
+    try {
+        const appointment = await CreateBookingSession(userData) 
+        res.status(201).json({ 
+            success: true, 
+            data: appointment 
+        });
+    } catch (error) {
+        // Handle errors
+        console.error('Error creating session:', error);
+        let statusCode = 500; // Internal Server Error by default
+        let errorMessage = 'An error occurred';
     
+        if (error.response && error.response.status === 422) {
+          if (error.response.data.error_code === 432) { 
+            statusCode = 422; 
+            errorMessage = 'Incorrect SMS number verification code';
+          } else if (error.response.data.error_code === 433) { 
+            statusCode = 422; 
+            errorMessage = 'Selected time is already taken';
+          } else if (error.response.data.error_code === 431) { 
+            statusCode = 422; 
+            errorMessage = 'Phone number is in the wrong format';
+          } else if (error.response.data.error_code === 435) { 
+            statusCode = 422; 
+            errorMessage = 'Client\'s name was not specified';
+          } else if (error.response.data.error_code === 436) { 
+            statusCode = 422; 
+            errorMessage = 'No employees available for recording';
+          } else if (error.response.data.error_code === 437) { 
+            statusCode = 422; 
+            errorMessage = 'Time of one of the records intersects with another';
+          }
+        } else if (error.response && error.response.status === 403) {
+          if (error.response.data.error_code === 434) { 
+            statusCode = 403; 
+            errorMessage = 'User is blacklisted';
+          }
+        }
+    
+        res.status(statusCode).json({ 
+          success: false, 
+          message: errorMessage 
+        });
+      }
 }
 
 

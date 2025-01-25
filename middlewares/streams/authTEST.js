@@ -3,12 +3,14 @@ const Users = require("../../db/models/usersModel");
 require("dotenv").config();
 
 const authMiddleware = async (req, res, next) => {
-    const token = req.header('Authorization').replace('Bearer ', '');
-
+    console.log(req.header('Authorization'))
+    console.log(req.body)
+    const [bearer , token] = req.header('Authorization').split(" ");
+    console.log(token)
     try {
         const decoded = jwt.verify(token, process.env.SECRET); 
         const user = await Users.findById(decoded.id);
-        if (!user) {
+        if (!user && bearer) {
             throw new Error();
         }
 
