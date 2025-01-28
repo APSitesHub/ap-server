@@ -68,7 +68,7 @@ app.use("/unikahoots", uniKahoots);
 app.use("/unihostkahoots", uniHostKahoots);
 app.use("/unicollections", uniCollections);
 app.use("/unitimetable", uniTimetables);
-app.use("/room", videochatRooms);
+app.use("/rooms", videochatRooms);
 app.use("/webhook_booking", webhookAltegio)
 
 app.use((req, res) => {
