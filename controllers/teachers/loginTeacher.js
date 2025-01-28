@@ -20,7 +20,7 @@ const loginTeacher = async (req, res, next) => {
     return res.status(401).json("Login or password is wrong");
   }
 
-  const payload = { id: teacher._id };
+  const payload = { id: teacher._id, login };
   const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });
   const visitDate = `${new Date().toLocaleDateString("uk-UA")}`;
 
