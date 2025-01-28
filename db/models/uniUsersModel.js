@@ -14,7 +14,6 @@ const uniUsers = new Schema(
     crmId: { type: Number },
     contactId: { type: Number },
     pupilId: { type: String },
-    marathonId: { type: String },
     university: { type: String },
     visited: [String],
     visitedTime: [String],

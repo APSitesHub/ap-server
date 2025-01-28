@@ -141,13 +141,13 @@ router.post("/found_teacher", async (req, res) => {
         case DATE_TIME_LESSON_START:
           userInfoForLesson = {
             ...userInfoForLesson,
-            dateTimeLesson: convertToISODate(filed.values[0].value),
+            dateTimeLessonStart: convertToISODate(filed.values[0].value),
           };
           break;
         case DATE_TIME_LESSON_END:
           userInfoForLesson = {
             ...userInfoForLesson,
-            dateTimeLesson: filed.values[0].value
+            dateTimeLessonEnd: filed.values[0].value
               ? convertToISODate(filed.values[0].value)
               : "",
           };
@@ -189,14 +189,21 @@ router.post("/found_teacher", async (req, res) => {
       ServicesMap?.[userInfoForLesson.lesson_language]?.[
         userInfoForLesson.teacherLvl
       ]?.[userInfoForLesson.lessonType];
-    const dateTime = userInfoForLesson.dateTimeLesson;
+    const dateTimeStart = userInfoForLesson.dateTimeLessonStart;
+    const dateTimeEnd =  userInfoForLesson.dateTimeLessonEnd  || null;
     const isChildren = Boolean(userInfoForLesson.isChildren);
     const bookableStaff = await getBookableStaff(
       serviceIds,
-      dateTime,
+      dateTimeStart,
+      dateTimeEnd,
       isChildren,
     );
-    const list = bookableStaff.map((employee) => employee.name).join(", ");
+
+    const sortedTeacherByLvl = bookableStaff.filter((employee) => employee.name.toUpperCase().includes(userInfoForLesson.teacherLvl.toUpperCase()))
+    const list = sortedTeacherByLvl.map((employee) => {
+      const name = employee.name.split(' ');
+      return `${name[0]} ${name[1]}`
+    }).join(', ');
     let taskMsg = "";
     if (!list.length) {
       taskMsg = `Вільних викладачів рівня: ${userInfoForLesson.teacherLvl} не має`;
@@ -207,7 +214,7 @@ router.post("/found_teacher", async (req, res) => {
       {
         responsible_user_id: userInfoForLesson.responsibleUserId,
         task_type_id: 1, // ID типу задачі (залежить від налаштувань у вашій CRM)
-        text: taskMsg, // Опис задачі
+        text: taskMsg, // Опис задачі taskMsg
         complete_till: Math.floor(new Date().getTime() / 1000), // Час завершення у форматі Unix timestamp
         entity_id: crmLead.data.id, // ID сутності (наприклад, lead ID)
         entity_type: "leads", // Тип сутності ('leads', 'contacts', 'companies')

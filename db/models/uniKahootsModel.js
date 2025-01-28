@@ -56,6 +56,24 @@ const uniKahoots = new Schema(
         wsbmir_prep_5: String,
       },
     },
+    ewspa_logistics: {
+      links: {
+        ewspa_logistics_1: String,
+        ewspa_logistics_2: String,
+        ewspa_logistics_3: String,
+        ewspa_logistics_4: String,
+        ewspa_logistics_5: String,
+      },
+    },
+    ewspa_prep: {
+      links: {
+        ewspa_prep_1: String,
+        ewspa_prep_2: String,
+        ewspa_prep_3: String,
+        ewspa_prep_4: String,
+        ewspa_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,

@@ -11,7 +11,7 @@ const loginTeacher = async (req, res, next) => {
   console.log(teacher);
   if (!teacher) {
     console.log("!no such teacher");
-    res.status(401).json("Login or password is wrong");
+    return res.status(401).json("Login or password is wrong");
   }
 
   const validatedPassword = password === teacher.password;

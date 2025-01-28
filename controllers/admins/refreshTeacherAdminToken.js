@@ -11,9 +11,11 @@ const refreshTeacherAdminToken = async (_, res, next) => {
     next();
   }
   console.log(admin.updatedAt.toDateString());
-  const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
-  if (!isTokenOK) {
-    next();
+  try {
+    const isTokenOK = jwt.verify(admin.token, process.env.SECRET);
+    console.log("verify jwt", isTokenOK);
+  } catch (error) {
+    console.log(error);
   }
   const payload = { id: admin._id };
   const newToken = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });

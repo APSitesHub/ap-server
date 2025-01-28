@@ -7,7 +7,6 @@ const uniUserSchema = Joi.object({
   crmId: Joi.number(),
   contactId: Joi.number(),
   pupilId: Joi.string(),
-  marathonId: Joi.string().empty(""),
   university: Joi.string(),
   visited: Joi.array().items(Joi.string()),
   visitedTime: Joi.array().items(Joi.string()),

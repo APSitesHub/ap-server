@@ -4,9 +4,9 @@ const {
   signInUniUser,
 } = require("../../services/uniUsersServices");
 
-const loginUniUser = async (req, res) => {
+const loginUniUserLesson = async (req, res) => {
   const { mail, password } = req.body;
-  console.log(6, "platform", req.body);
+  console.log(6, "lesson", req.body);
   const user = await findUniUser({ mail });
   console.log(user);
   if (!user) {
@@ -24,11 +24,11 @@ const loginUniUser = async (req, res) => {
   const token = jwt.sign(payload, process.env.SECRET, { expiresIn: "12h" });
   const visitDate = `${new Date().toLocaleDateString("uk-UA")}`;
 
-  user.visited.includes(visitDate)
+  user.visited.includes(`${visitDate} lesson`)
     ? user.visited
     : user.visited.length === 365
-    ? user.visited.shift() && user.visited.push(visitDate)
-    : user.visited.push(visitDate);
+    ? user.visited.shift() && user.visited.push(`${visitDate} lesson`)
+    : user.visited.push(`${visitDate} lesson`);
 
   const visitTimeDate = `${new Date().toISOString()}`;
 
@@ -71,4 +71,4 @@ const loginUniUser = async (req, res) => {
   });
 };
 
-module.exports = loginUniUser;
+module.exports = loginUniUserLesson;

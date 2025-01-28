@@ -17,9 +17,11 @@ const refreshTrialUserToken = async (req, res, next) => {
     next();
   }
   console.log(user.updatedAt.toDateString());
-  const isTokenOK = jwt.verify(user.token, process.env.SECRET);
-  if (!isTokenOK) {
-    next();
+  try {
+    const isTokenOK = jwt.verify(user.token, process.env.SECRET);
+    console.log("verify jwt", isTokenOK);
+  } catch (error) {
+    console.log(error);
   }
 
   const payload = { id: user._id };

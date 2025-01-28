@@ -18,8 +18,32 @@ const deleteUniUser = async (id) => await UniUsers.findByIdAndDelete(id);
 const signInUniUser = async (id, body) =>
   await UniUsers.findByIdAndUpdate(id, body, { new: true });
 
+const signInUniUserOnLesson = async (id, body) =>
+  await UniUsers.findByIdAndUpdate(id, body, { new: true });
+
 const updateUniUser = async (id, body) =>
   await UniUsers.findByIdAndUpdate(id, body, { new: true });
+
+const getPedagogiumAttendance = async () =>
+  await UniUsers.find({
+    university: "Pedagogium (Wyższa Szkoła Nauk Społecznych)",
+  }).select("name _id visited");
+
+const getWSTIJOAttendance = async () =>
+  await UniUsers.find({
+    university: "WSTIJO (Wyzsza Szkoła Turystyki i Jezykow Obcych w Warszawie)",
+  }).select("name _id visited");
+
+const getWSBMIRAttendance = async () =>
+  await UniUsers.find({
+    university: "WSBMIR (Wyższa Szkoła Biznesu, Mediów i Reklamy)",
+  }).select("name _id visited");
+
+const getEWSPAAttendance = async () =>
+  await UniUsers.find({
+    university:
+      "EWSPA (Europejska Wyższa Szkoła Prawa i Administracji w Warszawie)",
+  }).select("name _id visited");
 
 module.exports = {
   allUniUsers,
@@ -28,5 +52,10 @@ module.exports = {
   newUniUser,
   deleteUniUser,
   signInUniUser,
+  signInUniUserOnLesson,
   updateUniUser,
+  getPedagogiumAttendance,
+  getWSTIJOAttendance,
+  getWSBMIRAttendance,
+  getEWSPAAttendance,
 };
