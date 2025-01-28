@@ -1,6 +1,6 @@
 const http = require("http");
 const socketIo = require("socket.io");
-const {version, validate} = require('uuid');
+const { version, validate } = require("uuid");
 const app = require("./app");
 const connectDB = require("./db/connection");
 require("dotenv").config();
@@ -9,37 +9,30 @@ const server = http.createServer(app);
 const io = socketIo(server);
 
 const ACTIONS = {
-  JOIN: 'join',
-  LEAVE: 'leave',
-  SHARE_ROOMS: 'share-rooms',
-  ADD_PEER: 'add-peer',
-  REMOVE_PEER: 'remove-peer',
-  RELAY_SDP: 'relay-sdp',
-  RELAY_ICE: 'relay-ice',
-  ICE_CANDIDATE: 'ice-candidate',
-  SESSION_DESCRIPTION: 'session-description',
-  TOGGLE_MICRO: 'toggle-micro',
-  TOGGLE_CAMERA: 'toggle-camera',
+  JOIN: "join",
+  LEAVE: "leave",
+  ADD_PEER: "add-peer",
+  REMOVE_PEER: "remove-peer",
+  RELAY_SDP: "relay-sdp",
+  RELAY_ICE: "relay-ice",
+  ICE_CANDIDATE: "ice-candidate",
+  SESSION_DESCRIPTION: "session-description",
+  TOGGLE_MICRO: "toggle-micro",
+  TOGGLE_CAMERA: "toggle-camera",
 };
 
-function getClientRooms() {
-  const {rooms} = io.sockets.adapter;
+const roles = {};
 
-  return Array.from(rooms.keys()).filter(roomID => validate(roomID) && version(roomID) === 4);
-}
+io.on("connection", (socket) => {
+  socket.on(ACTIONS.JOIN, (config) => {
+    const { room: roomID, role } = config;
+    const { rooms: joinedRooms } = socket;
 
-function shareRoomsInfo() {
-  io.emit(ACTIONS.SHARE_ROOMS, {
-    rooms: getClientRooms()
-  })
-}
+    if (!roles[roomID]) {
+      roles[roomID] = {};
+    }
 
-io.on('connection', socket => {
-  shareRoomsInfo();
-
-  socket.on(ACTIONS.JOIN, config => {
-    const {room: roomID} = config;
-    const {rooms: joinedRooms} = socket;
+    roles[roomID][socket.id] = role;
 
     if (Array.from(joinedRooms).includes(roomID)) {
       return console.warn(`Already joined to ${roomID}`);
@@ -47,33 +40,36 @@ io.on('connection', socket => {
 
     const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-    clients.forEach(clientID => {
+    clients.forEach((clientID) => {
       io.to(clientID).emit(ACTIONS.ADD_PEER, {
         peerID: socket.id,
-        createOffer: false
+        roles: roles[roomID],
+        createOffer: false,
       });
 
       socket.emit(ACTIONS.ADD_PEER, {
         peerID: clientID,
+        roles: roles[roomID],
         createOffer: true,
       });
     });
 
     socket.join(roomID);
-    shareRoomsInfo();
   });
 
   function leaveRoom() {
-    const {rooms} = socket;
+    const { rooms } = socket;
 
     Array.from(rooms)
-      .filter(roomID => validate(roomID) && version(roomID) === 4)
-      .forEach(roomID => {
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
+        if (roles[roomID] && roles[roomID][socket.id]) {
+          delete roles[roomID][socket.id];
+        }
 
         const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-        clients
-          .forEach(clientID => {
+        clients.forEach((clientID) => {
           io.to(clientID).emit(ACTIONS.REMOVE_PEER, {
             peerID: socket.id,
           });
@@ -85,21 +81,19 @@ io.on('connection', socket => {
 
         socket.leave(roomID);
       });
-
-    shareRoomsInfo();
   }
 
   socket.on(ACTIONS.LEAVE, leaveRoom);
-  socket.on('disconnecting', leaveRoom);
+  socket.on("disconnecting", leaveRoom);
 
-  socket.on(ACTIONS.RELAY_SDP, ({peerID, sessionDescription}) => {
+  socket.on(ACTIONS.RELAY_SDP, ({ peerID, sessionDescription }) => {
     io.to(peerID).emit(ACTIONS.SESSION_DESCRIPTION, {
       peerID: socket.id,
       sessionDescription,
     });
   });
 
-  socket.on(ACTIONS.RELAY_ICE, ({peerID, iceCandidate}) => {
+  socket.on(ACTIONS.RELAY_ICE, ({ peerID, iceCandidate }) => {
     io.to(peerID).emit(ACTIONS.ICE_CANDIDATE, {
       peerID: socket.id,
       iceCandidate,
@@ -111,11 +105,11 @@ io.on('connection', socket => {
     const { rooms } = socket;
 
     Array.from(rooms)
-      .filter(roomID => validate(roomID) && version(roomID) === 4)
-      .forEach(roomID => {
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
         const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-        clients.forEach(clientID => {
+        clients.forEach((clientID) => {
           if (clientID !== socket.id) {
             io.to(clientID).emit(ACTIONS.TOGGLE_MICRO, {
               peerID: socket.id,
@@ -130,11 +124,11 @@ io.on('connection', socket => {
     const { rooms } = socket;
 
     Array.from(rooms)
-      .filter(roomID => validate(roomID) && version(roomID) === 4)
-      .forEach(roomID => {
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
         const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-        clients.forEach(clientID => {
+        clients.forEach((clientID) => {
           if (clientID !== socket.id) {
             io.to(clientID).emit(ACTIONS.TOGGLE_CAMERA, {
               peerID: socket.id,
@@ -144,7 +138,6 @@ io.on('connection', socket => {
         });
       });
   });
-
 });
 
 const startServer = async () => {

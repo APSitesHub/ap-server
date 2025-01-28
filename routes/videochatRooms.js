@@ -47,6 +47,25 @@ router.get("/byEmail", async (req, res) => {
   }
 });
 
+router.get("/isRoomAdmin", async (req, res) => {
+  const { id, mail } = req.query;
+
+  if (!id) {
+    return res.status(400).json({ message: "Room ID is required" });
+  }
+
+  try {
+    const room = await Room.findOne({ id });
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    res.status(200).json({ isRoomAdmin: room.roomAdmin === mail });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching room admin" });
+  }
+});
+
 module.exports = router;
-
-
