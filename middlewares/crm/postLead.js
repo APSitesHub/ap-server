@@ -137,28 +137,28 @@ const postLead = async (req, res, _) => {
                 { name: req.body.fbclid },
               ]
             : !req.headers.origin.includes("academy.")
-              ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
-              : req.body.tag
-                ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
-                : req.body.utm_content ||
-                    req.body.utm_medium ||
-                    req.body.utm_campaign ||
-                    req.body.utm_source ||
-                    req.body.utm_term ||
-                    req.body.utm_referrer ||
-                    req.body.referrer ||
-                    req.body.gclientid ||
-                    req.body.gclid ||
-                    req.body.fbclid
-                  ? [
-                      { name: "Лід з сайту" },
-                      { name: req.body.utm_source },
-                      { name: req.body.utm_campaign },
-                      { name: req.body.utm_term },
-                      { name: req.body.utm_content },
-                      { name: req.body.fbclid },
-                    ]
-                  : [{ name: "Лід з сайту, органіка" }],
+            ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
+            : req.body.tag
+            ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
+            : req.body.utm_content ||
+              req.body.utm_medium ||
+              req.body.utm_campaign ||
+              req.body.utm_source ||
+              req.body.utm_term ||
+              req.body.utm_referrer ||
+              req.body.referrer ||
+              req.body.gclientid ||
+              req.body.gclid ||
+              req.body.fbclid
+            ? [
+                { name: "Лід з сайту" },
+                { name: req.body.utm_source },
+                { name: req.body.utm_campaign },
+                { name: req.body.utm_term },
+                { name: req.body.utm_content },
+                { name: req.body.fbclid },
+              ]
+            : [{ name: "Лід з сайту, органіка" }],
         contacts: [
           {
             name: req.body.name,
@@ -198,12 +198,16 @@ const postLead = async (req, res, _) => {
 
   try {
     const currentToken = await getToken();
-    axios.defaults.headers.common["Authorization"] =
-      `Bearer ${currentToken[0].access_token}`;
+
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${currentToken[0].access_token}`;
+
     const crmLead = await axios.post("api/v4/leads/complex", postRequest);
     const crmLeadId = crmLead.data[0].id;
     return res.status(201).json(await newLead({ ...lead, crmId: crmLeadId }));
   } catch (error) {
+    console.log(error);
     return res.status(400).json(error);
   }
 };

@@ -1,6 +1,5 @@
 const express = require("express");
 
-const crmRefresh = require("../middlewares/crm/crmRefresh");
 const postLead = require("../middlewares/crm/postLead");
 const postLeadCertificate = require("../middlewares/crm/postLeadCertificate");
 const prePostQuizLead = require("../middlewares/crm/prePostQuizLead");
@@ -37,48 +36,31 @@ router.get("/", getLeads);
 
 router.get("/arr", getLeadsArray);
 
-router.post("/", validateLead, postLead, crmRefresh);
+router.post("/", validateLead, postLead);
 
-router.post("/hr", validateLead, postHRLead, crmRefresh);
+router.post("/hr", validateLead, postHRLead);
 
-router.post("/mc", validateLead, postMCLead, crmRefresh);
+router.post("/mc", validateLead, postMCLead);
 
-router.post(
-  "/conference",
-  validateLeadConference,
-  postConferenceLead,
-  crmRefresh,
-);
+router.post("/conference", validateLeadConference, postConferenceLead);
 
-router.post("/contract", validateLeadContract, updateContractLead, crmRefresh);
-router.post(
-  "/certificate",
-  validateLeadCertificate,
-  postLeadCertificate,
-  crmRefresh,
-);
+router.post("/contract", validateLeadContract, updateContractLead);
+router.post("/certificate", validateLeadCertificate, postLeadCertificate);
 
-router.post("/event", validateLeadEvent, postLeadEvent, crmRefresh);
-router.patch(
-  "/quiz/:id",
-  validateQuizLead,
-  updateQuizLead,
-  getLeadAndPost,
-  crmRefresh,
-);
+router.post("/event", validateLeadEvent, postLeadEvent);
+router.patch("/quiz/:id", validateQuizLead, updateQuizLead, getLeadAndPost);
 
-router.post("/quiz-one", postQuizLead, getLead, crmRefresh);
+router.post("/quiz-one", postQuizLead, getLead);
 
-router.post("/quiz-int", prePostQuizLead, getLead, crmRefresh);
+router.post("/quiz-int", prePostQuizLead, getLead);
 
-router.post("/quiz-code", postQuizLeadNoForm, getLead, crmRefresh);
+router.post("/quiz-code", postQuizLeadNoForm, getLead);
 
 router.patch(
   "/quiz-code/:id",
   validateQuizAuthCodeLead,
   updateQuizLead,
-  getAuthLeadAndPost,
-  crmRefresh,
+  getAuthLeadAndPost
 );
 
 module.exports = router;

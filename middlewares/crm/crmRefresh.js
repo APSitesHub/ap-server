@@ -8,6 +8,7 @@ axios.defaults.baseURL = process.env.BASE_URL;
 const crmRefresh = async (_, res, next) => {
   try {
     const currentToken = await getToken();
+    console.log(11, currentToken);
 
     if (currentToken[0]) {
       const refreshRequestBody = {
@@ -18,10 +19,14 @@ const crmRefresh = async (_, res, next) => {
         redirect_uri: process.env.REDIR_URI,
       };
 
+      console.log(22, refreshRequestBody);
+
       const refreshResp = await axios.post(
         "oauth2/access_token",
         refreshRequestBody
       );
+
+      console.log(29, refreshResp.data);
 
       const newToken = await refreshToken(
         currentToken[0]._id,
@@ -33,7 +38,7 @@ const crmRefresh = async (_, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(error).json(error);
+    return res.status(error.status || 500).json(error);
   }
 };
 
