@@ -9,6 +9,8 @@ const uniCollectionsSchema = Joi.object({
   wsbmir_prep: Joi.string().empty(""),
   ewspa_logistics: Joi.string().empty(""),
   ewspa_prep: Joi.string().empty(""),
+  merito_logistics: Joi.string().empty(""),
+  merito_prep: Joi.string().empty(""),
 });
 
 const validateUniCollections = ({ body }, res, next) => {

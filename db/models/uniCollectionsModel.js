@@ -10,6 +10,8 @@ const uniCollections = new Schema(
     wsbmir_prep: { type: String },
     ewspa_logistics: { type: String },
     ewspa_prep: { type: String },
+    merito_logistics: { type: String },
+    merito_prep: { type: String },
   },
   {
     versionKey: false,

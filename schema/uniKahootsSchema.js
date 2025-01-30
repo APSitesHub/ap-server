@@ -81,6 +81,26 @@ const uniKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  merito_logistics: Joi.object({
+    links: Joi.object({
+      merito_logistics_1: Joi.string().empty(""),
+      merito_logistics_2: Joi.string().empty(""),
+      merito_logistics_3: Joi.string().empty(""),
+      merito_logistics_4: Joi.string().empty(""),
+      merito_logistics_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  merito_prep: Joi.object({
+    links: Joi.object({
+      merito_prep_1: Joi.string().empty(""),
+      merito_prep_2: Joi.string().empty(""),
+      merito_prep_3: Joi.string().empty(""),
+      merito_prep_4: Joi.string().empty(""),
+      merito_prep_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
 });
 
 const validateUniKahoots = ({ body }, res, next) => {

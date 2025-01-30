@@ -74,6 +74,24 @@ const uniHostKahoots = new Schema(
         ewspa_prep_5: String,
       },
     },
+    merito_logistics: {
+      links: {
+        merito_logistics_1: String,
+        merito_logistics_2: String,
+        merito_logistics_3: String,
+        merito_logistics_4: String,
+        merito_logistics_5: String,
+      },
+    },
+    merito_prep: {
+      links: {
+        merito_prep_1: String,
+        merito_prep_2: String,
+        merito_prep_3: String,
+        merito_prep_4: String,
+        merito_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,
