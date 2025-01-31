@@ -1,10 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const altegioWebhook = require('../services/altegioWebhook')
 router.post(
-  "/test",(req, res) => {
-    console.log(req.body?.data.client)
-    res.status(200).json({ message: "OK" })
-  }
+  "/test", altegioWebhook
 );
 module.exports = router;
