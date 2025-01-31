@@ -55,7 +55,7 @@ const altegioWebhook = async (req, res) => {
         };
       
         // Форматуємо повідомлення за допомогою Markdown
-        const message = `❗❗ *Створено новий запис БЕЗ ІД З СРМ!*  
+        const message = `❗❗ *Створено новий запис БЕЗ ID CRM!*  
     👨‍🏫 *Викладач:* ${teacher.name}  
     📅 *Дата уроку:* ${format(new Date(teacher.lessonDate), "d MMMM yyyy, HH:mm", { locale: uk })}  
     👤 *Клієнт:* ${lead.name}  
