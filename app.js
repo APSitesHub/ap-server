@@ -31,7 +31,8 @@ const uniHostKahoots = require("./routes/uniHostKahoots");
 const uniCollections = require("./routes/uniCollections");
 const uniTimetables = require("./routes/uniTimetable");
 const videochatRooms = require("./routes/videochatRooms");
-const webhookAltegio = require("./routes/webhookAltegio")
+const webhookAltegio = require("./routes/webhookAltegio");
+const trialLesson = require("./routes/trialLesson")
 
 const app = express();
 
@@ -69,7 +70,8 @@ app.use("/unihostkahoots", uniHostKahoots);
 app.use("/unicollections", uniCollections);
 app.use("/unitimetable", uniTimetables);
 app.use("/rooms", videochatRooms);
-app.use("/webhook_booking", webhookAltegio)
+app.use("/webhook_booking", webhookAltegio);
+app.use("/trial-lesson",  trialLesson);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
