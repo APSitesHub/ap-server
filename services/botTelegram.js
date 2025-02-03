@@ -6,7 +6,7 @@ const ALLOWED_CHAT_ID = process.env.TELEGRAM_CHAT_ID_Notification_Proyobi_Sales;
 
 // Функція для надсилання повідомлення в чат
 const sendMessageToChat = (message, options = {}) => {
-
+    console.log(message);
   if (!ALLOWED_CHAT_ID) {
     console.error('Chat ID is not set');
     return;

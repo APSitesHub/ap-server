@@ -134,7 +134,7 @@ const altegioWebhook = async (req, res) => {
     if (!isSalesServices && !isLevelDefinition) {
       return res.status(200).json({ message: 'Not a sales service' });
     }
-    if (isSalesServices && !userCrmId) {
+    if ((isSalesServices || isLevelDefinition) && !userCrmId) {
         const teacher = {
           name: data.staff.name,
           lessonDate: data.datetime,
@@ -153,7 +153,7 @@ const altegioWebhook = async (req, res) => {
             📞 *Телефон:* \`${lead.phone}\``;
         sendMessageToChat(message); //
         return res.status(200).json({ message: "User without ID" });
-      }
+    }
 
     if (!userCrmId) {
         return res.status(200).json({ message: 'CRM ID not found' });
@@ -223,13 +223,11 @@ const altegioWebhook = async (req, res) => {
 
 
 async function bookTestLesson(leadId, pipelineId, status, teacher = null) {
-    // Створюємо об'єкт postRequest без поля custom_fields_values, якщо teacher відсутній
     const postRequest = {
       status_id: status,
       pipeline_id: pipelineId,
     };
   
-    // Якщо teacher існує, додаємо custom_fields_values
     if (teacher) {
       postRequest.custom_fields_values = [
         {
