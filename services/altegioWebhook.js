@@ -3,7 +3,7 @@ const axios = require('axios');
 const getCRMLead = require('./crmGetLead');
 const { getToken } = require('./tokensServices');
 const { sendMessageToChat } = require('./botTelegram');
-const { format, parseISO, addHours, startOfDay } = require("date-fns");
+const { format, parseISO, setHours, setMinutes, setSeconds } = require("date-fns");
 const { uk } = require("date-fns/locale");
 
 const SalesServicesIdList = [
@@ -40,7 +40,7 @@ const LinkMapTrial = {
             CRMslug: 'Англійська дорослі 20:15',
         }
        },
-       kids: {
+       Kids: {
         20: {
             link:'https://us06web.zoom.us/j/87062622194?pwd=bCn4sf2JLYhSKuCiCiXHu2UMPFWYzU.1',
             lvl: 'A0-A1',
@@ -75,7 +75,7 @@ const LinkMapTrial = {
             CRMslug: 'Німецька дорослі 20:00(лише вівторок)',
          },
         },
-        kids: {
+        Kids: {
          16: {
             link: 'https://us06web.zoom.us/j/87075472194?pwd=20qQad4apEADg0SPpbppvgf97EOnzL.1',
             lvl: 'A0-B1',
@@ -284,7 +284,6 @@ async function bookTestLesson(leadId, pipelineId, status, teacher = null) {
     if (!levelKey) {
         return null;
     }
-
     const levelParts = levelKey.split('_');
     const language = levelParts[0];
     const group = levelParts[1];
@@ -306,9 +305,8 @@ function getLessonDate(datetime, levelValue) {
     const levelParts = levelKey.split('_');
     const hour = parseInt(levelParts[2], 10);
 
-    const date = startOfDay(parseISO(datetime)); // Get only the date part
-    const lessonDate = addHours(date, hour);
-
+    const date = parseISO(datetime);
+    const lessonDate = setHours(setMinutes(setSeconds(date, 0), 0), hour);
     return format(lessonDate, "yyyy-MM-dd'T'HH:mm:ssXXX");
 }
 
