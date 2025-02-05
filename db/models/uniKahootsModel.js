@@ -92,6 +92,24 @@ const uniKahoots = new Schema(
         merito_prep_5: String,
       },
     },
+    wstih_logistics: {
+      links: {
+        wstih_logistics_1: String,
+        wstih_logistics_2: String,
+        wstih_logistics_3: String,
+        wstih_logistics_4: String,
+        wstih_logistics_5: String,
+      },
+    },
+    wstih_prep: {
+      links: {
+        wstih_prep_1: String,
+        wstih_prep_2: String,
+        wstih_prep_3: String,
+        wstih_prep_4: String,
+        wstih_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,
