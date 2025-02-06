@@ -19,6 +19,7 @@ const ACTIONS = {
   SESSION_DESCRIPTION: "session-description",
   TOGGLE_MICRO: "toggle-micro",
   TOGGLE_CAMERA: "toggle-camera",
+  MUTE_ALL: "mute-all",
 };
 
 const roles = {};
@@ -134,6 +135,23 @@ io.on("connection", (socket) => {
               peerID: socket.id,
               isCameraEnabled,
             });
+          }
+        });
+      });
+  });
+
+  socket.on(ACTIONS.MUTE_ALL, () => {
+    console.log("mute all");
+    const { rooms } = socket;
+
+    Array.from(rooms)
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
+        const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+
+        clients.forEach((clientID) => {
+          if (clientID !== socket.id) {
+            io.to(clientID).emit(ACTIONS.MUTE_ALL);
           }
         });
       });
