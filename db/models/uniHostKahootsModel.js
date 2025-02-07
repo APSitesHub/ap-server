@@ -110,6 +110,42 @@ const uniHostKahoots = new Schema(
         wstih_prep_5: String,
       },
     },
+    wskm_logistics: {
+      links: {
+        wskm_logistics_1: String,
+        wskm_logistics_2: String,
+        wskm_logistics_3: String,
+        wskm_logistics_4: String,
+        wskm_logistics_5: String,
+      },
+    },
+    wskm_prep: {
+      links: {
+        wskm_prep_1: String,
+        wskm_prep_2: String,
+        wskm_prep_3: String,
+        wskm_prep_4: String,
+        wskm_prep_5: String,
+      },
+    },
+    wssip_logistics: {
+      links: {
+        wssip_logistics_1: String,
+        wssip_logistics_2: String,
+        wssip_logistics_3: String,
+        wssip_logistics_4: String,
+        wssip_logistics_5: String,
+      },
+    },
+    wssip_prep: {
+      links: {
+        wssip_prep_1: String,
+        wssip_prep_2: String,
+        wssip_prep_3: String,
+        wssip_prep_4: String,
+        wssip_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,
