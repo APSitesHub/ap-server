@@ -166,6 +166,7 @@ const startServer = async () => {
         console.log("Server launch error", error);
       }
       console.log(`Database connection successful on port ${process.env.PORT}`);
+      console.log(`Run with environment ${process.env.NODE_ENV.toUpperCase()}`);
     });
   } catch (err) {
     console.log(`Failed to launch application with an error: "${err.message}"`);
