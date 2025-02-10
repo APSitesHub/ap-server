@@ -23,6 +23,7 @@ const ACTIONS = {
 };
 
 const roles = {};
+const debug = process.env.NODE_ENV === "development";
 
 io.on("connection", (socket) => {
   socket.on(ACTIONS.JOIN, (config) => {
@@ -55,6 +56,20 @@ io.on("connection", (socket) => {
       });
     });
 
+    if (debug) {
+      console.log("_________CONNECTED_________");
+      console.log(config);
+
+      console.log("Connected to room: " + roomID);
+      console.log("socket id: " + socket.id);
+      console.log("client role: " + role);
+      console.log("all clients: ");
+      console.log(clients);
+      console.log("all client roles: ");
+      console.log(roles[roomID]);
+      console.log("___________________________");
+    }
+
     socket.join(roomID);
   });
 
@@ -82,6 +97,12 @@ io.on("connection", (socket) => {
 
         socket.leave(roomID);
       });
+
+    if (debug) {
+      console.log("_________DISCONNECT___________");
+      console.log("socket id: " + socket.id);
+      console.log("______________________________");
+    }
   }
 
   socket.on(ACTIONS.LEAVE, leaveRoom);
@@ -92,6 +113,13 @@ io.on("connection", (socket) => {
       peerID: socket.id,
       sessionDescription,
     });
+
+    if (debug) {
+      console.log("_________RELAY_SDP___________");
+      console.log("from: " + socket.id);
+      console.log("to: " + peerID);
+      console.log("______________________________");
+    }
   });
 
   socket.on(ACTIONS.RELAY_ICE, ({ peerID, iceCandidate }) => {
@@ -99,6 +127,13 @@ io.on("connection", (socket) => {
       peerID: socket.id,
       iceCandidate,
     });
+
+    if (debug) {
+      console.log("_________ICE_CANDIDATE___________");
+      console.log("from: " + socket.id);
+      console.log("to: " + peerID);
+      console.log("______________________________");
+    }
   });
 
   // TODO: refactor TOGGLE_MICRO & TOGGLE_CAMERA listeners
@@ -160,7 +195,7 @@ io.on("connection", (socket) => {
 
 const startServer = async () => {
   try {
-    await connectDB();
+    // await connectDB();
     server.listen(process.env.PORT, (error) => {
       if (error) {
         console.log("Server launch error", error);
