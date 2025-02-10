@@ -92,6 +92,60 @@ const uniHostKahoots = new Schema(
         merito_prep_5: String,
       },
     },
+    wstih_logistics: {
+      links: {
+        wstih_logistics_1: String,
+        wstih_logistics_2: String,
+        wstih_logistics_3: String,
+        wstih_logistics_4: String,
+        wstih_logistics_5: String,
+      },
+    },
+    wstih_prep: {
+      links: {
+        wstih_prep_1: String,
+        wstih_prep_2: String,
+        wstih_prep_3: String,
+        wstih_prep_4: String,
+        wstih_prep_5: String,
+      },
+    },
+    wskm_logistics: {
+      links: {
+        wskm_logistics_1: String,
+        wskm_logistics_2: String,
+        wskm_logistics_3: String,
+        wskm_logistics_4: String,
+        wskm_logistics_5: String,
+      },
+    },
+    wskm_prep: {
+      links: {
+        wskm_prep_1: String,
+        wskm_prep_2: String,
+        wskm_prep_3: String,
+        wskm_prep_4: String,
+        wskm_prep_5: String,
+      },
+    },
+    wssip_logistics: {
+      links: {
+        wssip_logistics_1: String,
+        wssip_logistics_2: String,
+        wssip_logistics_3: String,
+        wssip_logistics_4: String,
+        wssip_logistics_5: String,
+      },
+    },
+    wssip_prep: {
+      links: {
+        wssip_prep_1: String,
+        wssip_prep_2: String,
+        wssip_prep_3: String,
+        wssip_prep_4: String,
+        wssip_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,
