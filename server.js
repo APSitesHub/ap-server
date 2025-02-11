@@ -4,6 +4,8 @@ const { version, validate } = require("uuid");
 const app = require("./app");
 const connectDB = require("./db/connection");
 require("dotenv").config();
+const { updateLeadsByTrialLessonFields } = require("./services/cronjob/trialLesson.job");
+const cron = require("node-cron");
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -156,6 +158,17 @@ io.on("connection", (socket) => {
         });
       });
   });
+});
+// Cron job to check custom fields and update status
+
+cron.schedule('45 22 * * *', async () => {
+  console.log('Running cron job to update leads by trial lesson fields');
+  try {
+    await updateLeadsByTrialLessonFields();
+    console.log('Cron job to update leads by trial lesson fields FINISHED');
+  } catch (error) {
+    console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
+  }
 });
 
 const startServer = async () => {
