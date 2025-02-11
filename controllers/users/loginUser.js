@@ -63,7 +63,7 @@ const loginUser = async (req, res, next) => {
   }
   const requestedUrl = req.get("X-Page-URL");
 
-  if(requestedUrl.includes("/streams/")) {
+  if(requestedUrl && requestedUrl.length && requestedUrl.includes("/streams/")) {
     crmId && updateLoginTime(crmId);
   }
 
