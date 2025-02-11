@@ -50,7 +50,7 @@ function getFieldsByIds(lead, fieldIds) {
     const kyivTimeZone = 'Europe/Kiev';
     // Convert the datetimeStamp to Unix time (milliseconds) if necessary
     const lessonDate = fromUnixTime(lessonInfo.datetimeStamp); // Assuming lessonInfo.datetimeStamp is in seconds
-    const lessonDateInKyiv = toZonedTime(lessonDate, kyivTimeZone);
+    const lessonDateInKyiv = toZonedTime(lessonDate);
   
     const now = new Date();
     const nowInKyiv = toZonedTime(now, kyivTimeZone);
