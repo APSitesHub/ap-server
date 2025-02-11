@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { signInUser, findUser } = require("../../services/usersServices");
+const { updateLoginTime } = require("../../services/crm/updateCRMLead");
 
 const loginUser = async (req, res, next) => {
   const { mail, password } = req.body;
@@ -59,6 +60,11 @@ const loginUser = async (req, res, next) => {
     await signInUser(user._id, { token, visited, visitedTime });
   } catch (error) {
     console.log(error);
+  }
+  const requestedUrl = req.get("X-Page-URL");
+
+  if(requestedUrl.includes("/streams/")) {
+    crmId && updateLoginTime(crmId);
   }
 
   res.status(200).json({
