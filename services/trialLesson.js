@@ -57,7 +57,10 @@ function getFieldsByIds(lead, fieldIds) {
   
     const startInterval = subMinutes(lessonDateInKyiv, 20);
     const endInterval = addMinutes(lessonDateInKyiv, 60);
-  
+    console.log('lessonDateInKyiv', lessonDateInKyiv);
+    console.log('nowInKyiv', nowInKyiv);
+    console.log('startInterval', startInterval);
+    console.log('endInterval', endInterval);
     return isWithinInterval(nowInKyiv, { start: startInterval, end: endInterval });
 }
 // TODO need improve logic
