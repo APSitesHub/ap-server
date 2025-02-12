@@ -9,6 +9,8 @@ async function getCRMLead (id)  {
       axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${currentToken[0].access_token}`;
+
+      console.log(`Bearer ${currentToken[0].access_token}`)
       const crmLead = await axios.get(
         `https://apeducation.kommo.com/api/v4/leads/${id}`
       );
