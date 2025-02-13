@@ -3,12 +3,12 @@ require("dotenv").config();
 const { getToken } = require("./tokensServices");
 
 
-async function getCRMLead (id)  {  
+async function getCRMUser(id){  
     try {
       const currentToken = await getToken();
       axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
       const crmLead = await axios.get(
-        `https://apeducation.kommo.com/api/v4/leads/${id}?with=contacts`
+        `https://apeducation.kommo.com/api/v4/users/${id}`
       );
       return crmLead.data
     } catch (error) {
@@ -18,4 +18,4 @@ async function getCRMLead (id)  {
   };
 
 
-  module.exports = getCRMLead;
+  module.exports = getCRMUser;

@@ -3,7 +3,6 @@ const  { updateSalesAnalytics } = require('../../services/analytics/updateSalesA
 const salesAnalyticsController = async (req, res) => {
     try {
         const { leads } = req.body;
-        console.log(leads);
         if (!leads) {
             return res.status(400).json({ error: 'leads not found' });
         }
@@ -11,8 +10,8 @@ const salesAnalyticsController = async (req, res) => {
             return res.status(400).json({ error: 'leads status not found' });
         }
         const crmId = leads.status[0].id;
-        await updateSalesAnalytics(crmId);
-        res.status(200).json({ message: 'Analytics updated successfully' });
+        const response = await updateSalesAnalytics(crmId);
+        res.status(200).json({ message: 'Analytics updated successfully', data: response });
     } catch (error) {
         console.error('salesAnalyticsController has error:', error);
         res.status(500).json({ error: 'Internal Server Error' });
