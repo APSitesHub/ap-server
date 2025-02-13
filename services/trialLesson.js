@@ -50,14 +50,17 @@ function getFieldsByIds(lead, fieldIds) {
     const kyivTimeZone = 'Europe/Kiev';
     // Convert the datetimeStamp to Unix time (milliseconds) if necessary
     const lessonDate = fromUnixTime(lessonInfo.datetimeStamp); // Assuming lessonInfo.datetimeStamp is in seconds
-    const lessonDateInKyiv = toZonedTime(lessonDate, kyivTimeZone);
+    // const lessonDateInKyiv = toZonedTime(lessonDate);
   
     const now = new Date();
     const nowInKyiv = toZonedTime(now, kyivTimeZone);
   
-    const startInterval = subMinutes(lessonDateInKyiv, 20);
-    const endInterval = addMinutes(lessonDateInKyiv, 60);
-  
+    const startInterval = subMinutes(lessonDate, 20);
+    const endInterval = addMinutes(lessonDate, 60);
+    console.log('lessonDateInKyiv', lessonDate);
+    console.log('nowInKyiv', nowInKyiv);
+    console.log('startInterval', startInterval);
+    console.log('endInterval', endInterval);
     return isWithinInterval(nowInKyiv, { start: startInterval, end: endInterval });
 }
 // TODO need improve logic
