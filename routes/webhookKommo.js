@@ -16,5 +16,5 @@ router.post(
 
 router.post("/google_kommo", getLeadsForGoogleSheets, updateLeadPaidStatus);
 
-router.post("/sales_analytics", salesAnalyticsController);
+router.post("/sales-analytics", salesAnalyticsController);
 module.exports = router;
