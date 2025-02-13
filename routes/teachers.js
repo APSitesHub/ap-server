@@ -15,6 +15,7 @@ const loginTeacher = require("../controllers/teachers/loginTeacher");
 const refreshTeacherToken = require("../controllers/teachers/refreshTeacherToken");
 const editTeacher = require("../controllers/teachers/editTeacher");
 const addTeachersBulk = require("../controllers/teachers/addTeachersBulk");
+const getTeacherPlatformToken = require("../middlewares/platform/getTeacherPlatformToken");
 
 const router = express.Router();
 
@@ -34,9 +35,9 @@ router.post("/bulk", addTeachersBulk);
 
 router.delete("/:id", removeTeacher);
 
-router.post("/login", validateTeacher, loginTeacher);
+router.post("/login", validateTeacher, getTeacherPlatformToken, loginTeacher);
 
-router.post("/refresh", refreshTeacherToken);
+router.post("/refresh", getTeacherPlatformToken, refreshTeacherToken);
 
 router.put("/:id", validateTeacher, editTeacher);
 

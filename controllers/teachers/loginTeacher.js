@@ -42,6 +42,7 @@ const loginTeacher = async (req, res, next) => {
   const visited = teacher.visited;
   const visitedTime = teacher.visitedTime;
   const name = teacher.name;
+  const platformToken = req.body.authToken;
 
   try {
     await signInTeacher(teacher._id, { token, visited, visitedTime });
@@ -57,6 +58,7 @@ const loginTeacher = async (req, res, next) => {
       name,
       visited,
       visitedTime,
+      platformToken,
     },
   });
 };
