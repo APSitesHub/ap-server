@@ -11,10 +11,10 @@ const salesAnalyticsController = async (req, res) => {
         }
         const crmId = leads.status[0].id;
         const response = await updateSalesAnalytics(crmId);
-        res.status(200).json({ message: 'Analytics updated successfully', data: response });
+        return res.status(200).json({ message: 'Analytics updated successfully', data: response });
     } catch (error) {
         console.error('salesAnalyticsController has error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
 
