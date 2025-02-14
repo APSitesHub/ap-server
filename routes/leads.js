@@ -19,6 +19,7 @@ const {
   validateLeadContract,
   validateLeadCertificate,
   validateLeadEvent,
+  validateLeadFeedback,
 } = require("../schema/leadSchema");
 const { validateQuizLead } = require("../schema/quizLeadSchema");
 const {
@@ -29,6 +30,7 @@ const getLeads = require("../controllers/leads/getLeads");
 const getLeadsArray = require("../middlewares/crm/getLeadsArray");
 const postHRLead = require("../middlewares/crm/postHRLead");
 const postMCLead = require("../middlewares/crm/postMCLead");
+const postLeadFeedback = require("../controllers/leads/postLeadFeedback.js");
 
 const router = express.Router();
 
@@ -48,6 +50,9 @@ router.post("/contract", validateLeadContract, updateContractLead);
 router.post("/certificate", validateLeadCertificate, postLeadCertificate);
 
 router.post("/event", validateLeadEvent, postLeadEvent);
+
+router.post("/feedback", validateLeadFeedback, postLeadFeedback)
+
 router.patch("/quiz/:id", validateQuizLead, updateQuizLead, getLeadAndPost);
 
 router.post("/quiz-one", postQuizLead, getLead);

@@ -131,6 +131,21 @@ const leadCertificateSchema = Joi.object({
   email: Joi.string().email().required(),
 });
 
+const leadFeedbackSchema = Joi.object({
+  leadId: Joi.string().optional(),
+  answers: Joi.array()
+    .items(
+      Joi.object({
+        id: Joi.number().required(),
+        question: Joi.string().required(),
+        shortanswer: Joi.string().optional(),
+        longanswer: Joi.string().optional(),
+        rating: Joi.number().optional(),
+      })
+    )
+    .required(),
+});
+
 const leadEventSchema = Joi.object({
   name: Joi.string().min(1).max(100).required(),
   phone: Joi.string().min(10).max(20).required(),
@@ -173,6 +188,15 @@ const validateLeadCertificate = ({ body }, res, next) => {
   next();
 };
 
+const validateLeadFeedback = ({ body }, res, next) => {
+  const { error } = leadFeedbackSchema.validate(body);
+  if (error) return res.status(400).json(error.details[0].message);
+
+  console.log('VALIDATE ACSSESS');
+  
+  next();
+};
+
 const validateLeadEvent = ({ body }, res, next) => {
   const { error } = leadEventSchema.validate(body);
   if (error) return res.status(400).json(error.details[0].message);
@@ -184,5 +208,6 @@ module.exports = {
   validateLeadConference,
   validateLeadContract,
   validateLeadCertificate,
-  validateLeadEvent
+  validateLeadFeedback,
+  validateLeadEvent,
 };

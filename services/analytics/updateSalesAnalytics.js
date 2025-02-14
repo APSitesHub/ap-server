@@ -2,7 +2,7 @@ const getCRMLead = require("../crmGetLead");
 const getCRMUser = require("../crmGetUser");
 const formatDate = require("../../utils/dateUtils");
 require("dotenv").config();
-const { LEAD_CUSTOM_FIELDS, STATUS_ID, PIPELINE_ID_SALES, EXEL_TABS } = require("./constants");
+const { LEAD_CUSTOM_FIELDS, STATUS_ID, PIPELINE_ID_SALES, EXEL_TABS } = require("../../utils/crm/constants");
 const { google } = require("googleapis");
 
 async function updateSalesAnalytics(crmId) {
