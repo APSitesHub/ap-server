@@ -84,7 +84,7 @@ function getValueCustomFields(lead, field) {
 
     const customField = lead.custom_fields_values.find(f => f.field_id === field.field_id);
 
-    if(customField && customField.field_type.include('date')) {
+    if(field.field_type === "date") {
         return formatDate(customField.values[0].value);
     }
     return customField ? customField.values[0].value : "";
