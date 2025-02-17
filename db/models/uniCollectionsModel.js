@@ -18,6 +18,8 @@ const uniCollections = new Schema(
     wskm_prep: { type: String },
     wssip_logistics: { type: String },
     wssip_prep: { type: String },
+    wspa_logistics: { type: String },
+    wspa_prep: { type: String },
   },
   {
     versionKey: false,

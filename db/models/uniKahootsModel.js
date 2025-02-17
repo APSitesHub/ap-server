@@ -146,6 +146,24 @@ const uniKahoots = new Schema(
         wssip_prep_5: String,
       },
     },
+    wspa_logistics: {
+      links: {
+        wspa_logistics_1: String,
+        wspa_logistics_2: String,
+        wspa_logistics_3: String,
+        wspa_logistics_4: String,
+        wspa_logistics_5: String,
+      },
+    },
+    wspa_prep: {
+      links: {
+        wspa_prep_1: String,
+        wspa_prep_2: String,
+        wspa_prep_3: String,
+        wspa_prep_4: String,
+        wspa_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,

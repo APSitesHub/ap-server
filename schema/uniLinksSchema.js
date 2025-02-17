@@ -17,6 +17,8 @@ const uniLinksSchema = Joi.object({
   wskm_prep: Joi.string().empty(""),
   wssip_logistics: Joi.string().empty(""),
   wssip_prep: Joi.string().empty(""),
+  wspa_logistics: Joi.string().empty(""),
+  wspa_prep: Joi.string().empty(""),
 });
 
 const validateUniLinks = ({ body }, res, next) => {
