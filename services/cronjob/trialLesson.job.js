@@ -87,7 +87,7 @@ async function updateLeadsByTrialLessonFields (isReanimation = false) {
     const SERVICE_ID_WAS_ON_TRIAL = isReanimation ? 71920164 : 58580615;
     const SERVICE_ID_NOT_ON_TRIAL = isReanimation ? 71920152 : 58580611; 
 
-    const leads = await fetchLeadsByStatusAndPipeline();
+    const leads = await fetchLeadsByStatusAndPipeline(isReanimation);
     const validLeads = validateLeadsArray(leads);
     const presentOnTrialLesson = [];
     const absenceOnTrialLesson = [];
