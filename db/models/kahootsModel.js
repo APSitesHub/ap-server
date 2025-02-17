@@ -438,6 +438,34 @@ const kahoots = new Schema(
         dea1kids_10: String,
       },
     },
+    dea2kids: {
+      links: {
+        dea2kids_1: String,
+        dea2kids_2: String,
+        dea2kids_3: String,
+        dea2kids_4: String,
+        dea2kids_5: String,
+        dea2kids_6: String,
+        dea2kids_7: String,
+        dea2kids_8: String,
+        dea2kids_9: String,
+        dea2kids_10: String,
+      },
+    },
+    deb1kids: {
+      links: {
+        deb1kids_1: String,
+        deb1kids_2: String,
+        deb1kids_3: String,
+        deb1kids_4: String,
+        deb1kids_5: String,
+        deb1kids_6: String,
+        deb1kids_7: String,
+        deb1kids_8: String,
+        deb1kids_9: String,
+        deb1kids_10: String,
+      },
+    },
     dekidsfree: {
       links: {
         dekidsfree_1: String,
@@ -464,6 +492,20 @@ const kahoots = new Schema(
         pla1kids_8: String,
         pla1kids_9: String,
         pla1kids_10: String,
+      },
+    },
+    pla2kids: {
+      links: {
+        pla2kids_1: String,
+        pla2kids_2: String,
+        pla2kids_3: String,
+        pla2kids_4: String,
+        pla2kids_5: String,
+        pla2kids_6: String,
+        pla2kids_7: String,
+        pla2kids_8: String,
+        pla2kids_9: String,
+        pla2kids_10: String,
       },
     },
     plkidsfree: {
