@@ -164,7 +164,12 @@ io.on("connection", (socket) => {
 cron.schedule('45 22 * * *', async () => {
   console.log('Running cron job to update leads by trial lesson fields');
   try {
-    await updateLeadsByTrialLessonFields();
+    await updateLeadsByTrialLessonFields().catch((error) => {
+      console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
+    });
+    await updateLeadsByTrialLessonFields(true).catch((error) => {
+      console.error('Cron job to update leads by trial lesson REANIMATION fields FAILED with an error:', error);
+    });
     console.log('Cron job to update leads by trial lesson fields FINISHED');
   } catch (error) {
     console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
