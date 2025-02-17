@@ -3,12 +3,12 @@ const { getToken } = require("../tokensServices");
 const { isToday, fromUnixTime } = require('date-fns');
 
 // Function to fetch clients from KommoCRM
-async function fetchLeadsByStatusAndPipeline() {
-    const PIPELINE_ID_SALES = 6453287;
+async function fetchLeadsByStatusAndPipeline(isReanimation = false) {
+    const PIPELINE_ID_SALES = isReanimation ? 7891256 : 6453287;
     const STATUS_ID_TRIAL_YEAR = {
-        ENGLISH: 63191344,
-        POLISH: 63191352,
-        GERMANY: 63191348,
+        ENGLISH: isReanimation ? 63642560 : 63191344,
+        POLISH: isReanimation ? 63642552 : 63642556,
+        GERMANY: isReanimation ? 63642552 : 63191348,
     }
     try {
         const currentToken = await getToken();
@@ -83,9 +83,9 @@ const isPresentOnTrialLesson = (lead) => {
     return false;
 };
 
-async function updateLeadsByTrialLessonFields () {
-    const SERVICE_ID_WAS_ON_TRIAL = 58580615;
-    const SERVICE_ID_NOT_ON_TRIAL = 58580611; 
+async function updateLeadsByTrialLessonFields (isReanimation = false) {
+    const SERVICE_ID_WAS_ON_TRIAL = isReanimation ? 71920164 : 58580615;
+    const SERVICE_ID_NOT_ON_TRIAL = isReanimation ? 71920152 : 58580611; 
 
     const leads = await fetchLeadsByStatusAndPipeline();
     const validLeads = validateLeadsArray(leads);
