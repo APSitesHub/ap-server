@@ -20,6 +20,8 @@ const uniLinks = new Schema(
     wssip_prep: { type: String },
     wspa_logistics: { type: String },
     wspa_prep: { type: String },
+    wse_logistics: { type: String },
+    wse_prep: { type: String },
   },
   {
     versionKey: false,

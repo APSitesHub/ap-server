@@ -19,6 +19,8 @@ const uniCollectionsSchema = Joi.object({
   wssip_prep: Joi.string().empty(""),
   wspa_logistics: Joi.string().empty(""),
   wspa_prep: Joi.string().empty(""),
+  wse_logistics: Joi.string().empty(""),
+  wse_prep: Joi.string().empty(""),
 });
 
 const validateUniCollections = ({ body }, res, next) => {

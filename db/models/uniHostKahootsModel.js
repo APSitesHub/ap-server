@@ -164,6 +164,24 @@ const uniHostKahoots = new Schema(
         wspa_prep_5: String,
       },
     },
+    wse_logistics: {
+      links: {
+        wse_logistics_1: String,
+        wse_logistics_2: String,
+        wse_logistics_3: String,
+        wse_logistics_4: String,
+        wse_logistics_5: String,
+      },
+    },
+    wse_prep: {
+      links: {
+        wse_prep_1: String,
+        wse_prep_2: String,
+        wse_prep_3: String,
+        wse_prep_4: String,
+        wse_prep_5: String,
+      },
+    },
   },
   {
     versionKey: false,
