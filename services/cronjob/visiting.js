@@ -155,29 +155,29 @@ async function updateLeadsByVisitedFields(statusIds) {
 // }
 
 // async function updateTaskCompleteTill(tasks, completeTill) {
-    try {
-        const currentToken = await getToken();
-        axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
+    // try {
+    //     const currentToken = await getToken();
+    //     axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
 
-        for (let i = 0; i < tasks.length; i += 200) {
-            const batch = tasks.slice(i, i + 200);
-            const updatedTasks = batch.map(task => ({
-                id: task.id,
-                complete_till: completeTill,
-            }));
+    //     for (let i = 0; i < tasks.length; i += 200) {
+    //         const batch = tasks.slice(i, i + 200);
+    //         const updatedTasks = batch.map(task => ({
+    //             id: task.id,
+    //             complete_till: completeTill,
+    //         }));
 
-            const response = await axios.patch(
-                `https://apeducation.kommo.com/api/v4/tasks`,
-                updatedTasks
-            );
+    //         const response = await axios.patch(
+    //             `https://apeducation.kommo.com/api/v4/tasks`,
+    //             updatedTasks
+    //         );
 
-            console.log(`Updated ${response.data.length} tasks in batch starting at index ${i}`);
-        }
-        return true;
-    } catch (error) {
-        console.error('Error updating tasks:', error);
-        return false;
-    }
+    //         console.log(`Updated ${response.data.length} tasks in batch starting at index ${i}`);
+    //     }
+    //     return true;
+    // } catch (error) {
+    //     console.error('Error updating tasks:', error);
+    //     return false;
+    // }
 // }
 
 // const fixTaskType = async (statusIds) => {

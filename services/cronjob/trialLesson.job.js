@@ -12,15 +12,34 @@ async function fetchLeadsByStatusAndPipeline(isReanimation = false) {
     }
     try {
         const currentToken = await getToken();
-      axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
-        const response = await axios.get('https://apeducation.kommo.com/api/v4/leads', {
-            params: {
-                limit:1000,
-                'filter[statuses][0][pipeline_id]': PIPELINE_ID_SALES,
-                'filter[statuses][0][status_id]': Object.values(STATUS_ID_TRIAL_YEAR),
+        axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
+        
+        let allLeads = [];
+        let page = 1;
+        let hasMoreLeads = true;
+
+        while (hasMoreLeads) {
+            const response = await axios.get('https://apeducation.kommo.com/api/v4/leads', {
+                params: {
+                    'filter[statuses][0][pipeline_id]': PIPELINE_ID_SALES,
+                    'filter[statuses][0][status_id]': Object.values(STATUS_ID_TRIAL_YEAR),
+                    page,
+                    limit: 250,
+                }
+            });
+
+            const leads = response.data._embedded.leads;
+            allLeads = allLeads.concat(leads);
+
+            if (leads.length < 250) {
+                hasMoreLeads = false;
+            } else {
+                page++;
             }
-        });
-        return response.data._embedded.leads;
+        }
+
+        console.log(allLeads.length);
+        return allLeads;
     } catch (error) {
         console.error('Error fetching leads:', error);
         return [];
@@ -28,30 +47,33 @@ async function fetchLeadsByStatusAndPipeline(isReanimation = false) {
 }
 
 // Function to update client status
-async function updateStatus(lead) {
+async function updateStatus(leads) {
     try {
-      const currentToken = await getToken();
-      
-      axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
-  
-      const crmLead = await axios.patch(
-        `https://apeducation.kommo.com/api/v4/leads`,
-        lead
-      ).catch(err => {
-        console.error(JSON.stringify(err.response.data));
-        return null;
-      });
-      return crmLead;
+        const currentToken = await getToken();
+        axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
+
+        for (let i = 0; i < leads.length; i += 200) {
+            const batch = leads.slice(i, i + 200);
+            const response = await axios.patch(
+                `https://apeducation.kommo.com/api/v4/leads`,
+                batch
+            ).catch(err => {
+                console.error(JSON.stringify(err.response.data));
+                return null;
+            });
+            console.log(`Updated ${response.data.length} leads in batch starting at index ${i}`);
+        }
+        return true;
     } catch (error) {
-      console.log(error);
-      return null;
+        console.log(error);
+        return false;
     }
-  }
+}
 
 const isTrialLessonToday = (lead) => {
     const customFieldDate = lead.custom_fields_values.find(field => field.field_id === 1806904);
     if (customFieldDate) {
-         const lessonDate = fromUnixTime(customFieldDate.values[0].value);
+        const lessonDate = fromUnixTime(customFieldDate.values[0].value);
         return isToday(lessonDate);
     }
     return false;
@@ -114,7 +136,7 @@ async function updateLeadsByTrialLessonFields (isReanimation = false) {
         }
     });
 
-    const absencePromises = absenceOnTrialLesson.map((lead) => {
+    const absenceLeads = absenceOnTrialLesson.map((lead) => {
         return {
             id: lead.id,
             status_id: SERVICE_ID_NOT_ON_TRIAL,
@@ -131,9 +153,9 @@ async function updateLeadsByTrialLessonFields (isReanimation = false) {
             ]
         }
     });
-    await Promise.all([updateStatus(presentLeads), updateStatus(absencePromises)]).catch(err => {
-        console.error("CORN JOB with trial lesson error", err);
-    });
+
+    await updateStatus(presentLeads);
+    await updateStatus(absenceLeads);
 };
  
 module.exports = {
