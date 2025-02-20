@@ -8,7 +8,7 @@ const { signInUser } = require("../usersServices");
 
 async function updateLoginTime(leadId, user) {
     const currentTimeInKiev = format(new Date(), "yyyy-MM-dd'T'HH:mm:ssXXX", { locale: uk });
-    const visited = format(new Date(), "dd.MM.yyyy");
+    const visited = user.visited
     try {
       await signInUser(user._id, { visited });
     } catch (error) {
