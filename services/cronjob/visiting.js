@@ -80,34 +80,129 @@ const validateLeadsArray = (leads) => {
     });
 };
 
-async function updateLeadsByVisitedFields (statusIds) {
+async function updateLeadsByVisitedFields(statusIds) {
     try {
         console.log('Fetching leads...');
         const leads = await fetchLeadsByStatusAndPipeline(statusIds);
         console.log('Validating leads...');
         const validLeads = validateLeadsArray(leads);
-        const leadsToUpdate = [];
         const threeDaysLater = Math.floor(addDays(new Date(), 3).getTime() / 1000);
-        validLeads.forEach(lead => {
-            leadsToUpdate.push({
-                responsible_user_id: lead.responsible_user_id, 
-                task_type_id: 1,
-                text: "останній візит студента був тиждень тому , набери спит в чому справа  чому не відвідує",
-                complete_till: threeDaysLater,
-                entity_id: lead.id,
-                entity_type: "leads",
-                request_id: `task_${lead.id}`,
-            });
-        });
+        const leadsToUpdate = validLeads.map(lead => ({
+            responsible_user_id: lead.responsible_user_id,
+            task_type_id: 1,
+            text: "останній візит студента був тиждень тому , набери спитай в чому справа  чому не відвідує",
+            complete_till: threeDaysLater,
+            entity_id: lead.id,
+            entity_type: "leads",
+            request_id: `task_${lead.id}`,
+        }));
+
         console.log(`Number of valid leads: ${validLeads.length}`);
         console.log('Creating tasks...');
-        await createTask(leadsToUpdate);
+
+        for (let i = 0; i < leadsToUpdate.length; i += 200) {
+            const batch = leadsToUpdate.slice(i, i + 200);
+            try {
+                await createTask(batch);
+            } catch (error) {
+                console.error(`Error creating tasks for batch starting at index ${i}:`, error);
+                batch.forEach(task => console.error(`Failed task for lead ID: ${task.entity_id}`));
+            }
+        }
         console.log('Tasks created successfully.');
     } catch (error) {
         console.error('Error in updateLeadsByVisitedFields:', error);
     }
-};
- 
+}
+
+// async function fetchTasksByEntityIds(entityIds) {
+//     try {
+//         const currentToken = await getToken();
+//         axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
+        
+//         let allTasks = [];
+//         let page = 1;
+//         let hasMoreTasks = true;
+
+//         while (hasMoreTasks) {
+//             const response = await axios.get('https://apeducation.kommo.com/api/v4/tasks', {
+//                 params: {
+//                     'filter[entity_id][]': entityIds,
+//                     'filter[entity_type]': 'leads',
+//                     page,
+//                     limit: 250,
+//                 }
+//             });
+
+//             const tasks = response.data._embedded.tasks;
+//             allTasks = allTasks.concat(tasks);
+
+//             if (tasks.length < 250) {
+//                 hasMoreTasks = false;
+//             } else {
+//                 page++;
+//             }
+//         }
+
+//         const filteredTasks = allTasks.filter(task => task.text === "останній візит студента був тиждень тому , набери спитай в чому справа  чому не відвідує");
+
+//         console.log(filteredTasks.length);
+//         return filteredTasks;
+//     } catch (error) {
+//         console.error('Error fetching tasks:', error);
+//         return [];
+//     }
+// }
+
+// async function updateTaskCompleteTill(tasks, completeTill) {
+    try {
+        const currentToken = await getToken();
+        axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
+
+        for (let i = 0; i < tasks.length; i += 200) {
+            const batch = tasks.slice(i, i + 200);
+            const updatedTasks = batch.map(task => ({
+                id: task.id,
+                complete_till: completeTill,
+            }));
+
+            const response = await axios.patch(
+                `https://apeducation.kommo.com/api/v4/tasks`,
+                updatedTasks
+            );
+
+            console.log(`Updated ${response.data.length} tasks in batch starting at index ${i}`);
+        }
+        return true;
+    } catch (error) {
+        console.error('Error updating tasks:', error);
+        return false;
+    }
+// }
+
+// const fixTaskType = async (statusIds) => {
+//     let leadsToUpdate = [];
+//     const now = new Date();
+//     now.setUTCHours(17, 0, 0, 0);
+//     const completeTill = Math.floor(now.getTime() / 1000) + 2 * 3600;
+//     try {
+//         console.log('Fetching leads...');
+//         const leads = await fetchLeadsByStatusAndPipeline(statusIds);
+//         console.log('Validating leads...');
+//         const validLeads = validateLeadsArray(leads);
+//         leadsToUpdate = validLeads.map(lead => lead.id);
+//         console.log(`Number of valid leads: ${validLeads.length}`);
+//         console.log('Fetching tasks...');
+
+//         const tasks = await fetchTasksByEntityIds(leadsToUpdate);
+//         await updateTaskCompleteTill(tasks, completeTill);
+
+//         console.log('Tasks updated successfully.');
+//     } catch (error) {
+//         console.error('Error in fixTaskType:', error);
+//     }
+// }
+
 module.exports = {
     updateLeadsByVisitedFields,
 }
