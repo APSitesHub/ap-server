@@ -86,7 +86,7 @@ async function updateLeadsByVisitedFields(statusIds) {
         const leads = await fetchLeadsByStatusAndPipeline(statusIds);
         console.log('Validating leads...');
         const validLeads = validateLeadsArray(leads);
-        const threeDaysLater = Math.floor(addDays(new Date(), 3).getTime() / 1000);
+        const threeDaysLater = Math.floor(new Date().getTime() / 1000);
         const leadsToUpdate = validLeads.map(lead => ({
             responsible_user_id: lead.responsible_user_id,
             task_type_id: 1,
