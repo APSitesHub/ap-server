@@ -6,6 +6,8 @@ const teacherSchema = Joi.object({
   password: Joi.string().required(),
   lang: Joi.string(),
   platformId: Joi.string(),
+  crmId: Joi.string(),
+  altegioId: Joi.string(),
   visited: Joi.array().items(Joi.string()),
   visitedTime: Joi.array().items(Joi.string()),
   token: Joi.string(),
