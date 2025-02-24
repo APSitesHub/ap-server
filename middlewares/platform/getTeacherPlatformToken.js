@@ -11,8 +11,7 @@ const getTeacherPlatformToken = async (req, res, next) => {
   }
 
   const updateLeadStatusRequest = {
-    // teacherId: teacher.teacherId,
-    teacherId: 2298518,
+    teacherId: teacher.platformId,
   };
 
   try {
