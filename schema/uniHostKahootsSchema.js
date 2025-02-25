@@ -161,6 +161,46 @@ const uniHostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  wspa_logistics: Joi.object({
+    links: Joi.object({
+      wspa_logistics_1: Joi.string().empty(""),
+      wspa_logistics_2: Joi.string().empty(""),
+      wspa_logistics_3: Joi.string().empty(""),
+      wspa_logistics_4: Joi.string().empty(""),
+      wspa_logistics_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  wspa_prep: Joi.object({
+    links: Joi.object({
+      wspa_prep_1: Joi.string().empty(""),
+      wspa_prep_2: Joi.string().empty(""),
+      wspa_prep_3: Joi.string().empty(""),
+      wspa_prep_4: Joi.string().empty(""),
+      wspa_prep_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  wse_logistics: Joi.object({
+    links: Joi.object({
+      wse_logistics_1: Joi.string().empty(""),
+      wse_logistics_2: Joi.string().empty(""),
+      wse_logistics_3: Joi.string().empty(""),
+      wse_logistics_4: Joi.string().empty(""),
+      wse_logistics_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  wse_prep: Joi.object({
+    links: Joi.object({
+      wse_prep_1: Joi.string().empty(""),
+      wse_prep_2: Joi.string().empty(""),
+      wse_prep_3: Joi.string().empty(""),
+      wse_prep_4: Joi.string().empty(""),
+      wse_prep_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
 });
 
 const validateUniHostKahoots = ({ body }, res, next) => {

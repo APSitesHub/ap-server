@@ -5,6 +5,7 @@ const app = require("./app");
 const connectDB = require("./db/connection");
 require("dotenv").config();
 const { updateLeadsByTrialLessonFields } = require("./services/cronjob/trialLesson.job");
+const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 
 const server = http.createServer(app);
@@ -199,10 +200,46 @@ io.on("connection", (socket) => {
 cron.schedule('45 22 * * *', async () => {
   console.log('Running cron job to update leads by trial lesson fields');
   try {
-    await updateLeadsByTrialLessonFields();
+    await updateLeadsByTrialLessonFields().catch((error) => {
+      console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
+    });
+    await updateLeadsByTrialLessonFields(true).catch((error) => {
+      console.error('Cron job to update leads by trial lesson REANIMATION fields FAILED with an error:', error);
+    });
     console.log('Cron job to update leads by trial lesson fields FINISHED');
   } catch (error) {
     console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
+  }
+});
+
+// Cron job to update leads by visited fields
+cron.schedule('0 3 * * 1', async () => {
+  console.log('Running cron job to update leads by visited fields for POLISH');
+  try {
+    await updateLeadsByVisitedFields([75659068]); // STATUS_ID_CLOSE_TO_YOU.POLISH
+    console.log('Cron job to update leads by visited fields for POLISH FINISHED');
+  } catch (error) {
+    console.error('Cron job to update leads by visited fields for POLISH FAILED with an error:', error);
+  }
+});
+// TODO need add children in next week 26.02
+cron.schedule('0 3 * * 3', async () => {
+  console.log('Running cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS');
+  try {
+    await updateLeadsByVisitedFields([75659060]); // STATUS_ID_CLOSE_TO_YOU.ENGLISH, STATUS_ID_CLOSE_TO_YOU.ENGLISH_KIDS 65411360
+    console.log('Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FINISHED');
+  } catch (error) {
+    console.error('Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FAILED with an error:', error);
+  }
+});
+// TODO need add children in next week 26.02
+cron.schedule('0 3 * * 5', async () => {
+  console.log('Running cron job to update leads by visited fields for GERMANY and GERMANY_KIDS');
+  try {
+    await updateLeadsByVisitedFields([75659064]); // STATUS_ID_CLOSE_TO_YOU.GERMANY, STATUS_ID_CLOSE_TO_YOU.GERMANY_KIDS 72736296
+    console.log('Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FINISHED');
+  } catch (error) {
+    console.error('Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FAILED with an error:', error);
   }
 });
 

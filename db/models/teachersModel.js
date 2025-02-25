@@ -22,6 +22,9 @@ const teachers = new Schema(
     token: {
       type: String,
     },
+    platformId: {
+      type: String,
+    }
   },
   {
     versionKey: false,

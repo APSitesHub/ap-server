@@ -57,14 +57,14 @@ const loginUser = async (req, res, next) => {
   const platformToken = req.body.authToken;
 
   try {
-    await signInUser(user._id, { token, visited, visitedTime });
+    await signInUser(user._id, { token, visitedTime });
   } catch (error) {
     console.log(error);
   }
   const requestedUrl = req.get("X-Page-URL");
 
-  if(requestedUrl && requestedUrl.length && requestedUrl.includes("/streams/")) {
-    crmId && updateLoginTime(crmId);
+  if(requestedUrl && requestedUrl.length && requestedUrl.includes("/streams")) {
+   updateLoginTime(crmId, user);
   }
 
   res.status(200).json({

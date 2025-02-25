@@ -51,15 +51,15 @@ router.post("/login", validateUser, getPlatformToken, loginUser);
 
 router.post("/refresh", getPlatformToken, refreshUserToken);
 
-router.post("/login-code", loginUserByAuthCode, changeLeadStatusQuiz);
+// router.post("/login-code", loginUserByAuthCode, changeLeadStatusQuiz);
 
-router.post(
-  "/login-direct",
-  loginUserByAuthCodeFromDirect,
-  changeLeadStatusDirect
-);
+// router.post(
+//   "/login-direct",
+//   loginUserByAuthCodeFromDirect,
+//   changeLeadStatusDirect
+// );
 
-router.post("/refresh-code", refreshUserTokenByAuthCode);
+// router.post("/refresh-code", refreshUserTokenByAuthCode);
 
 router.patch("/:id", banUser);
 
