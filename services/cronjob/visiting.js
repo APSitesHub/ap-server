@@ -74,8 +74,9 @@ const validateLeadsArray = (leads) => {
     return leads.filter(lead => {
         const availableForCreateTask = lead.custom_fields_values.find(field => field.field_id === 1826323);
         const lastVisiting = lead.custom_fields_values.find(field => field.field_id === 1826097);
-        const isAvailableForCreateTaskValid = !availableForCreateTask || availableForCreateTask.values[0].value !== 'TRUE';
+        const isAvailableForCreateTaskValid = !availableForCreateTask || availableForCreateTask.values[0].value === 'TRUE';
         const isLastVisitingValid = !lastVisiting || !lastVisiting.values[0].value || fromUnixTime(lastVisiting.values[0].value) < sub(new Date(), { days: 10 });
+
         return isAvailableForCreateTaskValid && isLastVisitingValid;
     });
 };
