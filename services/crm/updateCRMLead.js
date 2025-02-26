@@ -41,7 +41,7 @@ async function updateLoginTime(leadId, user) {
       });
       return crmLead;
     } catch (error) {
-      console.log(error);
+      console.log('ERROR with login user on platform and store in crm', error);
       return null;
     }
   }
