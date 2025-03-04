@@ -7,6 +7,7 @@ require("dotenv").config();
 const { updateLeadsByTrialLessonFields } = require("./services/cronjob/trialLesson.job");
 const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
+const { loginTeacherParser } = require("./utils/loginTeacherParser");
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -217,6 +218,7 @@ const startServer = async () => {
       }
       console.log(`Database connection successful on port ${process.env.PORT}`);
       console.log(`Run with environment ${process.env.NODE_ENV.toUpperCase()}`);
+      loginTeacherParser();
     });
   } catch (err) {
     console.log(`Failed to launch application with an error: "${err.message}"`);
