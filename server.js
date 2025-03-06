@@ -245,7 +245,7 @@ cron.schedule('0 3 * * 5', async () => {
 
 const startServer = async () => {
   try {
-    // await connectDB();
+    await connectDB();
     server.listen(process.env.PORT, (error) => {
       if (error) {
         console.log("Server launch error", error);

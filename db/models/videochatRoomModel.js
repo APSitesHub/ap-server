@@ -9,6 +9,9 @@ const videochatRooms = new Schema({
   name: {
     type: String
   },
+  slug: {
+    type: String
+  },
   roomAdmin: {
     type: String,
     required: [true, "No mail"]
