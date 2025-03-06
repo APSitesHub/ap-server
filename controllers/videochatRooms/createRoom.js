@@ -3,7 +3,7 @@ const Room = require("../../db/models/videochatRoomModel");
 
 const createRoom = async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, level } = req.body;
 
     if (!name) {
       return res.status(400).json({ message: "Room name is required" });
@@ -12,10 +12,12 @@ const createRoom = async (req, res) => {
     const { login } = req.user;
 
     const roomId = uuidv4();
+    const slug = `${level}`;
 
     const newRoom = await Room.create({
       id: roomId,
       name,
+      slug,
       roomAdmin: login,
     });
 
