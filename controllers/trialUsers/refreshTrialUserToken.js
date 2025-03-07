@@ -16,7 +16,7 @@ const refreshTrialUserToken = async (req, res, next) => {
   if (!user) {
     next();
   }
-  console.log(user.updatedAt.toDateString());
+  
   try {
     const isTokenOK = jwt.verify(user.token, process.env.SECRET);
     console.log("verify jwt", isTokenOK);
