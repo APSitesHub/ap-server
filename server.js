@@ -4,7 +4,9 @@ const { version, validate } = require("uuid");
 const app = require("./app");
 const connectDB = require("./db/connection");
 require("dotenv").config();
-const { updateLeadsByTrialLessonFields } = require("./services/cronjob/trialLesson.job");
+const {
+  updateLeadsByTrialLessonFields,
+} = require("./services/cronjob/trialLesson.job");
 const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 
@@ -25,36 +27,42 @@ const ACTIONS = {
   MUTE_ALL: "mute-all",
 };
 
-const roles = {};
+const clients = {};
 const debug = process.env.NODE_ENV === "development";
 
 io.on("connection", (socket) => {
   socket.on(ACTIONS.JOIN, (config) => {
-    const { room: roomID, role } = config;
+    const { room: roomID, role, isCameraEnabled, isMicroEnabled } = config;
     const { rooms: joinedRooms } = socket;
 
-    if (!roles[roomID]) {
-      roles[roomID] = {};
+    if (!clients[roomID]) {
+      clients[roomID] = {};
     }
 
-    roles[roomID][socket.id] = role;
+    if (!clients[roomID][socket.id]) {
+      clients[roomID][socket.id] = {};
+    }
+
+    clients[roomID][socket.id].role = role;
+    clients[roomID][socket.id].isCameraEnabled = isCameraEnabled;
+    clients[roomID][socket.id].isMicroEnabled = isMicroEnabled;
 
     if (Array.from(joinedRooms).includes(roomID)) {
       return console.warn(`Already joined to ${roomID}`);
     }
 
-    const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+    const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-    clients.forEach((clientID) => {
+    peers.forEach((clientID) => {
       io.to(clientID).emit(ACTIONS.ADD_PEER, {
         peerID: socket.id,
-        roles: roles[roomID],
+        clients: clients[roomID],
         createOffer: false,
       });
 
       socket.emit(ACTIONS.ADD_PEER, {
         peerID: clientID,
-        roles: roles[roomID],
+        clients: clients[roomID],
         createOffer: true,
       });
     });
@@ -66,10 +74,10 @@ io.on("connection", (socket) => {
       console.log("Connected to room: " + roomID);
       console.log("socket id: " + socket.id);
       console.log("client role: " + role);
+      console.log("all peers: ");
+      console.log(peers);
       console.log("all clients: ");
-      console.log(clients);
-      console.log("all client roles: ");
-      console.log(roles[roomID]);
+      console.log(clients[roomID]);
       console.log("___________________________");
     }
 
@@ -82,13 +90,13 @@ io.on("connection", (socket) => {
     Array.from(rooms)
       .filter((roomID) => validate(roomID) && version(roomID) === 4)
       .forEach((roomID) => {
-        if (roles[roomID] && roles[roomID][socket.id]) {
-          delete roles[roomID][socket.id];
+        if (clients[roomID] && clients[roomID][socket.id]) {
+          delete clients[roomID][socket.id];
         }
 
-        const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+        const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-        clients.forEach((clientID) => {
+        peers.forEach((clientID) => {
           io.to(clientID).emit(ACTIONS.REMOVE_PEER, {
             peerID: socket.id,
           });
@@ -146,9 +154,10 @@ io.on("connection", (socket) => {
     Array.from(rooms)
       .filter((roomID) => validate(roomID) && version(roomID) === 4)
       .forEach((roomID) => {
-        const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+        const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+        clients[roomID][socket.id].isMicroEnabled = isMicroEnabled;
 
-        clients.forEach((clientID) => {
+        peers.forEach((clientID) => {
           if (clientID !== socket.id) {
             io.to(clientID).emit(ACTIONS.TOGGLE_MICRO, {
               peerID: socket.id,
@@ -165,9 +174,10 @@ io.on("connection", (socket) => {
     Array.from(rooms)
       .filter((roomID) => validate(roomID) && version(roomID) === 4)
       .forEach((roomID) => {
-        const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+        const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+        clients[roomID][socket.id].isCameraEnabled = isCameraEnabled;
 
-        clients.forEach((clientID) => {
+        peers.forEach((clientID) => {
           if (clientID !== socket.id) {
             io.to(clientID).emit(ACTIONS.TOGGLE_CAMERA, {
               peerID: socket.id,
@@ -185,9 +195,9 @@ io.on("connection", (socket) => {
     Array.from(rooms)
       .filter((roomID) => validate(roomID) && version(roomID) === 4)
       .forEach((roomID) => {
-        const clients = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+        const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
 
-        clients.forEach((clientID) => {
+        peers.forEach((clientID) => {
           if (clientID !== socket.id) {
             io.to(clientID).emit(ACTIONS.MUTE_ALL);
           }
@@ -197,49 +207,77 @@ io.on("connection", (socket) => {
 });
 // Cron job to check custom fields and update status
 
-cron.schedule('45 22 * * *', async () => {
-  console.log('Running cron job to update leads by trial lesson fields');
+cron.schedule("45 22 * * *", async () => {
+  console.log("Running cron job to update leads by trial lesson fields");
   try {
     await updateLeadsByTrialLessonFields().catch((error) => {
-      console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
+      console.error(
+        "Cron job to update leads by trial lesson fields FAILED with an error:",
+        error
+      );
     });
     await updateLeadsByTrialLessonFields(true).catch((error) => {
-      console.error('Cron job to update leads by trial lesson REANIMATION fields FAILED with an error:', error);
+      console.error(
+        "Cron job to update leads by trial lesson REANIMATION fields FAILED with an error:",
+        error
+      );
     });
-    console.log('Cron job to update leads by trial lesson fields FINISHED');
+    console.log("Cron job to update leads by trial lesson fields FINISHED");
   } catch (error) {
-    console.error('Cron job to update leads by trial lesson fields FAILED with an error:', error);
+    console.error(
+      "Cron job to update leads by trial lesson fields FAILED with an error:",
+      error
+    );
   }
 });
 
 // Cron job to update leads by visited fields
-cron.schedule('0 3 * * 1', async () => {
-  console.log('Running cron job to update leads by visited fields for POLISH');
+cron.schedule("0 3 * * 1", async () => {
+  console.log("Running cron job to update leads by visited fields for POLISH");
   try {
     await updateLeadsByVisitedFields([75659068]); // STATUS_ID_CLOSE_TO_YOU.POLISH
-    console.log('Cron job to update leads by visited fields for POLISH FINISHED');
+    console.log(
+      "Cron job to update leads by visited fields for POLISH FINISHED"
+    );
   } catch (error) {
-    console.error('Cron job to update leads by visited fields for POLISH FAILED with an error:', error);
+    console.error(
+      "Cron job to update leads by visited fields for POLISH FAILED with an error:",
+      error
+    );
   }
 });
 // TODO need add children in next week 26.02
-cron.schedule('0 3 * * 3', async () => {
-  console.log('Running cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS');
+cron.schedule("0 3 * * 3", async () => {
+  console.log(
+    "Running cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS"
+  );
   try {
     await updateLeadsByVisitedFields([75659060]); // STATUS_ID_CLOSE_TO_YOU.ENGLISH, STATUS_ID_CLOSE_TO_YOU.ENGLISH_KIDS 65411360
-    console.log('Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FINISHED');
+    console.log(
+      "Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FINISHED"
+    );
   } catch (error) {
-    console.error('Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FAILED with an error:', error);
+    console.error(
+      "Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FAILED with an error:",
+      error
+    );
   }
 });
 // TODO need add children in next week 26.02
-cron.schedule('0 3 * * 5', async () => {
-  console.log('Running cron job to update leads by visited fields for GERMANY and GERMANY_KIDS');
+cron.schedule("0 3 * * 5", async () => {
+  console.log(
+    "Running cron job to update leads by visited fields for GERMANY and GERMANY_KIDS"
+  );
   try {
     await updateLeadsByVisitedFields([75659064]); // STATUS_ID_CLOSE_TO_YOU.GERMANY, STATUS_ID_CLOSE_TO_YOU.GERMANY_KIDS 72736296
-    console.log('Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FINISHED');
+    console.log(
+      "Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FINISHED"
+    );
   } catch (error) {
-    console.error('Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FAILED with an error:', error);
+    console.error(
+      "Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FAILED with an error:",
+      error
+    );
   }
 });
 
