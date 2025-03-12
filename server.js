@@ -24,6 +24,7 @@ const ACTIONS = {
   SESSION_DESCRIPTION: "session-description",
   TOGGLE_MICRO: "toggle-micro",
   TOGGLE_CAMERA: "toggle-camera",
+  CHANGE_VISIBILITY: "change-visibility",
   MUTE_ALL: "mute-all",
 };
 
@@ -186,6 +187,13 @@ io.on("connection", (socket) => {
           }
         });
       });
+  });
+
+  socket.on(ACTIONS.CHANGE_VISIBILITY, ({ client, isVisible }) => {
+    io.to(client.clientId).emit(ACTIONS.CHANGE_VISIBILITY, {
+      peerID: socket.id,
+      isVisible,
+    });
   });
 
   socket.on(ACTIONS.MUTE_ALL, () => {
