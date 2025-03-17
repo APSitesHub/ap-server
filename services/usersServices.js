@@ -8,9 +8,12 @@ const allUsers = async () =>
     .slice(-1);
 
 const allC1Users = async () =>
-  await Users.find({ course: { $regex: "10", $options: "i" } }).select(
-    "-visitedTime -adult -token -createdAt -updatedAt"
-  );
+  await Users.find({
+    $or: [
+      { course: { $regex: "10", $options: "i" } },
+      { course: { $regex: "11", $options: "i" } },
+    ],
+  }).select("-visitedTime -adult -token -createdAt -updatedAt");
 
 const allUsersPlatform = async () => {
   return Users.find({}).select("mail pupilId -_id");
