@@ -4,18 +4,21 @@ const videochatRooms = new Schema({
   id: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   name: {
-    type: String
+    type: String,
+  },
+  type: {
+    type: String,
   },
   slug: {
-    type: String
+    type: String,
   },
   roomAdmin: {
     type: String,
-    required: [true, "No mail"]
-  }
+    required: [true, "No mail"],
+  },
 });
 
 const VideochatRooms = model("videochatRooms", videochatRooms);
