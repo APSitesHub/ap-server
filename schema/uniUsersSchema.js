@@ -8,6 +8,8 @@ const uniUserSchema = Joi.object({
   contactId: Joi.number(),
   pupilId: Joi.string(),
   university: Joi.string(),
+  group: Joi.string(),
+  points: Joi.string(),
   visited: Joi.array().items(Joi.string()),
   visitedTime: Joi.array().items(Joi.string()),
   token: Joi.string(),
