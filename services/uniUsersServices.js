@@ -7,6 +7,12 @@ const allUniUsers = async () =>
     .where("visitedTime")
     .slice(-1);
 
+const allPedagogiumUsers = async () =>
+  await UniUsers.find({
+    university: "Pedagogium (Wyższa Szkoła Nauk Społecznych)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
 const findUniUser = async (query) => await UniUsers.findOne(query);
 
 const findUniUserByID = async (id) => await UniUsers.findById(id);
@@ -47,6 +53,7 @@ const getEWSPAAttendance = async () =>
 
 module.exports = {
   allUniUsers,
+  allPedagogiumUsers,
   findUniUser,
   findUniUserByID,
   newUniUser,

@@ -15,6 +15,8 @@ const uniUsers = new Schema(
     contactId: { type: Number },
     pupilId: { type: String },
     university: { type: String },
+    group: { type: String },
+    points: { type: String },
     visited: [String],
     visitedTime: [String],
     token: { type: String },

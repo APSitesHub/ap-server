@@ -19,17 +19,19 @@ const loginUniUserLesson = require("../controllers/uniUsers/loginUniUserLesson.j
 const refreshUniUserToken = require("../controllers/uniUsers/refreshUniUserToken.js");
 const refreshUniUserTokenLesson = require("../controllers/uniUsers/refreshUniUserTokenLesson.js");
 const editUniUser = require("../controllers/uniUsers/editUniUser.js");
-const getAttendance = require("../controllers/uniUsers/getPedagogiumUsersAttendance.js");
 const getPedagogiumUsersAttendance = require("../controllers/uniUsers/getPedagogiumUsersAttendance.js");
 const getWSTIJOUsersAttendance = require("../controllers/uniUsers/getWSTIJOUsersAttendance.js");
 const getWSBMIRUsersAttendance = require("../controllers/uniUsers/getWSBMIRUsersAttendance.js");
 const getEWSPAUsersAttendance = require("../controllers/uniUsers/getEWSPAUsersAttendance.js");
+const getAllPedagogiumUsers = require("../controllers/uniUsers/getAllPedagogiumUsers.js");
 
 const router = express.Router();
 
 router.get("/", authUniUser, getUniUser);
 
 router.get("/admin", authUserAdmin, getAllUniUsers);
+
+router.get("/admin/pedagogium", authUserAdmin, getAllPedagogiumUsers);
 
 router.post("/new", validateUniUser, addUniUser);
 
