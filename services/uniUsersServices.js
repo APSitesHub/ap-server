@@ -2,10 +2,10 @@ const UniUsers = require("../db/models/uniUsersModel");
 
 const allUniUsers = async () =>
   await UniUsers.find({})
-    .where("visited")
-    .slice(-1)
-    .where("visitedTime")
-    .slice(-1);
+    // .where("visited")
+    // .slice(-1)
+    // .where("visitedTime")
+    // .slice(-1);
 
 const allPedagogiumUsers = async () =>
   await UniUsers.find({
