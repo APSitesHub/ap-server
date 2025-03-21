@@ -15,7 +15,8 @@ const refreshTrialUserToken = async (req, res, next) => {
     console.log(user);
 
     if (user === null || !user._id) {
-      next();
+      console.log("Error with refreshUserToken:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
 
     try {
