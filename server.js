@@ -270,7 +270,7 @@ cron.schedule("45 22 * * *", async () => {
 //       error
 //     );
 //   }
-});
+//});
 // TODO need add children in next week 26.02
 // cron.schedule("0 3 * * 5", async () => {
 //   console.log(
