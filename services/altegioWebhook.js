@@ -35,7 +35,7 @@ const LinkMapTrial = {
             CRMslug: 'Англійська дорослі 19:00',
             },
         20: {
-            link: 'https://us06web.zoom.us/j/88281748322?pwd=DazWPms5w8ehZknADjlSUaumqV2yCl.1',
+            link: 'https://academy.ap.education/room/trial/a1free/2acccc81-9fc0-4f99-a893-5b3e47d14c46',
             lvl: 'A0_A1',
             CRMslug: 'Англійська дорослі 20:15',
         }
