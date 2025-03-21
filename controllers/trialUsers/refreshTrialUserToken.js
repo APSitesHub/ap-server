@@ -13,7 +13,7 @@ const refreshTrialUserToken = async (req, res, next) => {
   });
   console.log(user);
 
-  if (!user) {
+  if (user === null || !user._id) {
     next();
   }
   
