@@ -3,7 +3,8 @@ const { signInUser, findUser } = require("../../services/usersServices");
 const { updateLoginTime } = require("../../services/crm/updateCRMLead");
 
 const refreshUserToken = async (req, res, next) => {
-  const { mail } = req.body;
+  try {
+    const { mail } = req.body;
   console.log(req.body);
   const user = await findUser({ mail });
   console.log(user);
@@ -93,6 +94,10 @@ const refreshUserToken = async (req, res, next) => {
       platformToken,
     },
   });
+  } catch (error) {
+    console.log('Error with refreshUserToken:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
 
 module.exports = refreshUserToken;
