@@ -28,14 +28,14 @@ const LevelDefinition = {
 
 const LinkMapTrial = {
     English: {
-       Adult: {
+      Adult: {
         19: {
-            link: 'https://us06web.zoom.us/j/87347084243?pwd=RR7NoJ2dG5VXeECPEYmlFs4pPl4b56.1', 
+            link: 'https://academy.ap.education/room/trial/a1free/2acccc81-9fc0-4f99-a893-5b3e47d14c46', //https://us06web.zoom.us/j/87347084243?pwd=RR7NoJ2dG5VXeECPEYmlFs4pPl4b56.1
             lvl: 'A2_B1',
             CRMslug: 'Англійська дорослі 19:00',
             },
         20: {
-            link: 'https://academy.ap.education/room/trial/a1free/2acccc81-9fc0-4f99-a893-5b3e47d14c46',
+            link: 'https://us06web.zoom.us/j/88281748322?pwd=DazWPms5w8ehZknADjlSUaumqV2yCl.1', // ''
             lvl: 'A0_A1',
             CRMslug: 'Англійська дорослі 20:15',
         }
