@@ -16,7 +16,7 @@ const refreshTrialUserToken = async (req, res, next) => {
 
     if (user === null || !user._id) {
       console.log("Error with refreshUserToken:", error);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
 
     try {
@@ -74,7 +74,7 @@ const refreshTrialUserToken = async (req, res, next) => {
     });
   } catch (error) {
     console.log("Error with refreshUserToken:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
