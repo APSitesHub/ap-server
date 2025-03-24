@@ -189,7 +189,7 @@ const EXEL_TABS = {
     BOOK_TRIAL_YEARLY_PL: "Забронювали пробне річний польська",
     BOOK_TRIAL_YEARLY_GER: "Забронювали пробне річний німецька",
     NOT_WAS_TRIAL: "Не прийшли на пробне",
-    WAS_TRIAL: "Не прийшли на пробне",
+    WAS_TRIAL: "Пройшли пробне",
     NEXT_STEP_2: "Наступний крок 2",
     PROPOSITION_SEND_AFTER_TRIAL: "Пропозицію відправлено після пробного",
     IGNORE_PROPOSITION_AFTER_SEND: "Ігнор після пропозиції після пробного",
