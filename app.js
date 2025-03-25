@@ -33,7 +33,8 @@ const uniCollections = require("./routes/uniCollections");
 const uniTimetables = require("./routes/uniTimetable");
 const videochatRooms = require("./routes/videochatRooms");
 const webhookAltegio = require("./routes/webhookAltegio");
-const trialLesson = require("./routes/trialLesson")
+const trialLesson = require("./routes/trialLesson");
+const answerRouter = require("./routes/answers");
 const Sentry = require("@sentry/node");
 
 const app = express();
@@ -74,7 +75,8 @@ app.use("/unicollections", uniCollections);
 app.use("/unitimetable", uniTimetables);
 app.use("/rooms", videochatRooms);
 app.use("/webhook_booking", webhookAltegio);
-app.use("/trial-lesson",  trialLesson);
+app.use("/trial-lesson", trialLesson);
+app.use("/answers", answerRouter);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
