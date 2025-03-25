@@ -9,6 +9,8 @@
     "lint:fix": "eslint --fix **/*.js"
   },
   "dependencies": {
+    "@sentry/node": "^9.9.0",
+    "@sentry/profiling-node": "^9.9.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.1",
     "cors": "2.8.5",
