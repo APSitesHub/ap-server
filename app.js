@@ -1,3 +1,4 @@
+require("./utils/services/sentry");
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
@@ -33,8 +34,10 @@ const uniTimetables = require("./routes/uniTimetable");
 const videochatRooms = require("./routes/videochatRooms");
 const webhookAltegio = require("./routes/webhookAltegio");
 const trialLesson = require("./routes/trialLesson")
+const Sentry = require("@sentry/node");
 
 const app = express();
+Sentry.setupExpressErrorHandler(app);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -73,6 +76,9 @@ app.use("/rooms", videochatRooms);
 app.use("/webhook_booking", webhookAltegio);
 app.use("/trial-lesson",  trialLesson);
 
+app.get("/debug-sentry", function mainHandler(req, res) {
+  throw new Error("My first Sentry error!");
+});
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });
