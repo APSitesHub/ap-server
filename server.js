@@ -1,3 +1,4 @@
+require("./utils/services/sentry");
 const http = require("http");
 const socketIo = require("socket.io");
 const { version, validate } = require("uuid");
@@ -7,11 +8,12 @@ require("dotenv").config();
 const {
   updateLeadsByTrialLessonFields,
 } = require("./services/cronjob/trialLesson.job");
-const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
+// const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
-
+const Sentry = require("@sentry/node");
 const server = http.createServer(app);
 const io = socketIo(server);
+Sentry.setupExpressErrorHandler(server);
 
 const ACTIONS = {
   JOIN: "join",
