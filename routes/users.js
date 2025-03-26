@@ -38,9 +38,9 @@ const router = express.Router();
 
 router.get("/", authUser, getUser);
 
-router.get("/:id", getUserByID);
+router.get("/admin", getAllUsers);
 
-router.get("/admin", authUserAdmin, getAllUsers);
+router.get("/:id", getUserByID);
 
 router.get("/a-c1", authUserAdmin, getC1SpeakingUsers);
 
