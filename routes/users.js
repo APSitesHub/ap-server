@@ -14,6 +14,7 @@ const getContactIdFromCrm = require("../middlewares/crm/getContactIdFromCrm");
 
 const addUser = require("../controllers/users/addUser");
 const getUser = require("../controllers/users/getUser");
+const getUserByID = require("../controllers/users/getUserByID");
 const {
   getAllUsers,
   getAllUsersPlatformData,
@@ -36,6 +37,8 @@ const authAPI = require("../middlewares/integration/checkAuthAPI.js");
 const router = express.Router();
 
 router.get("/", authUser, getUser);
+
+router.get("/:id", getUserByID);
 
 router.get("/admin", authUserAdmin, getAllUsers);
 
