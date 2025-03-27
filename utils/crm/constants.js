@@ -25,6 +25,11 @@ const LEAD_CUSTOM_FIELDS = {
         field_name: "Дата і час запису на пробне заняття",
         field_type: "date",
     },
+    TYPE_OF_TRIAL: {
+        field_id: 1821801,
+        field_name: "Куди і на котру записаний на пробне",
+        field_type: "text",
+    },
     IDENTIFIER_1: {
         field_id: 1815765,
         field_name: "Ідентифікатор нл1",

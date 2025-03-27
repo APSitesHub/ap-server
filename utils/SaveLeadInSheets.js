@@ -11,8 +11,8 @@ const idArray = idString.split(' ');
 // Google Sheets setup
 const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
 const privateKey = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
-const SHEET_ID = '1fES4YgDpNrOGD9ZlUtBZFQaoHPXLu6LVwC-9Hmo5zsg'; // Replace with your Google Sheet ID
-const SHEET_RANGE = 'Sheet1!A1'; // Replace with your desired sheet and range
+const SHEET_ID = '1us5u7W5OLnuL7tun9-WA9i_VrTK4NtrCa5mmEZ9ZExo'; // Replace with your Google Sheet ID
+const SHEET_RANGE = 'test!A1'; // Replace with your desired sheet and range
 
 // Function to authenticate with Google Sheets API
 async function authenticateGoogleSheets() {
