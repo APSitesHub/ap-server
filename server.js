@@ -33,7 +33,7 @@ const debug = process.env.NODE_ENV === "development";
 
 io.on("connection", (socket) => {
   socket.on(ACTIONS.JOIN, (config) => {
-    const { room: roomID, role, isCameraEnabled, isMicroEnabled } = config;
+    const { room: roomID, role, userName, isCameraEnabled, isMicroEnabled } = config;
     const { rooms: joinedRooms } = socket;
 
     if (!clients[roomID]) {
@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
     }
 
     clients[roomID][socket.id].role = role;
+    clients[roomID][socket.id].userName = userName;
     clients[roomID][socket.id].isCameraEnabled = isCameraEnabled;
     clients[roomID][socket.id].isMicroEnabled = isMicroEnabled;
 
