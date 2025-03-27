@@ -16,41 +16,41 @@ const allC1Users = async () =>
   }).select("-visitedTime -adult -token -createdAt -updatedAt");
 
 const allUsersPlatform = async () => {
-  return Users.find({}).select("mail pupilId -_id");
+  return await Users.find({}).select("mail pupilId -_id");
 };
 
 const allUsersPlatformENG = async () => {
-  return Users.find({
+  return await Users.find({
     lang: { $regex: /en/, $ne: "enkids" },
   }).select("mail pupilId lang -_id");
 };
 
 const allUsersPlatformENGKIDS = async () => {
-  return Users.find({
+  return await Users.find({
     lang: { $regex: /enkids/ },
   }).select("mail pupilId -_id"); // Вибираємо тільки поля mail та pupilId, без _id
 };
 
 const allUsersPlatformPLKIDS = async () => {
-  return Users.find({
+  return await Users.find({
     lang: { $regex: /plkids/ },
   }).select("mail pupilId -_id"); // Вибираємо тільки поля mail та pupilId, без _id
 };
 
 const allUsersPlatformPL = async () => {
-  return Users.find({
+  return await Users.find({
     lang: { $regex: /pl/i, $ne: "plkids" }, // Пошук, щоб lang починався з "pl"
   }).select("mail pupilId lang -_id");
 };
 
 const allUsersPlatformDEKIDS = async () => {
-  return Users.find({
+  return await Users.find({
     lang: { $regex: /dekids/i },
   }).select("mail pupilId -_id"); // Вибираємо тільки поля mail та pupilId, без _id
 };
 
 const allUsersPlatformDE = async () => {
-  return Users.find({
+  return await Users.find({
     lang: { $regex: /de/i, $ne: "dekids" },
   }).select("mail pupilId -_id");
 };
