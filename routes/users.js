@@ -40,11 +40,11 @@ router.get("/", authUser, getUser);
 
 router.get("/admin", getAllUsers);
 
+router.get("/getAllUsersPlatform", authAPI, getAllUsersPlatformData);
+
 router.get("/:id", getUserByID);
 
 router.get("/a-c1", authUserAdmin, getC1SpeakingUsers);
-
-router.get("/getAllUsersPlatform", authAPI, getAllUsersPlatformData);
 
 router.post("/new", validateUser, addUser);
 
