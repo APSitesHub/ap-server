@@ -216,7 +216,7 @@ io.on("connection", (socket) => {
 
         peers.forEach((clientID) => {
           if (clientID !== socket.id) {
-            io.to(clientID).emit(ACTIONS.CHANGE_SPEACKING, {
+            io.to(clientID).emit(ACTIONS.CHANGE_SPEAKING, {
               peerID: socket.id,
               isSpeaker,
             });
