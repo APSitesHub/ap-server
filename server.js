@@ -24,8 +24,9 @@ const ACTIONS = {
   SESSION_DESCRIPTION: "session-description",
   TOGGLE_MICRO: "toggle-micro",
   TOGGLE_CAMERA: "toggle-camera",
-  CHANGE_VISIBILITY: "change-visibility",
   MUTE_ALL: "mute-all",
+  CHANGE_VISIBILITY: "change-visibility",
+  CHANGE_SPEAKING: "change-speaking",
 };
 
 const clients = {};
@@ -33,7 +34,13 @@ const debug = process.env.NODE_ENV === "development";
 
 io.on("connection", (socket) => {
   socket.on(ACTIONS.JOIN, (config) => {
-    const { room: roomID, role, userName, isCameraEnabled, isMicroEnabled } = config;
+    const {
+      room: roomID,
+      role,
+      userName,
+      isCameraEnabled,
+      isMicroEnabled,
+    } = config;
     const { rooms: joinedRooms } = socket;
 
     if (!clients[roomID]) {
@@ -195,6 +202,27 @@ io.on("connection", (socket) => {
       peerID: socket.id,
       isVisible,
     });
+  });
+
+  socket.on(ACTIONS.CHANGE_SPEAKING, ({ isSpeaker }) => {
+    const { rooms } = socket;
+
+    Array.from(rooms)
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
+        const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+
+        console.log(`${socket.id} is speak: ${isSpeaker}`);
+
+        peers.forEach((clientID) => {
+          if (clientID !== socket.id) {
+            io.to(clientID).emit(ACTIONS.CHANGE_SPEACKING, {
+              peerID: socket.id,
+              isSpeaker,
+            });
+          }
+        });
+      });
   });
 
   socket.on(ACTIONS.MUTE_ALL, () => {
