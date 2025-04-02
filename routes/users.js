@@ -7,8 +7,8 @@ const checkUser = require("../middlewares/crm/checkUser");
 const updateLeadById = require("../middlewares/crm/updateLeadById");
 const getLeadDataFromCrm = require("../middlewares/crm/getLeadDataFromCrm");
 const updateContactByLeadId = require("../middlewares/crm/updateContactByLeadId");
-const changeLeadStatusQuiz = require("../middlewares/crm/changeLeadStatusQuiz");
-const changeLeadStatusDirect = require("../middlewares/crm/changeLeadStatusDirect");
+// const changeLeadStatusQuiz = require("../middlewares/crm/changeLeadStatusQuiz");
+// const changeLeadStatusDirect = require("../middlewares/crm/changeLeadStatusDirect");
 const updateUserFromGifts = require("../middlewares/crm/updateUserFromGifts");
 const getContactIdFromCrm = require("../middlewares/crm/getContactIdFromCrm");
 
@@ -26,9 +26,9 @@ const removeUser = require("../controllers/users/removeUser");
 const banUser = require("../controllers/users/banUser");
 const editUser = require("../controllers/users/editUser");
 const editUserByCrmId = require("../controllers/users/editUserByCrmId");
-const loginUserByAuthCode = require("../controllers/users/loginUserByAuthCode");
-const refreshUserTokenByAuthCode = require("../controllers/users/refreshUserTokenByAuthCode");
-const loginUserByAuthCodeFromDirect = require("../controllers/users/loginUserByAuthCodeFromDirect");
+// const loginUserByAuthCode = require("../controllers/users/loginUserByAuthCode");
+// const refreshUserTokenByAuthCode = require("../controllers/users/refreshUserTokenByAuthCode");
+// const loginUserByAuthCodeFromDirect = require("../controllers/users/loginUserByAuthCodeFromDirect");
 const addUserByCrmId = require("../controllers/users/addUserByCrmId");
 const authUserAdmin = require("../middlewares/streams/authUserAdmin");
 const getPlatformToken = require("../middlewares/platform/getPlatformToken");
@@ -42,9 +42,9 @@ router.get("/admin", getAllUsers);
 
 router.get("/getAllUsersPlatform", authAPI, getAllUsersPlatformData);
 
-router.get("/:id", getUserByID);
-
 router.get("/a-c1", authUserAdmin, getC1SpeakingUsers);
+
+router.get("/:id", getUserByID);
 
 router.post("/new", validateUser, addUser);
 
