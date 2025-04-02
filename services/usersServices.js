@@ -13,7 +13,9 @@ const allC1Users = async () =>
       { course: { $regex: "10", $options: "i" } },
       { course: { $regex: "11", $options: "i" } },
     ],
-  }).select("-visitedTime -adult -token -createdAt -updatedAt");
+  }).select(
+    "-visitedTime -adult -zoomMail -token -createdAt -updatedAt -feedback -__v"
+  );
 
 const allUsersPlatform = async () => {
   return await Users.find({}).select("mail pupilId -_id");
