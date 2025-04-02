@@ -13,6 +13,8 @@ const linksSpeakingSchema = Joi.object({
   deutsch: Joi.string().empty(""),
   deutscha2: Joi.string().empty(""),
   deutschb1: Joi.string().empty(""),
+  deutschb1_1: Joi.string().empty(""),
+  deutschb1_2: Joi.string().empty(""),
   deutschb2: Joi.string().empty(""),
   deutschb2_1: Joi.string().empty(""),
   deutschb2_2: Joi.string().empty(""),

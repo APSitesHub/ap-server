@@ -14,6 +14,8 @@ const linksSpeaking = new Schema(
     deutsch: { type: String },
     deutscha2: { type: String },
     deutschb1: { type: String },
+    deutschb1_1: { type: String },
+    deutschb1_2: { type: String },
     deutschb2: { type: String },
     deutschb2_1: { type: String },
     deutschb2_2: { type: String },
