@@ -180,7 +180,11 @@ const LEAD_CUSTOM_FIELDS = {
         field_name: "fbclid",
         field_type: "text",
     },
-
+    TRIAL_TYPE: {
+        field_id: 1821801,
+        field_name: "Куди і на котру записаний на пробне",
+        field_type: "text",
+    },
 }
 
 const EXEL_TABS = {

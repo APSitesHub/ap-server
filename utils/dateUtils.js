@@ -5,4 +5,8 @@ function formatDate(timestamp) {
     return format(date, 'dd.MM.yyyy HH:mm');
 }
 
-module.exports = formatDate;
+function toSheetsDate(timestamp) {
+    return timestamp ? new Date(timestamp * 1000) : new Date();
+}
+
+module.exports = { formatDate, toSheetsDate };
