@@ -1,6 +1,6 @@
 const getCRMLead = require("../crmGetLead");
 const getCRMUser = require("../crmGetUser");
-const { formatDate } = require("../../utils/dateUtils");
+const { formatDate, toSheetsDate } = require("../../utils/dateUtils");
 require("dotenv").config();
 const { LEAD_CUSTOM_FIELDS, STATUS_ID, PIPELINE_ID_SALES, EXEL_TABS } = require("../../utils/crm/constants");
 const { google } = require("googleapis");
@@ -25,8 +25,8 @@ async function createLeadAnalytics(lead, statusId) {
         lead_name: lead.name,
         lead_tag: lead._embedded.tags.map(tag => tag.name).join(", "),
         lead_id: lead.id,
-        created_at: formatDate(lead.created_at),
-        current_date: formatDate(),
+        created_at: toSheetsDate(lead.created_at),
+        current_date: toSheetsDate(),
         responsible_user: await getResponsibleUser(lead).then(user => user ? user.name : (lead.responsible_user_id || "")),
     };
 
@@ -85,7 +85,7 @@ function getValueCustomFields(lead, field) {
     const customField = lead.custom_fields_values.find(f => f.field_id === field.field_id);
 
     if(field.field_type === "date") {
-        return formatDate(customField.values[0].value);
+        return toSheetsDate(customField.values[0].value);
     }
     return customField ? customField.values[0].value : "";
 }
