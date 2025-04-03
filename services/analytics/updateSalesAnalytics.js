@@ -1,6 +1,6 @@
 const getCRMLead = require("../crmGetLead");
 const getCRMUser = require("../crmGetUser");
-const { formatDate, toSheetsDate } = require("../../utils/dateUtils");
+const { formatDate } = require("../../utils/dateUtils");
 require("dotenv").config();
 const { LEAD_CUSTOM_FIELDS, STATUS_ID, PIPELINE_ID_SALES, EXEL_TABS } = require("../../utils/crm/constants");
 const { google } = require("googleapis");
@@ -25,8 +25,8 @@ async function createLeadAnalytics(lead, statusId) {
         lead_name: lead.name,
         lead_tag: lead._embedded.tags.map(tag => tag.name).join(", "),
         lead_id: lead.id,
-        created_at: toSheetsDate(lead.created_at),
-        current_date: toSheetsDate(),
+        created_at: formatDate(lead.created_at),
+        current_date: formatDate(),
         responsible_user: await getResponsibleUser(lead).then(user => user ? user.name : (lead.responsible_user_id || "")),
     };
 
@@ -125,7 +125,7 @@ async function writeToGoogleSheet(data, statusId) {
     await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID_ANALYTICS_SALES,
         range: `${sheetName}!A1`,
-        valueInputOption: 'RAW',
+        valueInputOption: 'USER_ENTERED',
         resource: {
             values: [Object.values(data)],
         },
