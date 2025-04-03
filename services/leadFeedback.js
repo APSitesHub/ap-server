@@ -1,7 +1,7 @@
 const getCRMLead = require("./crmGetLead");
 const { LEAD_CUSTOM_FIELDS } = require("../utils/crm/constants");
 const getCRMUser = require("./crmGetUser");
-const formatDate = require("../utils/dateUtils");
+const { formatDate } = require("../utils/dateUtils");
 const { google } = require("googleapis");
 const axios = require("axios");
 require("dotenv").config();
