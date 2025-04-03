@@ -85,7 +85,7 @@ function getValueCustomFields(lead, field) {
     const customField = lead.custom_fields_values.find(f => f.field_id === field.field_id);
 
     if(field.field_type === "date") {
-        return formatDate(customField.values[0].value);
+        return toSheetsDate(customField.values[0].value);
     }
     return customField ? customField.values[0].value : "";
 }
@@ -125,7 +125,7 @@ async function writeToGoogleSheet(data, statusId) {
     await sheets.spreadsheets.values.append({
         spreadsheetId: process.env.GOOGLE_SHEET_ID_ANALYTICS_SALES,
         range: `${sheetName}!A1`,
-        valueInputOption: 'RAW',
+        valueInputOption: 'USER_ENTERED',
         resource: {
             values: [Object.values(data)],
         },
