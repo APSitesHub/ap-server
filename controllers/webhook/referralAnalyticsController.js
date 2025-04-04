@@ -1,4 +1,4 @@
-const { updateReferralAnalytics } = require('../services/referralAnalyticsService');
+const { updateReferralAnalytics } = require('../../services/analytics/updateReferral');
 
 async function referralAnalyticsController(req, res) {
   try {
