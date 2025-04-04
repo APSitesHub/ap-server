@@ -5,6 +5,7 @@ const getResponsibleUser = require("../middlewares/crm/getResponsibleUser");
 const getLeadsForGoogleSheets = require("../middlewares/crm/getLeadsCRM");
 const updateLeadPaidStatus = require("../middlewares/crm/updatePaidLeadStatus");
 const { salesAnalyticsController } = require("../controllers/webhook/salesAnalyticsController");
+const { referralAnalyticsController } =require("../controllers/webhook/referralAnalyticsController")
 const router = express.Router();
 
 router.post(
@@ -17,4 +18,5 @@ router.post(
 router.post("/google_kommo", getLeadsForGoogleSheets, updateLeadPaidStatus);
 
 router.post("/sales-analytics", salesAnalyticsController);
+router.post("/referral-analytics", referralAnalyticsController)
 module.exports = router;
