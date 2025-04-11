@@ -241,6 +241,25 @@ io.on("connection", (socket) => {
         });
       });
   });
+
+  socket.on("toggle-board-all", ({ isBoardOpen }) => {
+    console.log("toggle-board-all", isBoardOpen);
+    const { rooms } = socket;
+
+    Array.from(rooms)
+      .filter((roomID) => validate(roomID) && version(roomID) === 4)
+      .forEach((roomID) => {
+        const peers = Array.from(io.sockets.adapter.rooms.get(roomID) || []);
+
+        peers.forEach((clientID) => {
+          if (clientID !== socket.id) {
+            io.to(clientID).emit("toggle-board-all", {
+              isBoardOpen,
+            });
+          }
+        });
+      });
+  });
 });
 // Cron job to check custom fields and update status
 
