@@ -22,6 +22,7 @@ const uniCollections = new Schema(
     wspa_prep: { type: String },
     wse_logistics: { type: String },
     wse_prep: { type: String },
+    eu: { type: String },
   },
   {
     versionKey: false,
