@@ -201,6 +201,16 @@ const uniHostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  eu: Joi.object({
+    links: Joi.object({
+      eu_1: Joi.string().empty(""),
+      eu_2: Joi.string().empty(""),
+      eu_3: Joi.string().empty(""),
+      eu_4: Joi.string().empty(""),
+      eu_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
 });
 
 const validateUniHostKahoots = ({ body }, res, next) => {
