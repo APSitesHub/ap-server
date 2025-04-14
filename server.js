@@ -330,6 +330,9 @@ cron.schedule("0 2 * * *", async () => {
       error
     );
   }
+},{
+  scheduled: true,
+  timezone: "Europe/Kyiv"
 });
 
 const startServer = async () => {
