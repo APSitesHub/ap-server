@@ -12,6 +12,7 @@ const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 const server = http.createServer(app);
 const io = socketIo(server);
+const { transferCRMDataBetweenSheets } = require("./utils/crm/googleSheetCrmLead");
 
 const ACTIONS = {
   JOIN: "join",
