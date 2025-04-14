@@ -4,6 +4,7 @@ const socketIo = require("socket.io");
 const { version, validate } = require("uuid");
 const app = require("./app");
 const connectDB = require("./db/connection");
+const { updateTable } = require("./utils/crm/paymentSheet");
 require("dotenv").config();
 const {
   updateLeadsByTrialLessonFields,
@@ -12,7 +13,6 @@ const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 const server = http.createServer(app);
 const io = socketIo(server);
-const { transferCRMDataBetweenSheets } = require("./utils/crm/googleSheetCrmLead");
 
 const ACTIONS = {
   JOIN: "join",
@@ -314,6 +314,19 @@ cron.schedule("0 3 * * 5", async () => {
   } catch (error) {
     console.error(
       "Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FAILED with an error:",
+      error
+    );
+  }
+});
+// Oleg analytics cron job
+cron.schedule("0 2 * * *", async () => {
+  console.log("Running nightly cron job to update the table");
+  try {
+    await updateTable();
+    console.log("Nightly cron job to update the table FINISHED");
+  } catch (error) {
+    console.error(
+      "Nightly cron job to update the table FAILED with an error:",
       error
     );
   }
