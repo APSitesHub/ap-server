@@ -2,7 +2,7 @@ const getCRMLead = require("../crmGetLead");
 const getCRMUser = require("../crmGetUser");
 const { toSheetsDate } = require("../../utils/dateUtils");
 require("dotenv").config();
-const { LEAD_CUSTOM_FIELDS, STATUS_ID, PIPELINE_ID_SALES, EXEL_TABS } = require("../../utils/crm/constants");
+const { LEAD_CUSTOM_FIELDS, STATUS_ID, PIPELINE_ID_SALES, EXEL_TABS, PIPELINE_ID_SALES_REANIMATION } = require("../../utils/crm/constants");
 const { google } = require("googleapis");
 
 async function updateSalesAnalytics(crmId) {
@@ -11,7 +11,7 @@ async function updateSalesAnalytics(crmId) {
         return null;
     }
 
-    if (lead.pipeline_id !== PIPELINE_ID_SALES) {
+    if (![PIPELINE_ID_SALES, PIPELINE_ID_SALES_REANIMATION].includes(lead.pipeline_id)) {
         return null;
     }
 
@@ -34,7 +34,11 @@ async function createLeadAnalytics(lead, statusId) {
         leadAnalytics[key.toLowerCase()] = getValueCustomFields(lead, LEAD_CUSTOM_FIELDS[key]);
     });
 
-    const statusKey = Object.keys(STATUS_ID).find(key => STATUS_ID[key] === statusId);
+    const statusKey = Object.keys(STATUS_ID).find(key => {
+        const statusValues = Array.isArray(STATUS_ID[key]) ? STATUS_ID[key] : [STATUS_ID[key]];
+        return statusValues.includes(statusId);
+    });
+
     const identifierCount = getIdentifierCountForStatus(statusKey);
 
     for (let i = 1; i <= identifierCount; i++) {
