@@ -43,6 +43,7 @@ const refreshUniUserTokenLesson = async (req, res, next) => {
   const id = user._id;
   const crmId = user.crmId;
   const contactId = user.contactId;
+  const group = user.group || "1";
   const visited = user.visited;
   const visitedTime = user.visitedTime;
   const name = user.name;
@@ -62,6 +63,7 @@ const refreshUniUserTokenLesson = async (req, res, next) => {
       id,
       crmId,
       contactId,
+      group,
       mail,
       name,
       visited,
