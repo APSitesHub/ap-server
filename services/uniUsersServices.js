@@ -36,7 +36,6 @@ const getPedagogiumAttendance = async () =>
     name: {
       $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski", "Veronika"],
     },
-    group: { $nin: "2" },
   }).select("name _id visited group");
 
 const getWSTIJOAttendance = async () =>
