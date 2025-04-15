@@ -15,7 +15,9 @@ const DELAY_MS = 200; // Затримка між запитами (мс)
 const NEXT_PAYMENT_AMOUNT_ID = 557258; // Сума наступної оплати
 const NEXT_PAYMENT_DATE_ID = 557476;   // Дата наступної оплати
 const PAYMENT_FIXATION_ID = 1824495;   // Фіксація оплат
-
+const STUDY_FORMAT = 558384; // Формат навчання
+const TYPE_SERVICE = 1812897; // Вид послуги
+const PAYMENT_REMAINING = 1809505; // Кількість платежів, що залишилось
 // Ініціалізація Google Sheets
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -59,7 +61,7 @@ async function updateTable() {
         range: headerRange,
         valueInputOption: 'USER_ENTERED',
         resource: {
-          values: [['Сума наступної оплати', 'Дата наступної оплати', 'Фіксація оплат']],
+          values: [['Сума наступної оплати', 'Дата наступної оплати', 'Фіксація оплат', 'Формат навчання', 'Кількість платежів, що залишилось']],
         },
       });
       console.log('Додано заголовки');
@@ -85,30 +87,42 @@ async function processBatch(batchIds, sheets, startRow) {
   const results = [];
   const API_TOKEN = await getToken();
   for (const leadId of batchIds) {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/${leadId}`, {
-        headers: {
-          Authorization: `Bearer ${API_TOKEN[0].access_token}`,
-        },
-      });
+    let retries = 3; // Number of retries
+    while (retries > 0) {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/${leadId}`, {
+          headers: {
+            Authorization: `Bearer ${API_TOKEN[0].access_token}`,
+          },
+        });
 
-      const lead = response.data;
-      const customFields = lead.custom_fields_values || [];
+        const lead = response.data;
+        const customFields = lead.custom_fields_values || [];
 
-      const nextPaymentAmount = getCustomFieldValue(customFields, NEXT_PAYMENT_AMOUNT_ID) || '';
-      const nextPaymentDate = getCustomFieldValue(customFields, NEXT_PAYMENT_DATE_ID) || '';
-      const paymentFixation = getCustomFieldValue(customFields, PAYMENT_FIXATION_ID) || '';
+        const nextPaymentAmount = getCustomFieldValue(customFields, NEXT_PAYMENT_AMOUNT_ID) || '';
+        const nextPaymentDate = getCustomFieldValue(customFields, NEXT_PAYMENT_DATE_ID) || '';
+        const paymentFixation = getCustomFieldValue(customFields, PAYMENT_FIXATION_ID) || '';
+        const studyFormat = getCustomFieldValue(customFields, STUDY_FORMAT) || '';
+        const typeService = getCustomFieldValue(customFields, TYPE_SERVICE) || '';
+        const paymentRemaining = getCustomFieldValue(customFields, PAYMENT_REMAINING) || '';
 
-      results.push([nextPaymentAmount, nextPaymentDate, paymentFixation]);
-    } catch (error) {
-      console.error(`Помилка для ID ${leadId}: ${error.response ? error.response.status : error.message}`);
-      results.push(['', '', '']); // Записуємо порожні значення у разі помилки
+        results.push([nextPaymentAmount, nextPaymentDate, paymentFixation, studyFormat, typeService, paymentRemaining]);
+        break; // Exit retry loop on success
+      } catch (error) {
+        retries--;
+        console.error(`Помилка для ID ${leadId}: ${error.response ? error.response.status : error.message}. Залишилось спроб: ${retries}`);
+        if (retries === 0) {
+          results.push(['', '', '', '', '', '']); // Записуємо порожні значення у разі помилки
+        } else {
+          await delay(1000); // Wait 1 second before retrying
+        }
+      }
     }
     await delay(DELAY_MS);
   }
 
   // Запис результатів у Google Sheet
-  const resultRange = `${SHEET_NAME}!B${startRow + 1}:D${startRow + batchIds.length}`;
+  const resultRange = `${SHEET_NAME}!B${startRow + 1}:G${startRow + batchIds.length}`; // Updated range to include columns B to G
   await sheets.spreadsheets.values.update({
     spreadsheetId: SPREADSHEET_ID,
     range: resultRange,

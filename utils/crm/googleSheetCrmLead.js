@@ -19,11 +19,11 @@ const getSheetsClient = (auth) => {
 
 // Configuration
 const SOURCE_SPREADSHEET_ID = '1LMTGGnj9AaMorg84dE1FQ0hmRgekXYnHR83Cgm79P5o';
-const SOURCE_SHEET_NAME = 'Очікую оплату';
+const SOURCE_SHEET_NAME = 'Забронювали пробне';
 const SOURCE_RANGE = `${SOURCE_SHEET_NAME}!A:A`;
 
 const TARGET_SPREADSHEET_ID = "1LMTGGnj9AaMorg84dE1FQ0hmRgekXYnHR83Cgm79P5o";
-const TARGET_SHEET_NAME = 'CRMData';
+const TARGET_SHEET_NAME = 'Забронювали пробне';
 const TARGET_RANGE = `${TARGET_SHEET_NAME}!A:Z`; // Wide range to accommodate all possible data
 
 /**
