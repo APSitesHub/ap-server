@@ -33,7 +33,11 @@ const updateUniUser = async (id, body) =>
 const getPedagogiumAttendance = async () =>
   await UniUsers.find({
     university: "Pedagogium (Wyższa Szkoła Nauk Społecznych)",
-  }).select("name _id visited");
+    name: {
+      $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski", "Veronika"],
+    },
+    group: { $nin: "2" },
+  }).select("name _id visited group");
 
 const getWSTIJOAttendance = async () =>
   await UniUsers.find({

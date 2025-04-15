@@ -2,6 +2,7 @@ const Joi = require("joi");
 
 const uniCollectionsSchema = Joi.object({
   pedagogium_logistics: Joi.string().empty(""),
+  pedagogium_logistics_2: Joi.string().empty(""),
   pedagogium_prep: Joi.string().empty(""),
   wstijo_logistics: Joi.string().empty(""),
   wstijo_prep: Joi.string().empty(""),

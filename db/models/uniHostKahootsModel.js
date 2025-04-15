@@ -11,6 +11,15 @@ const uniHostKahoots = new Schema(
         pedagogium_logistics_5: String,
       },
     },
+    pedagogium_logistics_2: {
+      links: {
+        pedagogium_logistics_2_1: String,
+        pedagogium_logistics_2_2: String,
+        pedagogium_logistics_2_3: String,
+        pedagogium_logistics_2_4: String,
+        pedagogium_logistics_2_5: String,
+      },
+    },
     pedagogium_prep: {
       links: {
         pedagogium_prep_1: String,

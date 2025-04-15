@@ -11,6 +11,16 @@ const uniKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  pedagogium_logistics_2: Joi.object({
+    links: Joi.object({
+      pedagogium_logistics_2_1: Joi.string().empty(""),
+      pedagogium_logistics_2_2: Joi.string().empty(""),
+      pedagogium_logistics_2_3: Joi.string().empty(""),
+      pedagogium_logistics_2_4: Joi.string().empty(""),
+      pedagogium_logistics_2_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   pedagogium_prep: Joi.object({
     links: Joi.object({
       pedagogium_prep_1: Joi.string().empty(""),
