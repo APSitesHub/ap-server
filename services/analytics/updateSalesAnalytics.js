@@ -88,10 +88,14 @@ function getValueCustomFields(lead, field) {
 
     const customField = lead.custom_fields_values.find(f => f.field_id === field.field_id);
 
-    if(field.field_type === "date") {
+    if (!customField || !customField.values || !Array.isArray(customField.values) || !customField.values[0]) {
+        return ""; 
+    }
+
+    if (field.field_type === "date") {
         return toSheetsDate(customField.values[0].value);
     }
-    return customField ? customField.values[0].value : "";
+    return customField.values[0].value;
 }
 
 async function getResponsibleUser(lead) {
@@ -111,7 +115,10 @@ async function writeToGoogleSheet(data, statusId) {
     });
 
     const sheets = google.sheets({ version: 'v4', auth });
-    const statusKey = Object.keys(STATUS_ID).find(key => STATUS_ID[key] === statusId);
+    const statusKey = Object.keys(STATUS_ID).find(key => {
+        const statusValues = Array.isArray(STATUS_ID[key]) ? STATUS_ID[key] : [STATUS_ID[key]];
+        return statusValues.includes(statusId);
+    });
     const sheetName = EXEL_TABS[statusKey];
 
     console.log(`Attempting to write to sheet: ${sheetName}`);
