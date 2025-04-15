@@ -3,6 +3,7 @@ const { Schema, model } = require("mongoose");
 const uniCollections = new Schema(
   {
     pedagogium_logistics: { type: String },
+    pedagogium_logistics_2: { type: String },
     pedagogium_prep: { type: String },
     wstijo_logistics: { type: String },
     wstijo_prep: { type: String },
