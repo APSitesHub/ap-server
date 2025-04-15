@@ -19,11 +19,11 @@ const getSheetsClient = (auth) => {
 
 // Configuration
 const SOURCE_SPREADSHEET_ID = '1LMTGGnj9AaMorg84dE1FQ0hmRgekXYnHR83Cgm79P5o';
-const SOURCE_SHEET_NAME = 'Очікую оплату';
+const SOURCE_SHEET_NAME = 'Наступний крок назначено після пробного';
 const SOURCE_RANGE = `${SOURCE_SHEET_NAME}!A:A`;
 
 const TARGET_SPREADSHEET_ID = "1LMTGGnj9AaMorg84dE1FQ0hmRgekXYnHR83Cgm79P5o";
-const TARGET_SHEET_NAME = 'CRMData';
+const TARGET_SHEET_NAME = 'Наступний крок назначено після пробного';
 const TARGET_RANGE = `${TARGET_SHEET_NAME}!A:Z`; // Wide range to accommodate all possible data
 
 /**
@@ -117,10 +117,14 @@ function getValueCustomFields(lead, field) {
 
     const customField = lead.custom_fields_values.find(f => f.field_id === field.field_id);
 
-    if(field.field_type === "date") {
+    if (!customField || !customField.values || !customField.values[0]) {
+        return ""; // Return an empty string if customField or its values are undefined
+    }
+
+    if (field.field_type === "date") {
         return toSheetsDate(customField.values[0].value);
     }
-    return customField ? customField.values[0].value : "";
+    return customField.values[0].value;
 }
 
 /**
@@ -156,28 +160,35 @@ async function writeToTargetSheet(data) {
  * @returns {Promise<{isSuccessful: boolean, message: string}>} - Result of the operation
  */
 async function processLead(leadId) {
-  try {
-    const lead = await getCRMLead(leadId);
-    if (!lead) {
-      return { 
-        isSuccessful: false, 
-        message: `No lead found in CRM with ID: ${leadId}` 
-      };
-    }
+  let retries = 3; // Number of retries for getCRMLead
+  while (retries > 0) {
+    try {
+      const lead = await getCRMLead(leadId);
+      if (!lead) {
+        return { 
+          isSuccessful: false, 
+          message: `No lead found in CRM with ID: ${leadId}` 
+        };
+      }
 
-    const leadData = await createLeadAnalytics(lead, lead.status_id);
-    
-    await writeToTargetSheet(leadData);
-    return { 
-      isSuccessful: true, 
-      message: `Lead with ID ${lead.id} successfully transferred to target sheet` 
-    };
-  } catch (error) {
-    console.error(`Error processing lead ${leadId}:`, error);
-    return { 
-      isSuccessful: false, 
-      message: `Error processing lead ${leadId}: ${error.message}` 
-    };
+      const leadData = await createLeadAnalytics(lead, lead.status_id);
+      
+      await writeToTargetSheet(leadData);
+      return { 
+        isSuccessful: true, 
+        message: `Lead with ID ${lead.id} successfully transferred to target sheet` 
+      };
+    } catch (error) {
+      retries--;
+      console.error(`Error processing lead ${leadId}: ${error.message}. Retries left: ${retries}`);
+      if (retries === 0) {
+        return { 
+          isSuccessful: false, 
+          message: `Error processing lead ${leadId}: ${error.message}` 
+        };
+      }
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retrying
+    }
   }
 }
 
