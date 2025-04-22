@@ -10,6 +10,9 @@ const findUserAdmin = async () => await Admins.findOne({ login: "UserAdmin" });
 const findTeacherAdmin = async () =>
   await Admins.findOne({ login: "TeacherAdmin" });
 
+const findPedagogiumAdmin = async () =>
+  await Admins.findOne({ login: "PedagogiumAdmin" });
+
 const findCollectionsAdmin = async () =>
   await Admins.findOne({ login: "CollectionsAdmin" });
 
@@ -35,6 +38,7 @@ module.exports = {
   findKahootAdmin,
   findUserAdmin,
   findTeacherAdmin,
+  findPedagogiumAdmin,
   findCollectionsAdmin,
   newAdmin,
   signInAdmin,
