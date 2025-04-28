@@ -30,19 +30,19 @@ const LinkMapTrial = {
     English: {
       Adult: {
         19: {
-            link: 'https://us06web.zoom.us/j/87347084243?pwd=RR7NoJ2dG5VXeECPEYmlFs4pPl4b56.1', // https://www.academy.ap.education/room/trial/a2free/9174b81d-2d91-407a-a0fa-5a8eb4a583fb
+            link: 'https://academy.ap.education/room/trial/a2free/fc682e2e-f8ef-4bbf-89fc-55171c225466',
             lvl: 'A2_B1',
             CRMslug: 'Англійська дорослі 19:00',
             },
         20: {
-            link: 'https://us06web.zoom.us/j/88281748322?pwd=DazWPms5w8ehZknADjlSUaumqV2yCl.1', // ''
+            link: 'https://academy.ap.education/room/trial/a1free/8c7f04bd-5116-42f7-bb43-3157d642bbc1', // ''
             lvl: 'A0_A1',
             CRMslug: 'Англійська дорослі 20:15',
         }
        },
        Kids: {
         20: {
-            link:'https://us06web.zoom.us/j/87062622194?pwd=bCn4sf2JLYhSKuCiCiXHu2UMPFWYzU.1',
+            link:'https://academy.ap.education/room/trial/a1kidsfree/97d38d14-78cf-4ae0-a103-1297311be402',
             lvl: 'A0-A1',
             CRMslug: 'Англійська діти 20:15',
             },
@@ -60,12 +60,12 @@ const LinkMapTrial = {
      German: {
         Adult: {
          17: {
-            link: 'https://us06web.zoom.us/j/81811560388?pwd=F6eyhgjd3dRcOICoQLEs9KdHMqQzPb.1',
+            link: 'https://academy.ap.education/room/trial/deutschfree/7e247c33-8880-4b74-bfdd-fffa1fc32a2f',
             lvl: 'A0-B1',
             CRMslug: 'Німецька дорослі 17:00',
          },
          19: {
-            link: 'https://academy.ap.education/room/trial/deutschfree/44a9ee91-8560-4383-b826-b6bec2f84a0f',
+            link: 'https://academy.ap.education/room/trial/deutschfree/7e247c33-8880-4b74-bfdd-fffa1fc32a2f',
             lvl: 'A0-B1',
             CRMslug: 'Німецька дорослі 19:00',
          },
@@ -82,7 +82,7 @@ const LinkMapTrial = {
             CRMslug: 'Німецька діти 16:00',
          },
          17: {
-            link: 'https://us06web.zoom.us/j/87075472194?pwd=20qQad4apEADg0SPpbppvgf97EOnzL.1',
+            link: 'https://academy.ap.education/room/trial/dekidsfree/affee4ce-f319-4982-9d29-8ceeb0f4d6f9',
             CRMslug: 'Німецька діти 17:00',
          },
         },
