@@ -101,7 +101,7 @@ async function createQuizLeadGer(data) {
         entity_type: "leads",
         note_type: "common", // Common note type
         params: {
-          text: `Приблизний рекомендований рівень: ${level}`,
+          text: `Приблизний рекомендований рівень німецької: ${level}`,
         },
         request_id: `note_${leadId}`,
       },
