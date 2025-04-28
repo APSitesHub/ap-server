@@ -13,6 +13,7 @@ const postConferenceLead = require("../middlewares/crm/postConfernceLead.js");
 const updateContractLead = require("../middlewares/crm/updateContractLead.js");
 const postLeadEvent = require("../middlewares/crm/postLeadEvent.js");
 const postLeadEng = require("../controllers/quiz/postLeadEng.js");
+const postLeadGer = require("../controllers/quiz/postLeadGer.js");
 
 const {
   validateLead,
@@ -70,5 +71,5 @@ router.patch(
 );
 
 router.post("/quiz-eng", postLeadEng);
-
+router.post("/quiz-ger", postLeadGer);
 module.exports = router;
