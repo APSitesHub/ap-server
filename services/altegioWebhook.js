@@ -70,7 +70,7 @@ const LinkMapTrial = {
             CRMslug: 'Німецька дорослі 19:00',
          },
          20: {
-            link: 'https://us06web.zoom.us/j/81811560388?pwd=F6eyhgjd3dRcOICoQLEs9KdHMqQzPb.1',
+            link: 'https://academy.ap.education/room/trial/deutschfree/7e247c33-8880-4b74-bfdd-fffa1fc32a2f',
             lvl: 'A0-B1',
             CRMslug: 'Німецька дорослі 20:00(лише вівторок)',
          },
