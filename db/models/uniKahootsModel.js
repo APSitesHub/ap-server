@@ -101,6 +101,15 @@ const uniKahoots = new Schema(
         merito_prep_5: String,
       },
     },
+    merito_automation: {
+      links: {
+        merito_automation_1: String,
+        merito_automation_2: String,
+        merito_automation_3: String,
+        merito_automation_4: String,
+        merito_automation_5: String,
+      },
+    },
     wstih_logistics: {
       links: {
         wstih_logistics_1: String,

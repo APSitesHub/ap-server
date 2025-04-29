@@ -111,6 +111,16 @@ const uniHostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  merito_automation: Joi.object({
+    links: Joi.object({
+      merito_automation_1: Joi.string().empty(""),
+      merito_automation_2: Joi.string().empty(""),
+      merito_automation_3: Joi.string().empty(""),
+      merito_automation_4: Joi.string().empty(""),
+      merito_automation_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   wstih_logistics: Joi.object({
     links: Joi.object({
       wstih_logistics_1: Joi.string().empty(""),

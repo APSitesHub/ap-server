@@ -12,6 +12,7 @@ const uniLinksSchema = Joi.object({
   ewspa_prep: Joi.string().empty(""),
   merito_logistics: Joi.string().empty(""),
   merito_prep: Joi.string().empty(""),
+  merito_automation: Joi.string().empty(""),
   wstih_logistics: Joi.string().empty(""),
   wstih_prep: Joi.string().empty(""),
   wskm_logistics: Joi.string().empty(""),
