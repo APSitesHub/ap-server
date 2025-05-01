@@ -24,6 +24,8 @@ const getWSTIJOUsersAttendance = require("../controllers/uniUsers/getWSTIJOUsers
 const getWSBMIRUsersAttendance = require("../controllers/uniUsers/getWSBMIRUsersAttendance.js");
 const getEWSPAUsersAttendance = require("../controllers/uniUsers/getEWSPAUsersAttendance.js");
 const getAllPedagogiumUsers = require("../controllers/uniUsers/getAllPedagogiumUsers.js");
+const getAllSSWUsers = require("../controllers/uniUsers/getAllSSWUsers.js");
+const getAllMANSUsers = require("../controllers/uniUsers/getAllMANSUsers.js");
 
 const router = express.Router();
 
@@ -33,7 +35,9 @@ router.get("/admin", authUserAdmin, getAllUniUsers);
 
 router.get("/admin/pedagogium", authUserAdmin, getAllPedagogiumUsers);
 
-router.get("/admin/ssw", authUserAdmin, getAllPedagogiumUsers);
+router.get("/admin/ssw", authUserAdmin, getAllSSWUsers);
+
+router.get("/admin/mans", authUserAdmin, getAllMANSUsers);
 
 router.post("/new", validateUniUser, addUniUser);
 
