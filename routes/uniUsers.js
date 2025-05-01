@@ -33,6 +33,8 @@ router.get("/admin", authUserAdmin, getAllUniUsers);
 
 router.get("/admin/pedagogium", authUserAdmin, getAllPedagogiumUsers);
 
+router.get("/admin/ssw", authUserAdmin, getAllPedagogiumUsers);
+
 router.post("/new", validateUniUser, addUniUser);
 
 router.delete("/:id", removeUniUser);
