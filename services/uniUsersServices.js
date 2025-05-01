@@ -13,6 +13,12 @@ const allPedagogiumUsers = async () =>
     name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
   }).select("-visitedTime -token -university -createdAt -updatedAt");
 
+const allSSWUsers = async () =>
+  await UniUsers.find({
+    university: "SSW (Świętokrzyska Szkoła Wyższa im. św. Jana Pawła II)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
 const findUniUser = async (query) => await UniUsers.findOne(query);
 
 const findUniUserByID = async (id) => await UniUsers.findById(id);
@@ -57,6 +63,7 @@ const getEWSPAAttendance = async () =>
 module.exports = {
   allUniUsers,
   allPedagogiumUsers,
+  allSSWUsers,
   findUniUser,
   findUniUserByID,
   newUniUser,
