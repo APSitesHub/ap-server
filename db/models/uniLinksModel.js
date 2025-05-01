@@ -25,6 +25,8 @@ const uniLinks = new Schema(
     wse_logistics: { type: String },
     wse_prep: { type: String },
     eu: { type: String },
+    ssw: { type: String },
+    mans: { type: String },
   },
   {
     versionKey: false,

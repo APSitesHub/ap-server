@@ -24,6 +24,8 @@ const uniLinksSchema = Joi.object({
   wse_logistics: Joi.string().empty(""),
   wse_prep: Joi.string().empty(""),
   eu: Joi.string().empty(""),
+  ssw: Joi.string().empty(""),
+  mans: Joi.string().empty(""),
 });
 
 const validateUniLinks = ({ body }, res, next) => {
