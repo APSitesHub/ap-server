@@ -209,6 +209,24 @@ const uniKahoots = new Schema(
         eu_5: String,
       },
     },
+    ssw: {
+      links: {
+        ssw_1: String,
+        ssw_2: String,
+        ssw_3: String,
+        ssw_4: String,
+        ssw_5: String,
+      },
+    },
+    mans: {
+      links: {
+        mans_1: String,
+        mans_2: String,
+        mans_3: String,
+        mans_4: String,
+        mans_5: String,
+      },
+    },
   },
   {
     versionKey: false,

@@ -24,6 +24,8 @@ const uniCollectionsSchema = Joi.object({
   wse_logistics: Joi.string().empty(""),
   wse_prep: Joi.string().empty(""),
   eu: Joi.string().empty(""),
+  ssw: Joi.string().empty(""),
+  mans: Joi.string().empty(""),
 });
 
 const validateUniCollections = ({ body }, res, next) => {
