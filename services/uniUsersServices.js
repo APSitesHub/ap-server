@@ -19,6 +19,12 @@ const allSSWUsers = async () =>
     name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
   }).select("-visitedTime -token -university -createdAt -updatedAt");
 
+const allMANSUsers = async () =>
+  await UniUsers.find({
+    university: "MANS (Międzynarodowa Akademia Nauk Stosowanych w Łomży)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
 const findUniUser = async (query) => await UniUsers.findOne(query);
 
 const findUniUserByID = async (id) => await UniUsers.findById(id);
@@ -64,6 +70,7 @@ module.exports = {
   allUniUsers,
   allPedagogiumUsers,
   allSSWUsers,
+  allMANSUsers,
   findUniUser,
   findUniUserByID,
   newUniUser,
