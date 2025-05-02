@@ -62,6 +62,20 @@ async function createQuizLeadGer(data) {
         })),
       ],
       _embedded: {
+        tags: [
+          { name: "Лід з сайту" },
+          { name: "квіз лід німецька" },
+          { name: utmFields.utm_source },
+          { name: utmFields.utm_campaign },
+          { name: utmFields.utm_term },
+          { name: utmFields.utm_content },
+          { name: utmFields.fbclid },
+          { name: utmFields.gclid },
+          { name: utmFields.gclientid },
+          { name: utmFields.utm_medium },
+          { name: utmFields.utm_referrer },
+          { name: utmFields.referrer },
+        ],
         contacts: [
           {
             name,
