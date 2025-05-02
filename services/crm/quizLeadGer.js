@@ -64,7 +64,7 @@ async function createQuizLeadGer(data) {
       _embedded: {
         tags: [
           { name: "Лід з сайту" },
-          { name: "квіз лід англійська" },
+          { name: "квіз лід німецька" },
           { name: utmFields.utm_source },
           { name: utmFields.utm_campaign },
           { name: utmFields.utm_term },
