@@ -640,6 +640,69 @@ const kahoots = new Schema(
         apconf_5: String,
       },
     },
+    kubrak: {
+      links: {
+        kubrak_1: String,
+        kubrak_2: String,
+        kubrak_3: String,
+        kubrak_4: String,
+        kubrak_5: String,
+      },
+    },
+    bulavka: {
+      links: {
+        bulavka_1: String,
+        bulavka_2: String,
+        bulavka_3: String,
+        bulavka_4: String,
+        bulavka_5: String,
+      },
+    },
+    ivachevska: {
+      links: {
+        ivachevska_1: String,
+        ivachevska_2: String,
+        ivachevska_3: String,
+        ivachevska_4: String,
+        ivachevska_5: String,
+      },
+    },
+    deineka: {
+      links: {
+        deineka_1: String,
+        deineka_2: String,
+        deineka_3: String,
+        deineka_4: String,
+        deineka_5: String,
+      },
+    },
+    nakonechna: {
+      links: {
+        nakonechna_1: String,
+        nakonechna_2: String,
+        nakonechna_3: String,
+        nakonechna_4: String,
+        nakonechna_5: String,
+      },
+    },
+    heinz: {
+      links: {
+        heinz_1: String,
+        heinz_2: String,
+        heinz_3: String,
+        heinz_4: String,
+        heinz_5: String,
+      },
+    },
+    doloka: {
+      links: {
+        doloka_1: String,
+        doloka_2: String,
+        doloka_3: String,
+        doloka_4: String,
+        doloka_5: String,
+      },
+    },
   },
   {
     versionKey: false,
