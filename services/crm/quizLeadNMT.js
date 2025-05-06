@@ -39,7 +39,7 @@ async function createQuizLeadNMT(data) {
           ],
         },
         {
-          field_id: 1827487,
+          field_id: 1827493,
           field_name: "Школа",
           values: [
             {

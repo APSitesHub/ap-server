@@ -31,6 +31,7 @@ const postHRLead = require("../middlewares/crm/postHRLead");
 const postMCLead = require("../middlewares/crm/postMCLead");
 const postLeadFeedback = require("../controllers/leads/postLeadFeedback.js");
 const postLeadNMT = require("../controllers/quiz/postLeadNMT");
+const postPartnerLeadNMT = require("../controllers/leads/postPartnerLeadNMT");
 
 const router = express.Router();
 
@@ -71,4 +72,5 @@ router.patch(
 router.post("/quiz-eng", postLeadEng);
 router.post("/quiz-ger", postLeadGer);
 router.post("/quiz-nmt", postLeadNMT);
+router.post("/nmt-form", postPartnerLeadNMT);
 module.exports = router;
