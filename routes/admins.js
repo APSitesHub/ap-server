@@ -29,6 +29,8 @@ const loginSSWAdmin = require("../controllers/admins/loginSSWAdmin");
 const loginMANSAdmin = require("../controllers/admins/loginMANSAdmin");
 const refreshSSWAdminToken = require("../controllers/admins/refreshSSWAdminToken");
 const refreshMANSAdminToken = require("../controllers/admins/refreshMANSAdminToken");
+const loginAHNSAdmin = require("../controllers/admins/loginAHNSAdmin");
+const refreshAHNSAdminToken = require("../controllers/admins/refreshAHNSAdminToken");
 
 const router = express.Router();
 
@@ -60,6 +62,8 @@ router.post("/login/ssw", validateAdminUser, loginSSWAdmin);
 
 router.post("/login/mans", validateAdminUser, loginMANSAdmin);
 
+router.post("/login/mans", validateAdminUser, loginAHNSAdmin);
+
 router.post("/refresh", refreshAdminToken);
 
 router.post("/refresh/kahoot", refreshKahootAdminToken);
@@ -73,6 +77,8 @@ router.post("/refresh/pedagogium", refreshPedagogiumAdminToken);
 router.post("/refresh/ssw", refreshSSWAdminToken);
 
 router.post("/refresh/mans", refreshMANSAdminToken);
+
+router.post("/refresh/ahns", refreshAHNSAdminToken);
 
 router.post("/refresh/collections", refreshCollectionAdminToken);
 
