@@ -227,6 +227,15 @@ const uniHostKahoots = new Schema(
         mans_5: String,
       },
     },
+    ahns: {
+      links: {
+        ahns_1: String,
+        ahns_2: String,
+        ahns_3: String,
+        ahns_4: String,
+        ahns_5: String,
+      },
+    },
   },
   {
     versionKey: false,
