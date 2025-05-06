@@ -62,7 +62,7 @@ router.post("/login/ssw", validateAdminUser, loginSSWAdmin);
 
 router.post("/login/mans", validateAdminUser, loginMANSAdmin);
 
-router.post("/login/mans", validateAdminUser, loginAHNSAdmin);
+router.post("/login/ahns", validateAdminUser, loginAHNSAdmin);
 
 router.post("/refresh", refreshAdminToken);
 
