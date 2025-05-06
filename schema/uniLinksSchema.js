@@ -26,6 +26,7 @@ const uniLinksSchema = Joi.object({
   eu: Joi.string().empty(""),
   ssw: Joi.string().empty(""),
   mans: Joi.string().empty(""),
+  ahns: Joi.string().empty(""),
 });
 
 const validateUniLinks = ({ body }, res, next) => {

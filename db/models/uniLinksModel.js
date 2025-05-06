@@ -27,6 +27,7 @@ const uniLinks = new Schema(
     eu: { type: String },
     ssw: { type: String },
     mans: { type: String },
+    ahns: { type: String },
   },
   {
     versionKey: false,
