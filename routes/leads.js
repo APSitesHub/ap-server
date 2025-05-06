@@ -1,5 +1,4 @@
 const express = require("express");
-
 const postLead = require("../middlewares/crm/postLead");
 const postLeadCertificate = require("../middlewares/crm/postLeadCertificate");
 const prePostQuizLead = require("../middlewares/crm/prePostQuizLead");
@@ -14,7 +13,6 @@ const updateContractLead = require("../middlewares/crm/updateContractLead.js");
 const postLeadEvent = require("../middlewares/crm/postLeadEvent.js");
 const postLeadEng = require("../controllers/quiz/postLeadEng.js");
 const postLeadGer = require("../controllers/quiz/postLeadGer.js");
-
 const {
   validateLead,
   validateLeadConference,
@@ -27,12 +25,12 @@ const { validateQuizLead } = require("../schema/quizLeadSchema");
 const {
   validateQuizAuthCodeLead,
 } = require("../schema/quizLeadAuthCodeSchema");
-
 const getLeads = require("../controllers/leads/getLeads");
 const getLeadsArray = require("../middlewares/crm/getLeadsArray");
 const postHRLead = require("../middlewares/crm/postHRLead");
 const postMCLead = require("../middlewares/crm/postMCLead");
 const postLeadFeedback = require("../controllers/leads/postLeadFeedback.js");
+const postLeadNMT = require("../controllers/quiz/postLeadNMT");
 
 const router = express.Router();
 
@@ -72,4 +70,5 @@ router.patch(
 
 router.post("/quiz-eng", postLeadEng);
 router.post("/quiz-ger", postLeadGer);
+router.post("/quiz-nmt", postLeadNMT);
 module.exports = router;
