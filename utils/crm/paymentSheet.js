@@ -2,6 +2,7 @@ const { google } = require('googleapis');
 const axios = require('axios');
 const { getToken } = require("../../services/tokensServices");
 const { toLocalTime } = require('../../utils/dateUtils');
+const getCRMUser = require('../../services/crmGetUser');
 
 // Конфігурація
 const API_BASE_URL = 'https://apeducation.kommo.com/api/v4/leads'; // Ваш субдомен
@@ -98,6 +99,7 @@ async function processBatch(batchIds, sheets, startRow) {
 
         const lead = response.data;
         const customFields = lead.custom_fields_values || [];
+        const responsibleUser = await getCRMUser(lead.responsible_user_id);
 
         const nextPaymentAmount = getCustomFieldValue(customFields, NEXT_PAYMENT_AMOUNT_ID) || '';
         const nextPaymentDate = getCustomFieldValue(customFields, NEXT_PAYMENT_DATE_ID) || '';
@@ -105,8 +107,9 @@ async function processBatch(batchIds, sheets, startRow) {
         const studyFormat = getCustomFieldValue(customFields, STUDY_FORMAT) || '';
         const typeService = getCustomFieldValue(customFields, TYPE_SERVICE) || '';
         const paymentRemaining = getCustomFieldValue(customFields, PAYMENT_REMAINING) || '';
+        const responsibleName = responsibleUser.name || '';
 
-        results.push([nextPaymentAmount, nextPaymentDate, paymentFixation, studyFormat, typeService, paymentRemaining]);
+        results.push([nextPaymentAmount, nextPaymentDate, paymentFixation, studyFormat, typeService, paymentRemaining, responsibleName]);
         break; // Exit retry loop on success
       } catch (error) {
         retries--;

@@ -170,54 +170,6 @@ const questions = [
   },
   {
     id: 4,
-    question: 'У якому творі порушено проблему митця і влади?',
-    options: ['«Тіні забутих предків»', '«Маруся Чурай»', '«Кайдашева сім’я»', '«Мойсей»'],
-    correct: 3,
-  },
-  {
-    id: 5,
-    question: 'У якому варіанті допущено лексичну помилку (порушено сполучуваність слів)?',
-    options: [
-      'Провести конференцію',
-      'Взяти участь у змаганнях',
-      'Приймати міри',
-      'Надати допомогу',
-    ],
-    correct: 2,
-  },
-  {
-    id: 6,
-    question: 'Розв’яжіть нерівність: (x+2)/(x−1) > 0',
-    options: ['x < −2', 'x > −2 і x < 1', 'x < −2 ∪ x > 1', '−2 < x < 1'],
-    correct: 1,
-  },
-  {
-    id: 7,
-    question: 'Знайдіть значення виразу: log₂(8) + log₂(4)',
-    options: ['3', '5', '6', '2'],
-    correct: 1,
-  },
-  {
-    id: 8,
-    question: 'Точка M(3; 4) є образом точки A відносно осі абсцис. Знайдіть координати точки A:',
-    options: ['(3; -4)', '(3; -4)', '(-3; 4)', '(-3; -4)'],
-    correct: 0,
-  },
-  {
-    id: 9,
-    question:
-      'У прямокутному трикутнику один з гострих кутів дорівнює 30°. Знайдіть відношення прилеглого катета до гіпотенузи.',
-    options: ['1/2', '√3/2', '1/√3', '1'],
-    correct: 0,
-  },
-  {
-    id: 10,
-    question: 'Сума чисел арифметичної прогресії з 11 членів дорівнює 121. Знайдіть середній член.',
-    options: ['11', '22', '12', '10'],
-    correct: 0,
-  },
-  {
-    id: 11,
     question: 'Який акт закріпив приєднання західноукраїнських земель до Польщі у 1923 р.?',
     options: [
       'Сен-Жерменський договір',
@@ -228,19 +180,13 @@ const questions = [
     correct: 1,
   },
   {
-    id: 12,
+    id: 5,
     question: 'Хто з історичних діячів очолив Коліївщину?',
     options: ['Семен Палій', 'Максим Залізняк', 'Іван Гонта', 'Данило Апостол'],
     correct: 1,
   },
   {
-    id: 13,
-    question: 'Що було характерним для соціально-економічного життя України в 1921–1928 рр.?',
-    options: ['НЕП', 'Індустріалізація', 'Колективізація', 'Воєнний комунізм'],
-    correct: 0,
-  },
-  {
-    id: 14,
+    id: 6,
     question: 'Укажіть основну мету створення РУХу в 1989 році:',
     options: [
       'Вихід України з СРСР',
@@ -251,13 +197,19 @@ const questions = [
     correct: 1,
   },
   {
-    id: 15,
-    question: 'Хто з діячів був представником «розстріляного відродження»?',
-    options: ['Олександр Довженко', 'Михайло Грушевський', 'Микола Куліш', 'Юрій Липа'],
+    id: 7,
+    question: 'Яка формула використовується для обчислення площі прямокутника?',
+    options: ['P=4a', 'S=a⋅b', 'V=a⋅b⋅c', 'C=2πr', 'P=2(a+b)'],
+    correct: 1,
+  },
+  {
+    id: 8,
+    question: 'Укажіть вираз, тотожно рівний виразу (2x+5)(3−x).',
+    options: ['15+x−2x^2', '15+x+2x^2', '15+6x−2x^2', '15+11x−2x^2', '15+11x+2x^2'],
     correct: 2,
   },
   {
-    id: 16,
+    id: 9,
     question: 'Choose the correct sentence in Passive Voice:',
     options: [
       'They built the house last year.',
@@ -268,13 +220,7 @@ const questions = [
     correct: 1,
   },
   {
-    id: 17,
-    question: 'Complete the sentence: “If I had known about the traffic, I __ earlier.”',
-    options: ['leave', 'left', 'would have left', 'have left'],
-    correct: 2,
-  },
-  {
-    id: 18,
+    id: 10,
     question:
       'Choose the correct reported speech transformation: He said: “I will go to London tomorrow.”',
     options: [
@@ -283,24 +229,6 @@ const questions = [
       'He said he will go to London tomorrow.',
       'He said I would go to London the next day.',
     ],
-    correct: 1,
-  },
-  {
-    id: 19,
-    question: 'Choose the sentence with the correct gerund usage:',
-    options: [
-      'He is interested in learning Spanish.',
-      'He is interested to learn Spanish.',
-      'He is interested for learning Spanish.',
-      'He is interested in to learn Spanish.',
-    ],
-    correct: 0,
-  },
-  {
-    id: 20,
-    question:
-      'Choose the most suitable word: “The book was so boring that I couldn’t __ reading it.”',
-    options: ['continue', 'keep', 'go', 'hold'],
     correct: 1,
   },
 ];
