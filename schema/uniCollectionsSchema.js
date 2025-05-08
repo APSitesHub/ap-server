@@ -27,6 +27,7 @@ const uniCollectionsSchema = Joi.object({
   ssw: Joi.string().empty(""),
   mans: Joi.string().empty(""),
   ahns: Joi.string().empty(""),
+  answp: Joi.string().empty(""),
 });
 
 const validateUniCollections = ({ body }, res, next) => {
