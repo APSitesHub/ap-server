@@ -19,6 +19,7 @@ const PAYMENT_FIXATION_ID = 1824495;   // Фіксація оплат
 const STUDY_FORMAT = 558384; // Формат навчання
 const TYPE_SERVICE = 1812897; // Вид послуги
 const PAYMENT_REMAINING = 1809505; // Кількість платежів, що залишилось
+const PRESPONSIBLE_USER_NAME = 1809505; // Відповідальний менеджер
 // Ініціалізація Google Sheets
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -107,7 +108,7 @@ async function processBatch(batchIds, sheets, startRow) {
         const studyFormat = getCustomFieldValue(customFields, STUDY_FORMAT) || '';
         const typeService = getCustomFieldValue(customFields, TYPE_SERVICE) || '';
         const paymentRemaining = getCustomFieldValue(customFields, PAYMENT_REMAINING) || '';
-        const responsibleName = responsibleUser.name || '';
+        const responsibleName = getCustomFieldValue(customFields, PRESPONSIBLE_USER_NAME) || '';
 
         results.push([nextPaymentAmount, nextPaymentDate, paymentFixation, studyFormat, typeService, paymentRemaining, responsibleName]);
         break; // Exit retry loop on success
