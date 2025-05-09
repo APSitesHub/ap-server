@@ -50,7 +50,7 @@ async function updateTable() {
     console.log(`Знайдено ${leadIds.length} ID лідів`);
 
     // Додаємо заголовки, якщо їх немає
-    const headerRange = `${SHEET_NAME}!B1:D1`;
+    const headerRange = `${SHEET_NAME}!B1:H1`;  // Changed from B1:D1 to B1:H1
     const headerResponse = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
       range: headerRange,
@@ -62,7 +62,7 @@ async function updateTable() {
         range: headerRange,
         valueInputOption: 'USER_ENTERED',
         resource: {
-          values: [['Сума наступної оплати', 'Дата наступної оплати', 'Фіксація оплат', 'Формат навчання', 'Кількість платежів, що залишилось']],
+          values: [['Сума наступної оплати', 'Дата наступної оплати', 'Фіксація оплат', 'Формат навчання', 'Вид послуги', 'Кількість платежів, що залишилось', 'Відповідальний']],
         },
       });
       console.log('Додано заголовки');
@@ -115,7 +115,7 @@ async function processBatch(batchIds, sheets, startRow) {
         retries--;
         console.error(`Помилка для ID ${leadId}: ${error.response ? error.response.status : error.message}. Залишилось спроб: ${retries}`);
         if (retries === 0) {
-          results.push(['', '', '', '', '', '']); // Записуємо порожні значення у разі помилки
+          results.push(['', '', '', '', '', '', '']); // Записуємо порожні значення у разі помилки
         } else {
           await delay(1000); // Wait 1 second before retrying
         }
@@ -125,7 +125,7 @@ async function processBatch(batchIds, sheets, startRow) {
   }
 
   // Запис результатів у Google Sheet
-  const resultRange = `${SHEET_NAME}!B${startRow + 1}:G${startRow + batchIds.length}`; // Updated range to include columns B to G
+  const resultRange = `${SHEET_NAME}!B${startRow + 1}:H${startRow + batchIds.length}`; // Changed from B:G to B:H
   await sheets.spreadsheets.values.update({
     spreadsheetId: SPREADSHEET_ID,
     range: resultRange,
