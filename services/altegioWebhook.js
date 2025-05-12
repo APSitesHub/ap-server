@@ -88,6 +88,36 @@ const LinkMapTrial = {
         },
      },
 }
+const PersonalLinkMapTrial = [
+  {
+    teacherId: 2179564,
+    link: 'https://academy.ap.education/room/trial/kubrak/ba9a038c-4ff3-4207-9145-eb5f58c6ca75',
+  },
+  {
+    teacherId: 2187135,
+    link: 'https://academy.ap.education/room/trial/bulavka/e3a3640b-e244-43b6-adfe-1f7abc856e3e',
+  },
+  {
+    teacherId: 2668683,
+    link: 'https://academy.ap.education/room/trial/ivachevska/2d5704b1-7082-4e54-be77-aec44a5246f5',
+  },
+  {
+    teacherId: 2179578,
+    link: 'https://academy.ap.education/room/trial/deineka/5e30c8ae-4e36-4f8b-9f36-746b011c19a3',
+  },
+  {
+    teacherId: 2752664,
+    link: 'https://academy.ap.education/room/trial/nakonechna/a91a6df5-c7bc-4ff9-9ff5-441ea5008a99',
+  },
+  {
+    teacherId: 2768418,
+    link: 'https://academy.ap.education/room/trial/heinz/a6929ff7-cc08-4f1f-9fc0-0fca316f5745',
+  },
+  {
+    teacherId: 2692855,
+    link: 'https://academy.ap.education/room/trial/doloka/812e0f63-de29-4d2c-b407-fa0d788e46a0',
+  },
+]
 
 const C2UTrialId = [12460475];
 
@@ -136,6 +166,7 @@ const altegioWebhook = async (req, res) => {
     }
     if ((isSalesServices || isLevelDefinition) && !userCrmId) {
         const teacher = {
+          id: data.staff.id,
           name: data.staff.name,
           lessonDate: data.datetime,
         };
@@ -258,6 +289,18 @@ async function bookTestLesson(leadId, pipelineId, status, teacher = null) {
           ],
         },
       ];
+    }
+
+    if (teacher?.lessonFormat && teacher.lessonFormat === "Індивідуальне C2U пробне") {
+        postRequest.custom_fields_values.push({
+          field_id: 1826019,
+          field_name: "Посилання на пробний урок",
+          values: [
+            {
+              value: PersonalLinkMapTrial.find(link => link.teacherId === teacher.id)?.link || '',
+            },
+          ],
+        });
     }
 
     try {
