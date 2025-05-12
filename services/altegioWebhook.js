@@ -4,7 +4,7 @@ const getCRMLead = require('./crmGetLead');
 const { getToken } = require('./tokensServices');
 const { sendMessageToChat } = require('./botTelegram');
 const { format, parseISO, setHours, setMinutes, setSeconds } = require("date-fns");
-const { uk } = require("date-fns/locale");
+const { uk, id } = require("date-fns/locale");
 
 const SalesServicesIdList = [
   10669989, 10669992, 10669994, 12452584, 12452585, 12460475, 12035570, 11004387
@@ -156,6 +156,18 @@ const altegioWebhook = async (req, res) => {
     const crmIdMatch = userName.match(/\b\d{4,}\b/);
     const userCrmId = crmIdMatch ? crmIdMatch[0] : null;
 
+    console.log('Webhook data:', req.body);
+    console.log('CRM ID:', userCrmId);
+    console.log('User name:', userName);
+    console.log('Visit attendance:', visit_attendance);
+    console.log('Resource:', resource);
+    console.log('Status:', status);
+    console.log('Services:', data.services);
+    console.log('Staff:', data.staff);
+    console.log('Datetime:', data.datetime);
+    console.log('Client:', data.client);
+    console.log('Client phone:', data.client.phone);
+
     if (!userName) {
       return res.status(200).json({ message: 'Invalid client name' });
     }
@@ -195,6 +207,7 @@ const altegioWebhook = async (req, res) => {
     if (resource === 'record' && (status === 'create' || status === 'update') && userCrmId && isSalesServices) {
         const lead = await getCRMLead(userCrmId);
         const teacher = {
+          id: data.staff.id,
           name: data.staff.name,
           lessonDate: data.datetime,
           lessonFormat: data.services.some(service => C2UTrialId.includes(service.id)) ? "Індивідуальне C2U пробне" : "Індивідуальне",
@@ -229,6 +242,7 @@ const altegioWebhook = async (req, res) => {
         const lead = await getCRMLead(userCrmId);
         const lessonData = getLinkMapTrialByValue(data.services[0].id)
         const teacher = {
+            id: data.staff.id,
             name: data.staff.name,
             lessonDate: getLessonDate(data.datetime, data.services[0].id),
             lessonFormat: lessonData.CRMslug,
@@ -290,7 +304,11 @@ async function bookTestLesson(leadId, pipelineId, status, teacher = null) {
         },
       ];
     }
-
+    console.log('=====================');
+    console.log('teacher', teacher);
+    console.log('teacher.lessonFormat', teacher?.lessonFormat);
+    console.log(PersonalLinkMapTrial.find(link => link.teacherId === teacher.id)?.link || '',)
+        console.log('=====================');
     if (teacher?.lessonFormat && teacher.lessonFormat === "Індивідуальне C2U пробне") {
         postRequest.custom_fields_values.push({
           field_id: 1826019,
