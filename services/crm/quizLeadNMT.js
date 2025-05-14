@@ -1,8 +1,56 @@
 const axios = require("axios");
+const { google } = require("googleapis");
 const { getToken } = require("../tokensServices");
+
+// Add Google Sheets configuration
+const SPREADSHEET_ID = '1uHq062nfYHlMtaGif9bvD3aG44M76ht9_K5v8au5qNA';
+const SHEET_NAME = 'Quiz Leads';
+
+async function writeToGoogleSheets(data) {
+  try {
+    const auth = new google.auth.GoogleAuth({
+      credentials: {
+        client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+        private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      },
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    // Get the last row number to determine the new index
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A:A`,
+    });
+    
+    const rowIndex = (response.data.values?.length || 0) + 1;
+
+    // Prepare the row data
+    const rowData = [rowIndex, data.name, data.school];
+
+    // Append the data
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `${SHEET_NAME}!A:C`,
+      valueInputOption: 'USER_ENTERED',
+      resource: {
+        values: [rowData],
+      },
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error writing to Google Sheets:', error);
+    return false;
+  }
+}
 
 async function createQuizLeadNMT(data) {
   const { school, name, parentName, parentPhone, ...utmFields } = data;
+
+  // Write to Google Sheets first
+  await writeToGoogleSheets({ name, school });
 
   const postRequest = [
     {
