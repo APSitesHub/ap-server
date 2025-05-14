@@ -13,6 +13,7 @@ const uniCollections = new Schema(
     ewspa_prep: { type: String },
     merito_logistics: { type: String },
     merito_prep: { type: String },
+    merito_automation: { type: String },
     wstih_logistics: { type: String },
     wstih_prep: { type: String },
     wskm_logistics: { type: String },
@@ -24,6 +25,10 @@ const uniCollections = new Schema(
     wse_logistics: { type: String },
     wse_prep: { type: String },
     eu: { type: String },
+    ssw: { type: String },
+    mans: { type: String },
+    ahns: { type: String },
+    answp: { type: String },
   },
   {
     versionKey: false,

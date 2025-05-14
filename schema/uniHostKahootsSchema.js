@@ -111,6 +111,16 @@ const uniHostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  merito_automation: Joi.object({
+    links: Joi.object({
+      merito_automation_1: Joi.string().empty(""),
+      merito_automation_2: Joi.string().empty(""),
+      merito_automation_3: Joi.string().empty(""),
+      merito_automation_4: Joi.string().empty(""),
+      merito_automation_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
   wstih_logistics: Joi.object({
     links: Joi.object({
       wstih_logistics_1: Joi.string().empty(""),
@@ -218,6 +228,46 @@ const uniHostKahootsSchema = Joi.object({
       eu_3: Joi.string().empty(""),
       eu_4: Joi.string().empty(""),
       eu_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  ssw: Joi.object({
+    links: Joi.object({
+      ssw_1: Joi.string().empty(""),
+      ssw_2: Joi.string().empty(""),
+      ssw_3: Joi.string().empty(""),
+      ssw_4: Joi.string().empty(""),
+      ssw_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  mans: Joi.object({
+    links: Joi.object({
+      mans_1: Joi.string().empty(""),
+      mans_2: Joi.string().empty(""),
+      mans_3: Joi.string().empty(""),
+      mans_4: Joi.string().empty(""),
+      mans_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  ahns: Joi.object({
+    links: Joi.object({
+      ahns_1: Joi.string().empty(""),
+      ahns_2: Joi.string().empty(""),
+      ahns_3: Joi.string().empty(""),
+      ahns_4: Joi.string().empty(""),
+      ahns_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  answp: Joi.object({
+    links: Joi.object({
+      answp_1: Joi.string().empty(""),
+      answp_2: Joi.string().empty(""),
+      answp_3: Joi.string().empty(""),
+      answp_4: Joi.string().empty(""),
+      answp_5: Joi.string().empty(""),
     }),
     replace: Joi.bool().required(),
   }),

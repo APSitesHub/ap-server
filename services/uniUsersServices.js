@@ -13,6 +13,30 @@ const allPedagogiumUsers = async () =>
     name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
   }).select("-visitedTime -token -university -createdAt -updatedAt");
 
+const allSSWUsers = async () =>
+  await UniUsers.find({
+    university: "SSW (Świętokrzyska Szkoła Wyższa im. św. Jana Pawła II)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
+const allMANSUsers = async () =>
+  await UniUsers.find({
+    university: "MANS (Międzynarodowa Akademia Nauk Stosowanych w Łomży)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
+const allAHNSUsers = async () =>
+  await UniUsers.find({
+    university: "AHNS (Akademia Handlowa Nauk Stosowanych w Radomiu)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
+const allANSWPUsers = async () =>
+  await UniUsers.find({
+    university: "ANSWP (Akademia Nauk Stosowanych Wincentego Pola w Lublinie)",
+    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
 const findUniUser = async (query) => await UniUsers.findOne(query);
 
 const findUniUserByID = async (id) => await UniUsers.findById(id);
@@ -57,6 +81,10 @@ const getEWSPAAttendance = async () =>
 module.exports = {
   allUniUsers,
   allPedagogiumUsers,
+  allSSWUsers,
+  allMANSUsers,
+  allAHNSUsers,
+  allANSWPUsers,
   findUniUser,
   findUniUserByID,
   newUniUser,

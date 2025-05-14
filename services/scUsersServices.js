@@ -4,22 +4,32 @@ const allScUsers = async () =>
   await ScUsers.find({}).select("_id name lang course feedback");
 
 const allScEnUsers = async () =>
-  await ScUsers.find({$or: [{lang: 'en'}, {lang: 'enkids'}]}).select("_id name lang course feedback");
+  await ScUsers.find({ $or: [{ lang: "en" }, { lang: "enkids" }] }).select(
+    "_id name lang course feedback"
+  );
 
 const allScDeUsers = async () =>
-  await ScUsers.find({$or: [{lang: 'de'}, {lang: 'dekids'}]}).select("_id name lang course feedback");
+  await ScUsers.find({ $or: [{ lang: "de" }, { lang: "dekids" }] }).select(
+    "_id name lang course feedback"
+  );
 
 const allScPlUsers = async () =>
-  await ScUsers.find({$or: [{lang: 'pl'}, {lang: 'plkids'}]}).select("_id name lang course feedback");
+  await ScUsers.find({ $or: [{ lang: "pl" }, { lang: "plkids" }] }).select(
+    "_id name lang course feedback"
+  );
 
-const allCourseUsers = async (query) =>
-  await ScUsers.find(query)
+const allCourseUsers = async (query) => {
+  return await ScUsers.find({
+    lang: { $regex: query.lang, $options: "i" },
+    course: { $regex: query.course, $options: "i" },
+  })
     .where("feedback")
     .slice(-1)
     .where("visited")
     .slice(-1)
     .where("visitedTime")
     .slice(-1);
+};
 
 const ratingScUsers = async () =>
   await ScUsers.find({})

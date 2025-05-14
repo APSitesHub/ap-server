@@ -697,6 +697,76 @@ const hostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  kubrak: Joi.object({
+    links: Joi.object({
+      kubrak_1: Joi.string().empty(""),
+      kubrak_2: Joi.string().empty(""),
+      kubrak_3: Joi.string().empty(""),
+      kubrak_4: Joi.string().empty(""),
+      kubrak_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  bulavka: Joi.object({
+    links: Joi.object({
+      bulavka_1: Joi.string().empty(""),
+      bulavka_2: Joi.string().empty(""),
+      bulavka_3: Joi.string().empty(""),
+      bulavka_4: Joi.string().empty(""),
+      bulavka_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  ivachevska: Joi.object({
+    links: Joi.object({
+      ivachevska_1: Joi.string().empty(""),
+      ivachevska_2: Joi.string().empty(""),
+      ivachevska_3: Joi.string().empty(""),
+      ivachevska_4: Joi.string().empty(""),
+      ivachevska_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  deineka: Joi.object({
+    links: Joi.object({
+      deineka_1: Joi.string().empty(""),
+      deineka_2: Joi.string().empty(""),
+      deineka_3: Joi.string().empty(""),
+      deineka_4: Joi.string().empty(""),
+      deineka_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  nakonechna: Joi.object({
+    links: Joi.object({
+      nakonechna_1: Joi.string().empty(""),
+      nakonechna_2: Joi.string().empty(""),
+      nakonechna_3: Joi.string().empty(""),
+      nakonechna_4: Joi.string().empty(""),
+      nakonechna_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  heinz: Joi.object({
+    links: Joi.object({
+      heinz_1: Joi.string().empty(""),
+      heinz_2: Joi.string().empty(""),
+      heinz_3: Joi.string().empty(""),
+      heinz_4: Joi.string().empty(""),
+      heinz_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
+  doloka: Joi.object({
+    links: Joi.object({
+      doloka_1: Joi.string().empty(""),
+      doloka_2: Joi.string().empty(""),
+      doloka_3: Joi.string().empty(""),
+      doloka_4: Joi.string().empty(""),
+      doloka_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
 });
 
 const validateHostKahoots = ({ body }, res, next) => {

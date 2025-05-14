@@ -101,6 +101,15 @@ const uniHostKahoots = new Schema(
         merito_prep_5: String,
       },
     },
+    merito_automation: {
+      links: {
+        merito_automation_1: String,
+        merito_automation_2: String,
+        merito_automation_3: String,
+        merito_automation_4: String,
+        merito_automation_5: String,
+      },
+    },
     wstih_logistics: {
       links: {
         wstih_logistics_1: String,
@@ -198,6 +207,42 @@ const uniHostKahoots = new Schema(
         eu_3: String,
         eu_4: String,
         eu_5: String,
+      },
+    },
+    ssw: {
+      links: {
+        ssw_1: String,
+        ssw_2: String,
+        ssw_3: String,
+        ssw_4: String,
+        ssw_5: String,
+      },
+    },
+    mans: {
+      links: {
+        mans_1: String,
+        mans_2: String,
+        mans_3: String,
+        mans_4: String,
+        mans_5: String,
+      },
+    },
+    ahns: {
+      links: {
+        ahns_1: String,
+        ahns_2: String,
+        ahns_3: String,
+        ahns_4: String,
+        ahns_5: String,
+      },
+    },
+    answp: {
+      links: {
+        answp_1: String,
+        answp_2: String,
+        answp_3: String,
+        answp_4: String,
+        answp_5: String,
       },
     },
   },
