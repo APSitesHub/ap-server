@@ -35,6 +35,7 @@ const videochatRooms = require("./routes/videochatRooms");
 const webhookAltegio = require("./routes/webhookAltegio");
 const trialLesson = require("./routes/trialLesson");
 const answerRouter = require("./routes/answers");
+const crmRouter = require("./routes/crm");
 const Sentry = require("@sentry/node");
 
 const app = express();
@@ -77,6 +78,7 @@ app.use("/rooms", videochatRooms);
 app.use("/webhook_booking", webhookAltegio);
 app.use("/trial-lesson", trialLesson);
 app.use("/answers", answerRouter);
+app.use("/crm", crmRouter);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
