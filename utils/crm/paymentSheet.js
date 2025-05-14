@@ -19,6 +19,8 @@ const PAYMENT_FIXATION_ID = 1824495;   // Фіксація оплат
 const STUDY_FORMAT = 558384; // Формат навчання
 const TYPE_SERVICE = 1812897; // Вид послуги
 const PAYMENT_REMAINING = 1809505; // Кількість платежів, що залишилось
+const RESPONSIBLE_USER= 557260; // Відповідальний менеджер
+const NOT_VALID_STATUS_ID_LIST = [59453311, 59453315, 75398368, 72341008, 75260544, 81414524, 84369860, 61086320, 60355340];
 // Ініціалізація Google Sheets
 const auth = new google.auth.GoogleAuth({
   credentials: {
@@ -62,7 +64,7 @@ async function updateTable() {
         range: headerRange,
         valueInputOption: 'USER_ENTERED',
         resource: {
-          values: [['Сума наступної оплати', 'Дата наступної оплати', 'Фіксація оплат', 'Формат навчання', 'Вид послуги', 'Кількість платежів, що залишилось', 'Відповідальний']],
+          values: [['Сума наступної оплати', 'Дата наступної оплати', 'Фіксація оплат', 'Формат навчання', 'Вид послуги', 'Кількість платежів, що залишилось', 'Відповідальний менеджер']],
         },
       });
       console.log('Додано заголовки');
@@ -98,17 +100,19 @@ async function processBatch(batchIds, sheets, startRow) {
         });
 
         const lead = response.data;
-        const customFields = lead.custom_fields_values || [];
-        const responsibleUser = await getCRMUser(lead.responsible_user_id);
 
+        const customFields = lead.custom_fields_values || [];
         const nextPaymentAmount = getCustomFieldValue(customFields, NEXT_PAYMENT_AMOUNT_ID) || '';
         const nextPaymentDate = getCustomFieldValue(customFields, NEXT_PAYMENT_DATE_ID) || '';
         const paymentFixation = getCustomFieldValue(customFields, PAYMENT_FIXATION_ID) || '';
         const studyFormat = getCustomFieldValue(customFields, STUDY_FORMAT) || '';
         const typeService = getCustomFieldValue(customFields, TYPE_SERVICE) || '';
         const paymentRemaining = getCustomFieldValue(customFields, PAYMENT_REMAINING) || '';
-        const responsibleName = responsibleUser.name || '';
-
+        const responsibleName = getCustomFieldValue(customFields, RESPONSIBLE_USER) || '';
+        if(NOT_VALID_STATUS_ID_LIST.includes(lead.status_id)) {
+          results.push(['', '', '', '', '', '', '']);
+          break;
+        }
         results.push([nextPaymentAmount, nextPaymentDate, paymentFixation, studyFormat, typeService, paymentRemaining, responsibleName]);
         break; // Exit retry loop on success
       } catch (error) {
