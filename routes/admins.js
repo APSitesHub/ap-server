@@ -25,6 +25,8 @@ const getTeacherAdmin = require("../controllers/admins/getTeacherAdmin");
 const refreshTeacherAdminToken = require("../controllers/admins/refreshTeacherAdminToken");
 const loginPedagogiumAdmin = require("../controllers/admins/loginPedagogiumAdmin");
 const refreshPedagogiumAdminToken = require("../controllers/admins/refreshPedagogiumAdminToken");
+const loginWSTIJOAdmin = require("../controllers/admins/loginWSTIJOAdmin");
+const refreshWSTIJOAdminToken = require("../controllers/admins/refreshWSTIJOAdminToken");
 const loginSSWAdmin = require("../controllers/admins/loginSSWAdmin");
 const loginMANSAdmin = require("../controllers/admins/loginMANSAdmin");
 const refreshSSWAdminToken = require("../controllers/admins/refreshSSWAdminToken");
@@ -60,6 +62,8 @@ router.post("/login/collections", validateAdminUser, loginCollectionAdmin);
 
 router.post("/login/pedagogium", validateAdminUser, loginPedagogiumAdmin);
 
+router.post("/login/wstijo", validateAdminUser, loginWSTIJOAdmin);
+
 router.post("/login/ssw", validateAdminUser, loginSSWAdmin);
 
 router.post("/login/mans", validateAdminUser, loginMANSAdmin);
@@ -77,6 +81,8 @@ router.post("/refresh/users", refreshUserAdminToken);
 router.post("/refresh/teachers", refreshTeacherAdminToken);
 
 router.post("/refresh/pedagogium", refreshPedagogiumAdminToken);
+
+router.post("/refresh/wstijo", refreshWSTIJOAdminToken);
 
 router.post("/refresh/ssw", refreshSSWAdminToken);
 
