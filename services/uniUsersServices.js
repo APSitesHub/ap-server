@@ -13,6 +13,21 @@ const allPedagogiumUsers = async () =>
     name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
   }).select("-visitedTime -token -university -createdAt -updatedAt");
 
+const allWSTIJOUsers = async () =>
+  await UniUsers.find({
+    university: "WSTIJO (Wyzsza Szkoła Turystyki i Jezykow Obcych w Warszawie)",
+    name: {
+      $nin: [
+        "Pedagogium",
+        "WSTIJO",
+        "Dev Acc",
+        "Krzysztof Lewandowski",
+        "New Student",
+        "Test Acc",
+      ],
+    },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
 const allSSWUsers = async () =>
   await UniUsers.find({
     university: "SSW (Świętokrzyska Szkoła Wyższa im. św. Jana Pawła II)",
@@ -65,6 +80,14 @@ const getPedagogiumAttendance = async () =>
 const getWSTIJOAttendance = async () =>
   await UniUsers.find({
     university: "WSTIJO (Wyzsza Szkoła Turystyki i Jezykow Obcych w Warszawie)",
+    $nin: [
+      "Pedagogium",
+      "WSTIJO",
+      "Dev Acc",
+      "Krzysztof Lewandowski",
+      "New Student",
+      "Test Acc",
+    ],
   }).select("name _id visited");
 
 const getWSBMIRAttendance = async () =>
@@ -81,6 +104,7 @@ const getEWSPAAttendance = async () =>
 module.exports = {
   allUniUsers,
   allPedagogiumUsers,
+  allWSTIJOUsers,
   allSSWUsers,
   allMANSUsers,
   allAHNSUsers,
