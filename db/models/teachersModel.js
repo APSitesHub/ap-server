@@ -24,7 +24,13 @@ const teachers = new Schema(
     },
     platformId: {
       type: String,
-    }
+    },
+    altegioId: {
+      type: Number,
+    },
+    crmId: {
+      type: Number,
+    },
   },
   {
     versionKey: false,
