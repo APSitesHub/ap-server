@@ -12,6 +12,8 @@ const findTeacher = async (query) => await Teachers.findOne(query);
 
 const findTeacherByID = async (id) => await Teachers.findById(id);
 
+const findTeacherByAltegioID = async (altegioId) => await Teachers.findOne({ altegioId });
+
 const newTeacher = async (body) => await Teachers(body).save();
 
 const deleteTeacher = async (id) => await Teachers.findByIdAndDelete(id);
@@ -29,6 +31,7 @@ module.exports = {
   allPlTeachers,
   findTeacher,
   findTeacherByID,
+  findTeacherByAltegioID,
   newTeacher,
   deleteTeacher,
   signInTeacher,
