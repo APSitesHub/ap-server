@@ -26,11 +26,11 @@ const teachers = new Schema(
       type: String,
     },
     altegioId: {
-      type: String,
+      type: Number,
     },
     crmId: {
-      type: String,
-    }
+      type: Number,
+    },
   },
   {
     versionKey: false,
