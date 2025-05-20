@@ -35,7 +35,7 @@ const getTeachersByStatus = async (status) => {
   const STUFF_PTPLINE_ID = 7009591;
 
   axios.defaults.headers.common["Authorization"] =
-    `Bearer ${process.env.KOMMO_AUTH_TOKEN}`;
+    `Bearer ${process.env.LONG_LIVED_TOKEN}`;
 
   const response = await axios.get(
     `https://apeducation.kommo.com/api/v4/leads?&filter[statuses][0][pipeline_id]=${STUFF_PTPLINE_ID}&filter[statuses][0][status_id]=${status}`,
