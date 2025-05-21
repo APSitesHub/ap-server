@@ -9,7 +9,7 @@ require("dotenv").config();
 const {
   updateLeadsByTrialLessonFields,
 } = require("./services/cronjob/trialLesson.job");
-const { updateLeadsByVisitedFields } = require("./services/cronjob/visiting");
+const { runWeeklyLeadUpdate } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -271,52 +271,8 @@ cron.schedule("45 22 * * *", async () => {
 
 // Cron job to update leads by visited fields
 cron.schedule("0 3 * * 1", async () => {
-  console.log("Running cron job to update leads by visited fields for POLISH");
-  try {
-    await updateLeadsByVisitedFields([75659068]); // STATUS_ID_CLOSE_TO_YOU.POLISH
-    console.log(
-      "Cron job to update leads by visited fields for POLISH FINISHED"
-    );
-  } catch (error) {
-    console.error(
-      "Cron job to update leads by visited fields for POLISH FAILED with an error:",
-      error
-    );
-  }
-});
-// TODO need add children in next week 26.02
-cron.schedule("0 3 * * 3", async () => {
-  console.log(
-    "Running cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS"
-  );
-  try {
-    await updateLeadsByVisitedFields([75659060, 65411360]); // STATUS_ID_CLOSE_TO_YOU.ENGLISH, STATUS_ID_CLOSE_TO_YOU.ENGLISH_KIDS 65411360
-    console.log(
-      "Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FINISHED"
-    );
-  } catch (error) {
-    console.error(
-      "Cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS FAILED with an error:",
-      error
-    );
-  }
-});
-// TODO need add children in next week 26.02
-cron.schedule("0 3 * * 5", async () => {
-  console.log(
-    "Running cron job to update leads by visited fields for GERMANY and GERMANY_KIDS"
-  );
-  try {
-    await updateLeadsByVisitedFields([75659064, 72736296]); // STATUS_ID_CLOSE_TO_YOU.GERMANY, STATUS_ID_CLOSE_TO_YOU.GERMANY_KIDS 72736296
-    console.log(
-      "Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FINISHED"
-    );
-  } catch (error) {
-    console.error(
-      "Cron job to update leads by visited fields for GERMANY and GERMANY_KIDS FAILED with an error:",
-      error
-    );
-  }
+  console.log("Checking for weekly lead update...");
+  await runWeeklyLeadUpdate();
 });
 // Oleg analytics cron job
 cron.schedule("0 2 * * *", async () => {
