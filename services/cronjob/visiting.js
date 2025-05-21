@@ -11,6 +11,75 @@ const PIPELINE_ID_SERVICES = 7001587;
 //     GERMANY_KIDS: 72736296,
 // };
 
+// Встановлюємо дату початку відліку циклів
+// 1 червня 2025 року - це неділя, тому візьмемо 2 червня 2025 року (понеділок),
+// щоб цикл "тиждень 1" почався з понеділка.
+const EPOCH_START_DATE_STRING = "2025-06-02"; // 2 червня 2025 року (понеділок)
+
+/**
+ * Визначає індекс поточного тижневого циклу (0, 1, 2).
+ * 0 - Англійська
+ * 1 - Німецька
+ * 2 - Польська
+ */
+function getCycleIndex() {
+  const epochStartDate = new Date(EPOCH_START_DATE_STRING);
+  // Встановлюємо час початку епохи на 00:00:00, щоб уникнути проблем з часовими поясами та точністю днів.
+  epochStartDate.setHours(0, 0, 0, 0);
+
+  const now = new Date();
+  // Встановлюємо час поточного дня на 00:00:00 для коректного обчислення різниці днів.
+  now.setHours(0, 0, 0, 0);
+
+  // Обчислюємо різницю в мілісекундах
+  const diffTime = Math.abs(now.getTime() - epochStartDate.getTime());
+
+  // Перетворюємо різницю в дні
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+  // Кількість повних тижнів, що минули
+  const diffWeeks = Math.floor(diffDays / 7);
+
+  // Визначаємо індекс циклу (0 для англійської, 1 для німецької, 2 для польської)
+  // Модуль 3, оскільки у вас 3 цикли мов
+  return diffWeeks % 3;
+}
+
+/**
+ * Асинхронна функція для оновлення лідів за відвіданими полями,
+ * залежно від поточного тижневого циклу.
+ */
+async function runWeeklyLeadUpdate() {
+  const currentCycleIndex = getCycleIndex();
+
+  console.log(`Running weekly lead update. Current cycle index: ${currentCycleIndex}`);
+
+  try {
+    switch (currentCycleIndex) {
+      case 0: // Перший тиждень циклу: Англійська
+        console.log("Running cron job to update leads by visited fields for ENGLISH and ENGLISH_KIDS");
+        await updateLeadsByVisitedFields([75659060, 65411360]); // STATUS_ID_CLOSE_TO_YOU.ENGLISH, STATUS_ID_CLOSE_TO_YOU.ENGLISH_KIDS
+        console.log("Cron job for ENGLISH and ENGLISH_KIDS FINISHED");
+        break;
+      case 1: // Другий тиждень циклу: Німецька
+        console.log("Running cron job to update leads by visited fields for GERMANY and GERMANY_KIDS");
+        await updateLeadsByVisitedFields([75659064, 72736296]); // STATUS_ID_CLOSE_TO_YOU.GERMANY, STATUS_ID_CLOSE_TO_YOU.GERMANY_KIDS
+        console.log("Cron job for GERMANY and GERMANY_KIDS FINISHED");
+        break;
+      case 2: // Третій тиждень циклу: Польська
+        console.log("Running cron job to update leads by visited fields for POLISH");
+        await updateLeadsByVisitedFields([75659068]); // STATUS_ID_CLOSE_TO_YOU.POLISH
+        console.log("Cron job for POLISH FINISHED");
+        break;
+      default:
+        console.warn("Unexpected cycle index. No job ran.");
+        break;
+    }
+  } catch (error) {
+    console.error("Weekly lead update FAILED with an error:", error);
+  }
+}
+
 // Function to fetch clients from KommoCRM
 async function fetchLeadsByStatusAndPipeline(statusIds) {
     try {
@@ -206,4 +275,5 @@ async function updateLeadsByVisitedFields(statusIds) {
 
 module.exports = {
     updateLeadsByVisitedFields,
+    runWeeklyLeadUpdate,
 }
