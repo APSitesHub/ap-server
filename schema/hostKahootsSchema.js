@@ -767,6 +767,16 @@ const hostKahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  lyasota: Joi.object({
+    links: Joi.object({
+      lyasota_1: Joi.string().empty(""),
+      lyasota_2: Joi.string().empty(""),
+      lyasota_3: Joi.string().empty(""),
+      lyasota_4: Joi.string().empty(""),
+      lyasota_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
 });
 
 const validateHostKahoots = ({ body }, res, next) => {

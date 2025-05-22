@@ -703,6 +703,15 @@ const hostKahoots = new Schema(
         doloka_5: String,
       },
     },
+    lyasota: {
+      links: {
+        lyasota_1: String,
+        lyasota_2: String,
+        lyasota_3: String,
+        lyasota_4: String,
+        lyasota_5: String,
+      },
+    },
   },
   {
     versionKey: false,
