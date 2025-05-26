@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { getToken } = require("../tokensServices");
+const getLeadWithEngPage = require("../../utils/crm/getLeadWithEngPage");
 
 async function createQuizLeadEng(data) {
   const { name, phone, callTime, answers, ...utmFields } = data;
@@ -123,8 +124,8 @@ async function createQuizLeadEng(data) {
 
     // Fix the URL by ensuring it starts with a `/`
     await axios.post("/api/v4/leads/notes", noteRequest);
-
-    return crmLead.data[0];
+    const engPage = getLeadWithEngPage(leadId);
+    return engPage;
   } catch (error) {
     console.error("Error creating quiz lead or note:", error);
     throw error;

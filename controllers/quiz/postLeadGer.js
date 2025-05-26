@@ -2,8 +2,15 @@ const { createQuizLeadGer } = require("../../services/crm/quizLeadGer"); // Fix 
 
 const postLeadGer = async (req, res) => {
     try {
-        const data = req.body;
-        await createQuizLeadGer(data);
+        const dataReq = req.body;
+        const dataRes = await createQuizLeadGer(dataReq);
+        if (!dataRes.engPage) {
+            return res.status(400).json({
+                status: "error",
+                message: "Failed to create lead",
+            });
+        }
+        res.status(200).json(dataRes);
         res.status(200).json({
             status: "success",
             message: "Lead created successfully",
