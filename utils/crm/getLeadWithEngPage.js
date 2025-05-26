@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { getToken } = require("../services/tokensServices");
+const { getToken } = require("../../services/tokensServices");
 
 const getLeadWithEngPage = async (crmId) => {
   try {
