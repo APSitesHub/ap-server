@@ -1,9 +1,10 @@
 const { v4: uuidv4 } = require("uuid");
-const Room = require("../../db/models/videochatRoomModel");
+const { newRoom } = require("../../services/videochatRoomsServices");
 
 const createRoom = async (req, res) => {
   try {
-    const { type, name, level } = req.body;
+    const { id, type, name, level } = req.body;
+    let roomId = id;
 
     if (!type) {
       return res.status(400).json({ message: "Room type is required" });
@@ -14,11 +15,13 @@ const createRoom = async (req, res) => {
     }
 
     const { login } = req.user;
-
-    const roomId = uuidv4();
     const slug = `${level}`;
 
-    const newRoom = await Room.create({
+    if (!roomId) {
+      roomId = uuidv4();
+    }
+
+    newRoom({
       id: roomId,
       name,
       type,
