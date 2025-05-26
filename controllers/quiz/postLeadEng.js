@@ -2,12 +2,15 @@ const { createQuizLeadEng } = require("../../services/crm/quizLeadEng"); // Fix 
 
 const postLeadEng = async (req, res) => {
     try {
-        const data = req.body;
-        await createQuizLeadEng(data);
-        res.status(200).json({
-            status: "success",
-            message: "Lead created successfully",
-        });
+        const dataReq = req.body;
+        const dataRes = await createQuizLeadEng(dataReq);
+        if (!dataRes.engPage) {
+            return res.status(400).json({
+                status: "error",
+                message: "Failed to create lead",
+            });
+        }
+        res.status(200).json(dataRes);
     } catch (error) {
         console.error("Error creating lead:", error);
         res.status(500).json({
