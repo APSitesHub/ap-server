@@ -11,6 +11,7 @@ const {
 } = require("./services/cronjob/trialLesson.job");
 const { runWeeklyLeadUpdate } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
+const { processLeadsByStatuses } = require("./services/cronjob/updateGroup");
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -283,6 +284,29 @@ cron.schedule("0 2 * * *", async () => {
   } catch (error) {
     console.error(
       "Nightly cron job to update the table FAILED with an error:",
+      error
+    );
+  }
+},{
+  scheduled: true,
+  timezone: "Europe/Kyiv"
+});
+cron.schedule("0 3 * * *", async () => {
+  console.log("Running nightly cron job to update the table v2");
+  try {
+      await processLeadsByStatuses(75659060);
+      await processLeadsByStatuses(75659064);
+      await processLeadsByStatuses(75659068);
+      await processLeadsByStatuses(65411360);
+      await processLeadsByStatuses(72736296);
+      await processLeadsByStatuses(75398860);
+      await processLeadsByStatuses(75398868);
+      await processLeadsByStatuses(58435407);
+      await processLeadsByStatuses(58435411);
+    console.log("Nightly cron job to update the table FINISHED v2");
+  } catch (error) {
+    console.error(
+      "Nightly cron job to update the table FAILED v2 with an error:",
       error
     );
   }
