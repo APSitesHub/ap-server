@@ -24,6 +24,21 @@ async function createQuizLeadEng(data) {
     return total + (item.answer === question.correct ? weight : 0);
   }, 0);
 
+   let level = "A1";
+    if (score >= 0 && score <= 3) {
+      level = "A1";
+    } else if (score >= 4 && score <= 6) {
+      level = "A2";
+    } else if (score >= 7 && score <= 9) {
+      level = "B1";
+    } else if (score >= 10 && score <= 12) {
+      level = "B2";
+    } else if (score >= 13 && score <= 15) {
+      level = "C1";
+    } else if (score >= 16 && score <= 18) {
+      level = "C2";
+    }
+
   const postRequest = [
     {
       name: `Quiz Lead ${name}`,
@@ -54,6 +69,15 @@ async function createQuizLeadEng(data) {
           values: [
             {
               value: callTime || "",
+            },
+          ],
+        },
+        {
+          field_id: 1827945, // Field for English level
+          field_name: "Визначений рівень",
+          values: [
+            {
+              value: level,
             },
           ],
         },
