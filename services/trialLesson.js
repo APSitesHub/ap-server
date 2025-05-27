@@ -3,7 +3,6 @@ const getCRMLead = require('./crmGetLead');
 const { getToken } = require('./tokensServices');
 const { fromUnixTime, addMinutes, subMinutes, isWithinInterval } = require('date-fns');
 const { toZonedTime } = require('date-fns-tz');
-const { LinkMapTrial } = require('./altegioWebhook');
 
 const idFiled = [
     1821801,
