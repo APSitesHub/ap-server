@@ -4,10 +4,15 @@ const { findRoomById, newRoom } = require("./videochatRoomsServices");
 
 const BASE_LESSON_URL = "https://academy.ap.education/room/individual";
 
-const prepareLessonRoom = async (teacherAltegioId) => {
-  try {
-    const teacher = await findTeacherByAltegioID(teacherAltegioId);
 
+/**
+ * Prepares a lesson room for a teacher by creating a new room if it doesn't exist.
+ * @param {Object} teacher - The teacher object containing the teacher's details.
+ * @returns {Promise<string>} - The URL of the prepared lesson room.
+ * @throws {Error} - If there is an error while preparing the lesson room.
+ */
+const prepareLessonRoom = async (teacher) => {
+  try {
     const slug = slugify(teacher.name, { lowercase: true });
     const room = await findRoomById(slug);
 
@@ -21,13 +26,7 @@ const prepareLessonRoom = async (teacherAltegioId) => {
 
       await newRoom(room);
     }
-    return {
-      roomLink: `${BASE_LESSON_URL}/${slug}`,
-      teacher: {
-        login: teacher.login,
-        password: teacher.password,
-      },
-    };
+    return `${BASE_LESSON_URL}/${slug}`;
   } catch (error) {
     console.error("Error preparing lesson room:", error);
     throw new Error("Failed to prepare lesson room");
