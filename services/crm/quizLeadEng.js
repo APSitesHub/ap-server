@@ -3,7 +3,7 @@ const { getToken } = require("../tokensServices");
 const getLeadWithEngPage = require("../../utils/crm/getLeadWithEngPage");
 
 async function createQuizLeadEng(data) {
-  const { name, phone, callTime, answers, ...utmFields } = data;
+  const { name, phone, email, callTime, answers, ...utmFields } = data;
 
   // Map answers to include question text and selected answer content
   const answersList = answers.map((item) => {
@@ -31,12 +31,8 @@ async function createQuizLeadEng(data) {
       level = "A2";
     } else if (score >= 7 && score <= 9) {
       level = "B1";
-    } else if (score >= 10 && score <= 12) {
+    } else if (score >= 10) {
       level = "B2";
-    } else if (score >= 13 && score <= 15) {
-      level = "C1";
-    } else if (score >= 16 && score <= 18) {
-      level = "C2";
     }
 
   const postRequest = [
@@ -111,6 +107,16 @@ async function createQuizLeadEng(data) {
                 values: [
                   {
                     value: phone,
+                    enum_code: "WORK",
+                  },
+                ],
+              },
+              {
+                field_id: 556512,
+                field_name: "Email",
+                values: [
+                  {
+                    value: email || "",
                     enum_code: "WORK",
                   },
                 ],
