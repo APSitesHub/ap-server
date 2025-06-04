@@ -184,7 +184,6 @@ const StatusMappingReanimation = {
   Polish: 63642556,
 };
 
-const TEST_STAFF_ID = 2779383;
 
 // Webhook обробник для Altegio
 const altegioWebhook = async (req, res) => {

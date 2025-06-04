@@ -3,7 +3,7 @@ const { getToken } = require("../tokensServices");
 const getLeadWithEngPage = require("../../utils/crm/getLeadWithEngPage");
 
 async function createQuizLeadGer(data) {
-  const { name, phone, callTime, answers, ...utmFields } = data;
+  const { name, phone, email, callTime, answers, ...utmFields } = data;
 
   // Map answers to include question text and selected answer content
   const answersList = answers.map((item) => {
@@ -31,12 +31,8 @@ async function createQuizLeadGer(data) {
       level = "A2";
     } else if (score >= 7 && score <= 9) {
       level = "B1";
-    } else if (score >= 10 && score <= 12) {
+    } else if (score >= 10) {
       level = "B2";
-    } else if (score >= 13 && score <= 15) {
-      level = "C1";
-    } else if (score >= 16 && score <= 18) {
-      level = "C2";
     }
 
   const postRequest = [
@@ -115,6 +111,16 @@ async function createQuizLeadGer(data) {
                   },
                 ],
               },
+               {
+                field_id: 556512,
+                field_name: "Email",
+                values: [
+                  {
+                    value: email || "",
+                    enum_code: "WORK",
+                  },
+                ],
+              },
             ],
           },
         ],
@@ -131,7 +137,7 @@ async function createQuizLeadGer(data) {
     const leadId = crmLead.data[0].id;
 
     // Determine the recommended level
-    const level = score <= 10 ? "початковий" : "середній";
+    const levelNote = score <= 10 ? "початковий" : "середній";
 
     // Create a note for the lead
     const noteRequest = [
@@ -140,7 +146,7 @@ async function createQuizLeadGer(data) {
         entity_type: "leads",
         note_type: "common", // Common note type
         params: {
-          text: `Приблизний рекомендований рівень німецької: ${level}`,
+          text: `Приблизний рекомендований рівень німецької: ${levelNote}`,
         },
         request_id: `note_${leadId}`,
       },
@@ -231,7 +237,7 @@ const questions = [
     options: [
       'Ich interessiere mich für Reisen.',
       'Ich interessiere mich an Reisen.',
-      'Ich interessiere für Reisen.',
+      'Ich interessiere для Reisen.',
     ],
     correct: 0,
   },

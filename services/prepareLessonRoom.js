@@ -1,4 +1,3 @@
-const { findTeacherByAltegioID } = require("./teachersServices");
 const { slugify } = require("transliteration");
 const { findRoomById, newRoom } = require("./videochatRoomsServices");
 

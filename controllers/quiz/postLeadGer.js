@@ -10,10 +10,10 @@ const postLeadGer = async (req, res) => {
                 message: "Failed to create lead",
             });
         }
-        res.status(200).json(dataRes);
         res.status(200).json({
             status: "success",
             message: "Lead created successfully",
+            ...dataRes
         });
     } catch (error) {
         console.error("Error creating lead:", error);
