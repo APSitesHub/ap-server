@@ -184,62 +184,61 @@ function getFieldIdByKey(key) {
 const questions = [
   {
     id: 1,
-    question: 'Як правильно сказати: "Мене звати Анна."',
-    options: ['Ich heiße Anna.', 'Ich bin Anna heiße.', 'Heiße ich Anna.'],
-    correct: 0,
+    question: 'Як правильно відповісти на запитання: "Як тебе звати?"',
+    options: ['I am call Anna.', 'My name is Anna.', 'I calling Anna.'],
+    correct: 1,
   },
   {
     id: 2,
-    question: 'Оберіть правильний артикль: Buch liegt auf dem Tisch.',
-    options: ['Der', 'Die', 'Das'],
-    correct: 2,
+    question: 'Оберіть правильний варіант: Good morning! How __ you?',
+    options: ['is', 'are', 'am'],
+    correct: 1,
   },
   {
     id: 3,
     question: 'Яке речення правильне:',
-    options: ['Er kommen aus Spanien.', 'Er kommt aus Spanien.', 'Er kommt Spanien aus.'],
+    options: ['She live in London.', 'She lives in London.', 'She living in London.'],
     correct: 1,
   },
   {
     id: 4,
-    question: 'Виберіть правильну форму дієслова: Wir ins Kino gegangen.',
-    options: ['sind', 'haben', 'sein'],
-    correct: 0,
+    question: 'Оберіть правильний варіант: I have been living here ___ five years.', //need check
+    options: ['since', 'for', 'during'],
+    correct: 1,
   },
   {
     id: 5,
-    question: 'Оберіть правильний переклад: "Чи можна тут паркуватися?"',
-    options: ['Darf ich hier parken?', 'Kann ich hier parkieren?', 'Kann ich hier parken darf?'],
+    question: 'Виберіть правильний переклад: "Чи можу я взяти це?"',
+    options: ['Can I take this?', 'May I taken this?', 'Could I taking this?'],
     correct: 0,
   },
   {
     id: 6,
-    question: 'Як правильно поставити питання: hast du gestern gesehen?',
-    options: ['Wer', 'Was', 'Wen'],
+    question: 'Оберіть правильний варіант: When ___ you finish your homework yesterday?', //need check, really ?
+    options: ['do', 'does', 'did'],
     correct: 2,
   },
   {
     id: 7,
-    question:
-      'Оберіть правильне продовження речення: Wenn ich mehr Zeit hätte, ich ein Buch schreiben.',
-    options: ['werde', 'würde', 'werde'],
-    correct: 1,
+    question: 'Оберіть правильний варіант: If I had more free time, I ___ travel the world.', //need check
+    options: ['would', 'will', 'can'],
+    correct: 0,
   },
   {
     id: 8,
-    question: 'Виберіть правильну форму: Trotz ___ Regens sind wir spazieren gegangen.',
-    options: ['der', 'dem', 'des'],
-    correct: 2,
+    question: 'Оберіть правильний варіант: Despite ___ late, he managed to catch the train.',
+    options: ['to be', 'being', 'been'],
+    correct: 1,
   },
   {
     id: 9,
     question: 'Яке речення граматично правильне:',
     options: [
-      'Ich interessiere mich für Reisen.',
-      'Ich interessiere mich an Reisen.',
-      'Ich interessiere для Reisen.',
+      'He suggested to go to the museum.',
+      'He suggested going to the museum.',
+      'He suggested go to the museum.',
     ],
-    correct: 0,
+    correct: 1,
   },
 ];
 
