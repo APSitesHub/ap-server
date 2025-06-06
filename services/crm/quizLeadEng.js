@@ -189,7 +189,7 @@ const questions = [
   },
   {
     id: 2,
-    question: "Оберіть правильний варіант: Good morning! How you?",
+    question: "Оберіть правильний варіант: Good morning! How __ you?",
     options: ["is", "are", "am"],
     correct: 1,
   },
@@ -201,7 +201,8 @@ const questions = [
   },
   {
     id: 4,
-    question: "Оберіть правильне речення: I have been living here five years.",
+    question:
+      "Оберіть правильний варіант: I have been living here ___ five years.", //need check
     options: ["since", "for", "during"],
     correct: 1,
   },
@@ -213,19 +214,22 @@ const questions = [
   },
   {
     id: 6,
-    question: "Яке речення правильне: When you finish your homework?",
+    question:
+      "Оберіть правильний варіант: When ___ you finish your homework yesterday?", //need check, really ?
     options: ["do", "does", "did"],
     correct: 2,
   },
   {
     id: 7,
-    question: "Оберіть правильне продовження речення: If I had more free time, I travel the world.",
+    question:
+      "Оберіть правильний варіант: If I had more free time, I ___ travel the world.", //need check
     options: ["would", "will", "can"],
     correct: 0,
   },
   {
     id: 8,
-    question: "Виберіть правильний варіант: Despite ___ late, he managed to catch the train.",
+    question:
+      "Оберіть правильний варіант: Despite ___ late, he managed to catch the train.",
     options: ["to be", "being", "been"],
     correct: 1,
   },
