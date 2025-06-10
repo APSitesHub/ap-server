@@ -154,6 +154,10 @@ const PersonalLinkMapTrial = [
     teacherId: 2692855,
     link: "https://academy.ap.education/room/trial/doloka/812e0f63-de29-4d2c-b407-fa0d788e46a0",
   },
+  {
+    teacherId: 2212152,
+    link: "https://academy.ap.education/room/trial/doloka/812e0f63-de29-4d2c-b407-fa0d788e46a0",
+  },
 ];
 
 const C2UTrialId = [12460475];
