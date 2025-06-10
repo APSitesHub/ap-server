@@ -712,6 +712,15 @@ const hostKahoots = new Schema(
         lyasota_5: String,
       },
     },
+    shvets: {
+      links: {
+        shvets_1: String,
+        shvets_2: String,
+        shvets_3: String,
+        shvets_4: String,
+        shvets_5: String,
+      },
+    },
   },
   {
     versionKey: false,
