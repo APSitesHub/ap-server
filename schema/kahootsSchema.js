@@ -777,6 +777,16 @@ const kahootsSchema = Joi.object({
     }),
     replace: Joi.bool().required(),
   }),
+  shvets: Joi.object({
+    links: Joi.object({
+      shvets_1: Joi.string().empty(""),
+      shvets_2: Joi.string().empty(""),
+      shvets_3: Joi.string().empty(""),
+      shvets_4: Joi.string().empty(""),
+      shvets_5: Joi.string().empty(""),
+    }),
+    replace: Joi.bool().required(),
+  }),
 });
 
 const validateKahoots = ({ body }, res, next) => {
