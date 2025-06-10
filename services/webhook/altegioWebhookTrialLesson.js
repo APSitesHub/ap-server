@@ -156,7 +156,7 @@ const PersonalLinkMapTrial = [
   },
   {
     teacherId: 2212152,
-    link: "https://academy.ap.education/room/trial/doloka/812e0f63-de29-4d2c-b407-fa0d788e46a0",
+    link: "https://academy.ap.education/room/trial/shvets/68f68f33-636c-4fbf-ae66-999897c4e654",
   },
 ];
 
