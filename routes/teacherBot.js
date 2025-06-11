@@ -96,16 +96,23 @@ const ServicesMap = {
   },
 };
 
+const trialServicesMap = {
+  ENG: 10669989,
+  PL: 10669994,
+  DE: 10669992,
+};
+
 const router = express.Router();
 router.post("/found_teacher", async (req, res) => {
   const RESPONSIBLE_MANGER_ID = 557260;
   const DATE_TIME_LESSON_START = 1824843;
-  const DATE_TIME_LESSON_END = 1824931;
-  const LESSON_TYPE = 1824839;
-  const LESSON_LEVEL = 1824721;
+  // const DATE_TIME_LESSON_END = 1824931;
+  // const LESSON_TYPE = 1824839;
+  // const LESSON_LEVEL = 1824721;
   const LESSON_LANGUAGE = 1824775;
-  const TEACHER = 1824847;
+  // const TEACHER = 1824847;
   const FOR_CHILDREN = 1824855;
+  let taskMsg = "";
 
   const leadId = req.body.leads.add[0].id;
   if (!leadId) {
@@ -114,13 +121,14 @@ router.post("/found_teacher", async (req, res) => {
 
   try {
     const currentToken = await getToken();
-    axios.defaults.headers.common["Authorization"] =
-      `Bearer ${currentToken[0].access_token}`;
-    console.log(`Found Teacher for ${req.body.leads.add[0].id}`);
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${currentToken[0].access_token}`;
     const crmLead = await axios.get(
-      `https://apeducation.kommo.com/api/v4/leads/${req.body.leads.add[0].id}`,
+      `https://apeducation.kommo.com/api/v4/leads/${req.body.leads.add[0].id}`
     );
     const customFields = crmLead.data.custom_fields_values;
+
     if (!Array.isArray(customFields) || !customFields.length) {
       console.error(`Lead do not have custom fields for found teacher`);
       return res
@@ -144,36 +152,10 @@ router.post("/found_teacher", async (req, res) => {
             dateTimeLessonStart: convertToISODate(filed.values[0].value),
           };
           break;
-        case DATE_TIME_LESSON_END:
-          userInfoForLesson = {
-            ...userInfoForLesson,
-            dateTimeLessonEnd: filed.values[0].value
-              ? convertToISODate(filed.values[0].value)
-              : "",
-          };
-          break;
-        case LESSON_TYPE:
-          userInfoForLesson = {
-            ...userInfoForLesson,
-            lessonType: filed.values[0].value,
-          };
-          break;
-        case LESSON_LEVEL:
-          userInfoForLesson = {
-            ...userInfoForLesson,
-            lessonLevel: filed.values[0].value,
-          };
-          break;
         case LESSON_LANGUAGE:
           userInfoForLesson = {
             ...userInfoForLesson,
             lesson_language: filed.values[0].value,
-          };
-          break;
-        case TEACHER:
-          userInfoForLesson = {
-            ...userInfoForLesson,
-            teacherLvl: filed.values[0].value,
           };
           break;
         case FOR_CHILDREN:
@@ -184,31 +166,32 @@ router.post("/found_teacher", async (req, res) => {
           break;
       }
     });
-    console.log(`Lead data for found teacher ${userInfoForLesson}`);
-    const serviceIds =
-      ServicesMap?.[userInfoForLesson.lesson_language]?.[
-        userInfoForLesson.teacherLvl
-      ]?.[userInfoForLesson.lessonType];
-    const dateTimeStart = userInfoForLesson.dateTimeLessonStart;
-    const dateTimeEnd =  userInfoForLesson.dateTimeLessonEnd  || null;
-    const isChildren = Boolean(userInfoForLesson.isChildren);
-    const bookableStaff = await getBookableStaff(
-      serviceIds,
-      dateTimeStart,
-      dateTimeEnd,
-      isChildren,
-    );
 
-    const sortedTeacherByLvl = bookableStaff.filter((employee) => employee.name.toUpperCase().includes(userInfoForLesson.teacherLvl.toUpperCase()))
-    const list = sortedTeacherByLvl.map((employee) => {
-      const name = employee.name.split(' ');
-      return `${name[0]} ${name[1]}`
-    }).join(', ');
-    let taskMsg = "";
+    const dateTimeStart = userInfoForLesson.dateTimeLessonStart;
+    const isChildren = Boolean(userInfoForLesson.isChildren);
+    const serviceIds = trialServicesMap[userInfoForLesson.lesson_language];
+    const bookableStaff = await getBookableStaff(serviceIds, isChildren);
+
+    if (!dateTimeStart) {
+      taskMsg = "Не вказано дату пошуку!";
+      return;
+    }
+
+    if (!bookableStaff.length) {
+      taskMsg = "Вільних викладачів не знайдено!";
+      return;
+    }
+
+    const sessions = await getSessions(bookableStaff, dateTimeStart);
+
+    const list = sessions
+      .map((employee) => `${employee.name} ${employee.freeSessions}`)
+      .join("\n");
+
     if (!list.length) {
-      taskMsg = `Вільних викладачів рівня: ${userInfoForLesson.teacherLvl} не має`;
+      taskMsg = "Вільних викладачів не знайдено!";
     } else {
-      taskMsg = `Доступні викладачі ${list}`;
+      taskMsg = `Доступні викладачі:\n${list}`;
     }
     const taskData = [
       {
@@ -228,11 +211,13 @@ router.post("/found_teacher", async (req, res) => {
         headers: {
           "Content-Type": "application/json", // Заголовок для JSON-запиту
         },
-      },
+      }
     );
   } catch (err) {
     console.error(
-      `Error with lead ${req.body.leads.add[0].id} ERROR: ${JSON.stringify(err)}`,
+      `Error with lead ${req.body.leads.add[0].id} ERROR: ${JSON.stringify(
+        err
+      )}`
     );
   }
   return res.status(200).json({ message: "OK" });
@@ -244,26 +229,31 @@ function convertToISODate(data) {
   return formattedDate;
 }
 
-async function getBookableStaff(
-  serviceIds,
-  dateTimeStart,
-  dateTimeEnd,
-  isChildren,
-) {
+function getNearbyTimes(date, timesArray) {
+  const SEARCH_HOURS_RANGE = 2;
+  const baseTime = new Date(date).getTime();
+  const twoHoursMs = SEARCH_HOURS_RANGE * 60 * 60 * 1000;
+
+  const filteredTimes = timesArray
+    .filter((slot) => {
+      const slotTime = new Date(slot.datetime).getTime();
+      return Math.abs(slotTime - baseTime) <= twoHoursMs;
+    })
+    .map((slot) => slot.time);
+
+  return filteredTimes.length ? `(${filteredTimes.join(", ")})` : null;
+}
+
+async function getBookableStaff(serviceIds, isChildren) {
   const companyId = process.env.ALTEGIO_COMPANY_ID;
   const companyToken = process.env.ALTEGIO_COMPANY_TOKEN;
   const firedStatus = "ЗВІЛЬНЕНО";
   const withoutChildrenStatus = "NO CHILDREN";
-  const paramsOptions = dateTimeEnd
-    ? {
-        service_ids: serviceIds,
-        date_from: dateTimeStart,
-        date_to: dateTimeEnd,
-      }
-    : {
-        service_ids: serviceIds, // Фільтр по service ID
-        datetime: dateTimeStart,
-      };
+  const webinarsOnlyStatus = "ВЕБІНАР";
+  const paramsOptions = {
+    service_ids: serviceIds,
+  };
+
   try {
     const apiUrl = `https://api.alteg.io/api/v1/book_staff/${companyId}`;
     const response = await axios.get(apiUrl, {
@@ -274,25 +264,67 @@ async function getBookableStaff(
       },
       params: paramsOptions,
     });
+
     if (!response.data.success) {
       throw new Error("API call unsuccessful");
     }
     const bookableStaff = response.data.data.filter((employee) => {
       const employeeName = employee.name.toUpperCase();
       return (
-        Boolean(employee.bookable) && !employeeName.includes(firedStatus.toUpperCase())
+        Boolean(employee.bookable) &&
+        !employeeName.includes(firedStatus.toUpperCase()) &&
+        !employeeName.includes(webinarsOnlyStatus.toUpperCase())
       );
     });
     if (isChildren) {
       return bookableStaff.filter(
-        (employee) => !`${employee.name}`.includes(withoutChildrenStatus),
+        (employee) => !`${employee.name}`.includes(withoutChildrenStatus)
       );
     }
 
     return bookableStaff;
   } catch (error) {
-    console.log(error);
     console.error("Error fetching bookable staff:", error.message);
   }
 }
+
+async function getSessions(teachers, startDate) {
+  try {
+    const sessions = await Promise.all(
+      teachers.map(async (teacher) => {
+        try {
+          const apiUrl = `https://api.alteg.io/api/v1/book_times/${process.env.ALTEGIO_COMPANY_ID}/${teacher.id}/${startDate}`;
+          const response = await axios.get(apiUrl, {
+            headers: {
+              Accept: "application/vnd.api.v2+json",
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${process.env.ALTEGIO_COMPANY_TOKEN}`,
+            },
+          });
+
+          const sessionsData = response?.data?.data;
+          if (!Array.isArray(sessionsData)) return null;
+
+          return {
+            id: teacher.id,
+            name: teacher.name.split(" ").slice(0, 2).join(" "),
+            freeSessions: getNearbyTimes(startDate, sessionsData),
+          };
+        } catch (err) {
+          console.warn(
+            `Failed to fetch sessions for teacher ID ${teacher.id}:`,
+            err.message
+          );
+          return null;
+        }
+      })
+    );
+
+    return sessions.filter((session) => session.freeSessions).filter(Boolean);
+  } catch (e) {
+    console.error("Critical error in getSessions:", e);
+    return [];
+  }
+}
+
 module.exports = router;
