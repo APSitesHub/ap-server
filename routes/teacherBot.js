@@ -249,13 +249,17 @@ function getNearbyTimes(date, timesArray) {
   const filteredTimes = timesArray
     .filter((slot) => {
       // Convert slot time to Kyiv time
-      const slotDateTime = DateTime.fromISO(slot.datetime, { zone: "Europe/Kiev" });
+      const slotDateTime = DateTime.fromISO(slot.datetime, {
+        zone: "Europe/Kiev",
+      });
       const slotTime = slotDateTime.toMillis();
       return Math.abs(slotTime - baseTime) <= twoHoursMs;
     })
     .map((slot) => {
       // Format time in Kyiv timezone
-      const slotDateTime = DateTime.fromISO(slot.datetime, { zone: "Europe/Kiev" });
+      const slotDateTime = DateTime.fromISO(slot.datetime, {
+        zone: "Europe/Kiev",
+      });
       return slotDateTime.toFormat("HH:mm");
     });
   console.log("Filtered times:", filteredTimes);
@@ -326,7 +330,7 @@ async function getSessions(teachers, startDate) {
 
           return {
             id: teacher.id,
-            name: teacher.name.split(" ").slice(0, 2).join(" "),
+            name: teacher.name,
             freeSessions: getNearbyTimes(startDate, sessionsData),
           };
         } catch (err) {
