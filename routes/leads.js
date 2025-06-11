@@ -14,6 +14,7 @@ const postLeadEvent = require("../middlewares/crm/postLeadEvent.js");
 const postLeadEng = require("../controllers/quiz/postLeadEng.js");
 const postLeadGer = require("../controllers/quiz/postLeadGer.js");
 const postBodoCardLead = require("../controllers/leads/postBodoCardLead");
+const postPaymentSignature = require("../controllers/leads/postPaymentSignature");
 const {
   validateLead,
   validateLeadConference,
@@ -75,4 +76,5 @@ router.post("/quiz-ger", postLeadGer);
 router.post("/quiz-nmt", postLeadNMT);
 router.post("/nmt-form", postPartnerLeadNMT);
 router.post("/bodocard", postBodoCardLead);
+router.post("/lead-payment", postPaymentSignature);
 module.exports = router;
