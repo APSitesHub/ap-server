@@ -230,8 +230,9 @@ function convertToISODate(data) {
 }
 
 function getNearbyTimes(date, timesArray) {
+  const kyivDate = convertToISODate(date);
   const SEARCH_HOURS_RANGE = 2;
-  const baseTime = new Date(date).getTime();
+  const baseTime = new Date(kyivDate).getTime();
   const twoHoursMs = SEARCH_HOURS_RANGE * 60 * 60 * 1000;
 
   const filteredTimes = timesArray
