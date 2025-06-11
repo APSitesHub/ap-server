@@ -231,8 +231,6 @@ function convertToISODate(data) {
 
 function getNearbyTimes(date, timesArray) {
   const SEARCH_HOURS_RANGE = 2;
-  console.log("getNearbyTimes date:", date);
-  console.log("getNearbyTimes timesArray:", timesArray);
   // Convert base date to Kyiv time
   const baseDateTime = DateTime.fromISO(date, { zone: "Europe/Kiev" });
   const baseTime = baseDateTime.toMillis();
