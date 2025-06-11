@@ -185,7 +185,10 @@ router.post("/found_teacher", async (req, res) => {
     const sessions = await getSessions(bookableStaff, dateTimeStart);
 
     const list = sessions
-      .map((employee) => `${employee.name} ${employee.freeSessions}`)
+      .map(
+        (employee) =>
+          `${normalizeTeacherName(employee.name)} ${employee.freeSessions}`
+      )
       .join("\n");
 
     if (!list.length) {
@@ -222,6 +225,13 @@ router.post("/found_teacher", async (req, res) => {
   }
   return res.status(200).json({ message: "OK" });
 });
+
+function normalizeTeacherName(name) {
+  const firstTwoWords = name.split(" ").slice(0, 2);
+  const levels = name.match(/\b(DE|ENG|PL|A0|A1|A2|B1|B2|C1|C2)\b/g) || [];
+
+  return [...firstTwoWords, ...levels].join(" ");
+}
 
 function convertToISODate(data) {
   const date = DateTime.fromMillis(+data * 1000, { zone: "Europe/Kiev" });
