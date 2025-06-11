@@ -230,17 +230,27 @@ function convertToISODate(data) {
 }
 
 function getNearbyTimes(date, timesArray) {
-  const kyivDate = convertToISODate(date);
   const SEARCH_HOURS_RANGE = 2;
-  const baseTime = new Date(kyivDate).getTime();
+  console.log("getNearbyTimes date:", date);
+  console.log("getNearbyTimes timesArray:", timesArray);
+  // Convert base date to Kyiv time
+  const baseDateTime = DateTime.fromISO(date, { zone: "Europe/Kiev" });
+  const baseTime = baseDateTime.toMillis();
   const twoHoursMs = SEARCH_HOURS_RANGE * 60 * 60 * 1000;
 
   const filteredTimes = timesArray
     .filter((slot) => {
-      const slotTime = new Date(slot.datetime).getTime();
+      // Convert slot time to Kyiv time
+      const slotDateTime = DateTime.fromISO(slot.datetime, { zone: "Europe/Kiev" });
+      const slotTime = slotDateTime.toMillis();
       return Math.abs(slotTime - baseTime) <= twoHoursMs;
     })
-    .map((slot) => slot.time);
+    .map((slot) => {
+      // Format time in Kyiv timezone
+      const slotDateTime = DateTime.fromISO(slot.datetime, { zone: "Europe/Kiev" });
+      return slotDateTime.toFormat("HH:mm");
+    });
+  console.log("Filtered times:", filteredTimes);
 
   return filteredTimes.length ? `(${filteredTimes.join(", ")})` : null;
 }
