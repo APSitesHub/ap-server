@@ -15,6 +15,7 @@ const postLeadEng = require("../controllers/quiz/postLeadEng.js");
 const postLeadGer = require("../controllers/quiz/postLeadGer.js");
 const postBodoCardLead = require("../controllers/leads/postBodoCardLead");
 const postPaymentSignature = require("../controllers/leads/postPaymentSignature");
+const postWayforPayCallback = require("../controllers/leads/postWayforPayCallback");
 const {
   validateLead,
   validateLeadConference,
@@ -77,4 +78,5 @@ router.post("/quiz-nmt", postLeadNMT);
 router.post("/nmt-form", postPartnerLeadNMT);
 router.post("/bodocard", postBodoCardLead);
 router.post("/lead-payment", postPaymentSignature);
+router.post("/wayforpay-callback", postWayforPayCallback);
 module.exports = router;
