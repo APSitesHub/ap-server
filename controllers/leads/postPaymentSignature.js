@@ -17,7 +17,7 @@ const postPaymentSignature = (req, res) => {
     ];
     const params = req.body;
 
-    params.merchantAccount = 'ap_education';
+    params.merchantAccount = process.env.WFP_Merchant_Account || 'ap_education';
     params.merchantDomainName = 'ap.education';
     params.amount = 490;
     params.currency = 'UAH';
