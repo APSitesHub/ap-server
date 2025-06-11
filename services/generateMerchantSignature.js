@@ -17,4 +17,6 @@ function generateMerchantSignature (params, secretKey){
     // Генеруємо підпис
     return crypto.createHash('sha256').update(stringToSign).digest('hex');
 }
-module.exports = generateMerchantSignature;
+module.exports = {
+    generateMerchantSignature
+};
