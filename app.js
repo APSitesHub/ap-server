@@ -36,6 +36,7 @@ const webhookAltegio = require("./routes/webhookAltegio");
 const trialLesson = require("./routes/trialLesson");
 const answerRouter = require("./routes/answers");
 const crmRouter = require("./routes/crm");
+const pedagogiumCoursesRouter = require("./routes/pedagogiumCourses");
 const Sentry = require("@sentry/node");
 
 const app = express();
@@ -79,6 +80,7 @@ app.use("/webhook_booking", webhookAltegio);
 app.use("/trial-lesson", trialLesson);
 app.use("/answers", answerRouter);
 app.use("/crm", crmRouter);
+app.use("/pedagogium-courses", pedagogiumCoursesRouter);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");

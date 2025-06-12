@@ -10,8 +10,9 @@ const allUniUsers = async () =>
 const allPedagogiumUsers = async () =>
   await UniUsers.find({
     university: "Pedagogium (Wyższa Szkoła Nauk Społecznych)",
-    name: { $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski"] },
-    group: { $nin: ["2"] },
+    name: {
+      $nin: ["Pedagogium", "Dev Acc", "Krzysztof Lewandowski", "Student"],
+    },
   }).select("-visitedTime -token -university -createdAt -updatedAt");
 
 const allWSTIJOUsers = async () =>
