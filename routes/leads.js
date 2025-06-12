@@ -34,6 +34,7 @@ const postHRLead = require("../middlewares/crm/postHRLead");
 const postMCLead = require("../middlewares/crm/postMCLead");
 const postLeadFeedback = require("../controllers/leads/postLeadFeedback.js");
 const postLeadNMT = require("../controllers/quiz/postLeadNMT");
+const postLeadEngChildren = require("../controllers/quiz/postLeadEngChildren");
 const postPartnerLeadNMT = require("../controllers/leads/postPartnerLeadNMT");
 
 const router = express.Router();
@@ -55,7 +56,7 @@ router.post("/certificate", validateLeadCertificate, postLeadCertificate);
 
 router.post("/event", validateLeadEvent, postLeadEvent);
 
-router.post("/feedback", validateLeadFeedback, postLeadFeedback)
+router.post("/feedback", validateLeadFeedback, postLeadFeedback);
 
 router.patch("/quiz/:id", validateQuizLead, updateQuizLead, getLeadAndPost);
 
@@ -75,6 +76,7 @@ router.patch(
 router.post("/quiz-eng", postLeadEng);
 router.post("/quiz-ger", postLeadGer);
 router.post("/quiz-nmt", postLeadNMT);
+router.post("/quiz-eng-children", postLeadEngChildren);
 router.post("/nmt-form", postPartnerLeadNMT);
 router.post("/bodocard", postBodoCardLead);
 router.post("/lead-payment", postPaymentSignature);
