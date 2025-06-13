@@ -1,13 +1,52 @@
-function postWayforPayCallback (req, res) {
-    console.log('WayforPay Callback Body:', req.body);
-    res.status(200).send('Callback received');
-};
+const axios = require('axios');
+const { getToken } = require('../../services/tokensServices');
 
-// WayforPay Callback Body: {
-//   '{"merchantAccount":"test_merch_n1","orderReference":"AP-1749645521-4956","merchantSignature":"454fd4698293514a13449ff2836de2ac","amount":490,"currency":"UAH","authCode":"847011","email":"seo@ap.education","phone":"7812348134162","createdDate":1749645522,"processingDate":1749645656,"cardPan":"51****5977","cardType":"MasterCard","issuerBankCountry":"Ukraine","issuerBankName":"JSC CB PRIVATBANK","recToken":"68497932-8940-464b-987e-17599cb36dc2","transactionStatus":"Approved","reason":"Ok","reasonCode":1100,"fee":9.8,"paymentSystem":"card","acquirerBankName":"WayForPay","cardProduct":"debit","clientName":"\\u0412\\u041e\\u0414\\u041e\\u041d\\u0406\\u0421 \\u0406\\u041b\\u041b\\u042f"}': ''
-// }
-// POST /leads/wayforpay-callback/ 200 3.827 ms - 17
-// WayforPay Callback Body: {
-//   '{"merchantAccount":"test_merch_n1","orderReference":"AP-1749645521-4956","merchantSignature":"454fd4698293514a13449ff2836de2ac","amount":490,"currency":"UAH","authCode":"847011","email":"seo@ap.education","phone":"7812348134162","createdDate":1749645522,"processingDate":1749645656,"cardPan":"51****5977","cardType":"MasterCard","issuerBankCountry":"Ukraine","issuerBankName":"JSC CB PRIVATBANK","recToken":"68497932-8940-464b-987e-17599cb36dc2","transactionStatus":"Approved","reason":"Ok","reasonCode":1100,"fee":9.8,"paymentSystem":"card","acquirerBankName":"WayForPay","cardProduct":"debit","clientName":"\\u0412\\u041e\\u0414\\u041e\\u041d\\u0406\\u0421 \\u0406\\u041b\\u041b\\u042f"}': ''
+async function postWayforPayCallback(req, res) {
+    try {
+        // Parse the JSON string from the key
+        const paymentData = JSON.parse(Object.keys(req.body)[0]);
+        console.log('WayforPay Callback Body:', paymentData);
+
+        if (paymentData.transactionStatus === 'Approved') {
+            const currentToken = await getToken();
+            axios.defaults.headers.common.Authorization = `Bearer ${currentToken[0].access_token}`;
+            const leadData = {
+                name: paymentData.clientName,
+                created_by: 0,
+                pipeline_id: 6447058,
+                status_id: 58735746, // Replace with your desired status ID
+                _embedded: {
+                    contacts: [
+                        {
+                            first_name: paymentData.clientName,
+                            custom_fields_values: [
+                                {
+                                    field_code: "EMAIL",
+                                    values: [{ value: paymentData.email }]
+                                },
+                                {
+                                    field_code: "PHONE",
+                                    values: [{ value: paymentData.phone }]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                custom_fields_values: [
+                    {
+                        field_id: 1824857, // Replace with your payment amount field ID
+                        values: [{ value: paymentData.amount }]
+                    }
+                ]
+            };
+            await axios.post('https://apeducation.kommo.com/api/v4/leads/complex', [leadData]);
+        }
+
+        res.status(200).send('Callback received and processed');
+    } catch (error) {
+        console.error('Error processing WayForPay callback:', error);
+        res.status(500).send('Error processing callback');
+    }
+};
 
 module.exports = postWayforPayCallback;
