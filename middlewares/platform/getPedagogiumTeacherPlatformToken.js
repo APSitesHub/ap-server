@@ -1,10 +1,8 @@
 const axios = require("axios");
-const { findTeacher } = require("../../services/teachersServices");
+const { findTeacher } = require("../../services/pedagogiumTeachersServices");
 
 const getTeacherPlatformToken = async (req, res, next) => {
   const { login } = req.body;
-
-  console.log(req.body);
 
   const teacher = await findTeacher({ login });
 
