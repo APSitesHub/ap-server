@@ -20,15 +20,8 @@ const refreshUniUserToken = require("../controllers/pedagogiumUsers/refreshUniUs
 const refreshUniUserTokenLesson = require("../controllers/pedagogiumUsers/refreshUniUserTokenLesson.js");
 const editUniUser = require("../controllers/pedagogiumUsers/editUniUser.js");
 const getPedagogiumUsersAttendance = require("../controllers/pedagogiumUsers/getPedagogiumUsersAttendance.js");
-const getWSTIJOUsersAttendance = require("../controllers/pedagogiumUsers/getWSTIJOUsersAttendance.js");
-const getWSBMIRUsersAttendance = require("../controllers/pedagogiumUsers/getWSBMIRUsersAttendance.js");
-const getEWSPAUsersAttendance = require("../controllers/pedagogiumUsers/getEWSPAUsersAttendance.js");
 const getAllPedagogiumUsers = require("../controllers/pedagogiumUsers/getAllPedagogiumUsers.js");
-const getAllSSWUsers = require("../controllers/pedagogiumUsers/getAllSSWUsers.js");
-const getAllMANSUsers = require("../controllers/pedagogiumUsers/getAllMANSUsers.js");
-const getAllAHNSUsers = require("../controllers/pedagogiumUsers/getAllAHNSUsers.js");
-const getAllANSWPUsers = require("../controllers/pedagogiumUsers/getAllANSWPUsers.js");
-const getAllWSTIJOUsers = require("../controllers/pedagogiumUsers/getAllWSTIJOUsers.js");
+
 
 const router = express.Router();
 
@@ -37,16 +30,6 @@ router.get("/", authUniUser, getUniUser);
 router.get("/admin", authUserAdmin, getAllUniUsers);
 
 router.get("/admin/pedagogium", authUserAdmin, getAllPedagogiumUsers);
-
-router.get("/admin/wstijo", authUserAdmin, getAllWSTIJOUsers);
-
-router.get("/admin/ssw", authUserAdmin, getAllSSWUsers);
-
-router.get("/admin/mans", authUserAdmin, getAllMANSUsers);
-
-router.get("/admin/ahns", authUserAdmin, getAllAHNSUsers);
-
-router.get("/admin/answp", authUserAdmin, getAllANSWPUsers);
 
 router.post("/new", validateUniUser, addUniUser);
 
@@ -75,10 +58,5 @@ router.put(
 
 router.get("/attendance/pedagogium", getPedagogiumUsersAttendance);
 
-router.get("/attendance/wstijo", getWSTIJOUsersAttendance);
-
-router.get("/attendance/wsbmir", getWSBMIRUsersAttendance);
-
-router.get("/attendance/ewspa", getEWSPAUsersAttendance);
 
 module.exports = router;
