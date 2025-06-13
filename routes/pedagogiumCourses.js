@@ -1,7 +1,5 @@
 const express = require("express");
 
-const authUserAdmin = require("../middlewares/streams/authUserAdmin.js");
-
 const {
   validatePedagogiumCourse,
 } = require("../schema/pedagogiumCoursesSchema.js");
@@ -14,9 +12,9 @@ const editPedagogiumCourse = require("../controllers/pedagogiumCourses/editPedag
 
 const router = express.Router();
 
-router.get("/admin", authUserAdmin, getAllPedagogiumCourses);
+router.get("/admin", getAllPedagogiumCourses);
 
-router.get("/:id", authUserAdmin, getPedagogiumCourse);
+router.get("/:id", getPedagogiumCourse);
 
 router.post("/", validatePedagogiumCourse, addPedagogiumCourse);
 
