@@ -8,7 +8,7 @@ const authUserAdmin = require("../middlewares/streams/authUserAdmin.js");
 const authUniUser = require("../middlewares/uniStreams/authUniUser.js");
 const getUniPlatformToken = require("../middlewares/platform/getUniPlatformToken.js");
 
-const { validateUniUser } = require("../schema/uniUsersSchema.js");
+const { validateUniUser } = require("../schema/pedagogiumUsersSchema.js");
 
 const getUniUser = require("../controllers/uniUsers/getUniUser.js");
 const getAllUniUsers = require("../controllers/uniUsers/getAllUniUsers.js");

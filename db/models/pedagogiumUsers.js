@@ -16,6 +16,7 @@ const pedagogiumUsersSchema = new Schema({
     university: { type: String },
     group: { type: String },
     points: { type: String },
+    courseName: { type: String },
     visited: [String],
     visitedTime: [String],
     token: { type: String },
