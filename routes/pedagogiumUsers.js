@@ -21,6 +21,7 @@ const refreshUniUserTokenLesson = require("../controllers/pedagogiumUsers/refres
 const editUniUser = require("../controllers/pedagogiumUsers/editUniUser.js");
 const getPedagogiumUsersAttendance = require("../controllers/pedagogiumUsers/getPedagogiumUsersAttendance.js");
 const getAllPedagogiumUsers = require("../controllers/pedagogiumUsers/getAllPedagogiumUsers.js");
+const getUniPedagogiumPlatformToken = require("../middlewares/platform/getPedagogiumPlatformToken.js");
 
 
 const router = express.Router();
@@ -35,7 +36,7 @@ router.post("/new", validateUniUser, addUniUser);
 
 router.delete("/:id", removeUniUser);
 
-router.post("/login", validateUniUser, getUniPlatformToken, loginUniUser);
+router.post("/login", validateUniUser, getUniPedagogiumPlatformToken, loginUniUser);
 
 router.post(
   "/login/lesson",
