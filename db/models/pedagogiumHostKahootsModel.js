@@ -12,7 +12,7 @@ const pedagogiumHostKahootsModel = new Schema(
 );
 
 const PedagogiumHostKahootsModel = model(
-  "pedagogium-host-kahoots",
+  "pedagogiumhostkahoots",
   pedagogiumHostKahootsModel
 );
 
