@@ -39,6 +39,7 @@ const trialLesson = require("./routes/trialLesson");
 const answerRouter = require("./routes/answers");
 const crmRouter = require("./routes/crm");
 const pedagogiumCoursesRouter = require("./routes/pedagogiumCourses");
+const usersWebinarRouter = require("./routes/usersWebinar");
 const Sentry = require("@sentry/node");
 
 const app = express();
@@ -85,6 +86,7 @@ app.use("/trial-lesson", trialLesson);
 app.use("/answers", answerRouter);
 app.use("/crm", crmRouter);
 app.use("/pedagogium-courses", pedagogiumCoursesRouter);
+app.use("/webinarusers", usersWebinarRouter);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
