@@ -39,6 +39,8 @@ const trialLesson = require("./routes/trialLesson");
 const answerRouter = require("./routes/answers");
 const crmRouter = require("./routes/crm");
 const pedagogiumCoursesRouter = require("./routes/pedagogiumCourses");
+const pedagogiumKahoots = require("./routes/pedagogiumKahoots");
+const pedagogiumHostKahoots = require("./routes/pedagogiumHostKahoots");
 const Sentry = require("@sentry/node");
 
 const app = express();
@@ -66,14 +68,12 @@ app.use("/tokens", tokensRouter);
 app.use("/trialUsers", trialUsersRouter);
 app.use("/users", usersRouter);
 app.use("/teachers", teachersRouter);
-app.use("/pedagogium-teachers", pedagogiumTeachersRouter);
 app.use("/speakingusers", usersSpeakingRouter);
 app.use("/sctest", testUsersSpeakingRouter);
 app.use("/uni-leads", universityLeadsRouter);
 app.use("/webhooktest", webhookKommo);
 app.use("/srm_bot", teacherBot);
 app.use("/uniusers", uniUsers);
-app.use("/pedagogium-users", pedagogiumUsers);
 app.use("/unilinks", uniLinks);
 app.use("/unikahoots", uniKahoots);
 app.use("/unihostkahoots", uniHostKahoots);
@@ -84,7 +84,12 @@ app.use("/webhook_booking", webhookAltegio);
 app.use("/trial-lesson", trialLesson);
 app.use("/answers", answerRouter);
 app.use("/crm", crmRouter);
+
 app.use("/pedagogium-courses", pedagogiumCoursesRouter);
+app.use("/pedagogium-teachers", pedagogiumTeachersRouter);
+app.use("/pedagogium-users", pedagogiumUsers);
+app.use("/pedagogium-kahoots", pedagogiumKahoots);
+app.use("/pedagogium-host-kahoots", pedagogiumHostKahoots);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
