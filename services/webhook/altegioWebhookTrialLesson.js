@@ -158,6 +158,10 @@ const PersonalLinkMapTrial = [
     teacherId: 2212152,
     link: "https://academy.ap.education/room/trial/shvets/68f68f33-636c-4fbf-ae66-999897c4e654",
   },
+    {
+    teacherId: 2704377,
+    link: "https://academy.ap.education/room/trial/tsvihun/bcbad8df-888c-4333-97c9-6bb5fc14770f",
+  },
 ];
 
 const C2UTrialId = [12460475];
