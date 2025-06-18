@@ -48,6 +48,7 @@ const loginUniUser = async (req, res) => {
   const pupilId = user.pupilId;
   const marathonId = user.marathonId;
   const platformToken = req.body.authToken;
+  const feedbacks = user.feedbacks;
 
   try {
     await signInUniUser(user._id, { token, visited, visitedTime });
@@ -69,6 +70,7 @@ const loginUniUser = async (req, res) => {
       pupilId,
       marathonId,
       platformToken,
+      feedbacks,
     },
   });
 };

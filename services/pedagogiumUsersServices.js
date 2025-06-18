@@ -105,6 +105,33 @@ const getEWSPAAttendance = async () =>
       "EWSPA (Europejska Wyższa Szkoła Prawa i Administracji w Warszawie)",
   }).select("name _id visited");
 
+const findUserByGroup = async (course, group) =>
+  await PedagogiumUsers.find({
+    courseName: course,
+    group: group,
+  });
+
+const addUserFeedback = async (userId, feedback) => {
+  const user = await PedagogiumUsers.findById(userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const existingFeedback = user.feedbacks.find(
+    (fb) => fb.date === feedback.date
+  );
+
+  if (existingFeedback) {
+    existingFeedback.feedback = feedback.feedback;
+  } else {
+    user.feedbacks.push(feedback);
+  }
+
+  await user.save();
+  return user;
+};
+
 module.exports = {
   allUniUsers,
   allPedagogiumUsers,
@@ -124,4 +151,6 @@ module.exports = {
   getWSTIJOAttendance,
   getWSBMIRAttendance,
   getEWSPAAttendance,
+  findUserByGroup,
+  addUserFeedback,
 };

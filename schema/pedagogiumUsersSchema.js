@@ -5,6 +5,12 @@ const uniUserSchema = Joi.object({
   mail: Joi.string().required(),
   password: Joi.string().required(),
   crmId: Joi.number().optional(),
+  feedbacks: Joi.array().items(
+    Joi.object({
+      date: Joi.string().required(),
+      feedback: Joi.string().required(),
+    })
+  ),
   contactId: Joi.number().optional(),
   pupilId: Joi.string(),
   university: Joi.string(),
