@@ -42,6 +42,7 @@ const crmRouter = require("./routes/crm");
 const pedagogiumCoursesRouter = require("./routes/pedagogiumCourses");
 const pedagogiumKahoots = require("./routes/pedagogiumKahoots");
 const pedagogiumHostKahoots = require("./routes/pedagogiumHostKahoots");
+const pedagogiumTimetable = require("./routes/pedagogiumTimetable");
 const Sentry = require("@sentry/node");
 
 const app = express();
@@ -92,6 +93,7 @@ app.use("/pedagogium-teachers", pedagogiumTeachersRouter);
 app.use("/pedagogium-users", pedagogiumUsers);
 app.use("/pedagogium-kahoots", pedagogiumKahoots);
 app.use("/pedagogium-host-kahoots", pedagogiumHostKahoots);
+app.use("/pedagogium-timetable", pedagogiumTimetable);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
