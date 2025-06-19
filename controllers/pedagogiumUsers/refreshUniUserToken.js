@@ -8,7 +8,6 @@ const refreshUniUserToken = async (req, res, next) => {
   const { mail } = req.body;
   console.log(6, "platform", req.body);
   const user = await findUniUser({ mail });
-  console.log(user);
   if (!user) {
     next();
   }

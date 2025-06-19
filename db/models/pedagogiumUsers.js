@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const pedagogiumUsersSchema = new Schema({
+const pedagogiumUsersSchema = new Schema(
+  {
     name: { type: String },
     mail: {
       type: String,
@@ -10,6 +11,18 @@ const pedagogiumUsersSchema = new Schema({
       type: String,
       required: [true, "No password"],
     },
+    feedbacks: [
+      {
+        date: {
+          type: String,
+          require: true,
+        },
+        feedback: {
+          type: String,
+          require: true,
+        },
+      },
+    ],
     crmId: { type: Number },
     contactId: { type: Number },
     pupilId: { type: String },
@@ -24,8 +37,9 @@ const pedagogiumUsersSchema = new Schema({
   {
     versionKey: false,
     timestamps: true,
-  });
+  }
+);
 
-const PedagogiumUsers = model('pedagogiumusers', pedagogiumUsersSchema);
+const PedagogiumUsers = model("pedagogiumusers", pedagogiumUsersSchema);
 
 module.exports = PedagogiumUsers;

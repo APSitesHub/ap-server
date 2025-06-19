@@ -11,6 +11,8 @@ const getUniPlatformToken = require("../middlewares/platform/getUniPlatformToken
 const { validateUniUser } = require("../schema/pedagogiumUsersSchema.js");
 
 const getUniUser = require("../controllers/pedagogiumUsers/getUniUser.js");
+const getUserFeedbacks = require("../controllers/pedagogiumUsers/getUserFeedbacks.js");
+const getUsersByGroup = require("../controllers/pedagogiumUsers/getUsersByGroup.js");
 const getAllUniUsers = require("../controllers/pedagogiumUsers/getAllUniUsers.js");
 const addUniUser = require("../controllers/pedagogiumUsers/addUniUser.js");
 const removeUniUser = require("../controllers/pedagogiumUsers/removeUniUser.js");
@@ -21,22 +23,33 @@ const refreshUniUserTokenLesson = require("../controllers/pedagogiumUsers/refres
 const editUniUser = require("../controllers/pedagogiumUsers/editUniUser.js");
 const getPedagogiumUsersAttendance = require("../controllers/pedagogiumUsers/getPedagogiumUsersAttendance.js");
 const getAllPedagogiumUsers = require("../controllers/pedagogiumUsers/getAllPedagogiumUsers.js");
+const updateUserFeedback = require("../controllers/pedagogiumUsers/updateUserFeedback.js");
 const getUniPedagogiumPlatformToken = require("../middlewares/platform/getPedagogiumPlatformToken.js");
-
 
 const router = express.Router();
 
-router.get("/", authUniUser, getUniUser);
+router.get("/", getUniUser);
+
+router.get("/feedbacks/:id", getUserFeedbacks);
+
+router.get("/byGroup/:course/:group", getUsersByGroup);
 
 router.get("/admin", authUserAdmin, getAllUniUsers);
 
 router.get("/admin/pedagogium", authUserAdmin, getAllPedagogiumUsers);
 
+router.patch("/feedback/:id", updateUserFeedback);
+
 router.post("/new", validateUniUser, addUniUser);
 
 router.delete("/:id", removeUniUser);
 
-router.post("/login", validateUniUser, getUniPedagogiumPlatformToken, loginUniUser);
+router.post(
+  "/login",
+  validateUniUser,
+  getUniPedagogiumPlatformToken,
+  loginUniUser
+);
 
 router.post(
   "/login/lesson",
@@ -45,7 +58,7 @@ router.post(
   loginUniUserLesson
 );
 
-router.post("/refresh", getUniPlatformToken, refreshUniUserToken);
+router.post("/refresh", getUniPedagogiumPlatformToken, refreshUniUserToken);
 
 router.post("/refresh/lesson", getUniPlatformToken, refreshUniUserTokenLesson);
 
@@ -58,6 +71,5 @@ router.put(
 );
 
 router.get("/attendance/pedagogium", getPedagogiumUsersAttendance);
-
 
 module.exports = router;
