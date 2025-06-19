@@ -132,6 +132,11 @@ const addUserFeedback = async (userId, feedback) => {
   return user;
 };
 
+const getUserFeedbacksById = async (userId) => {
+  const user = await PedagogiumUsers.findById(userId).select("feedbacks");
+  return user?.feedbacks || [];
+};
+
 module.exports = {
   allUniUsers,
   allPedagogiumUsers,
@@ -153,4 +158,5 @@ module.exports = {
   getEWSPAAttendance,
   findUserByGroup,
   addUserFeedback,
+  getUserFeedbacksById,
 };

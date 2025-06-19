@@ -11,6 +11,7 @@ const getUniPlatformToken = require("../middlewares/platform/getUniPlatformToken
 const { validateUniUser } = require("../schema/pedagogiumUsersSchema.js");
 
 const getUniUser = require("../controllers/pedagogiumUsers/getUniUser.js");
+const getUserFeedbacks = require("../controllers/pedagogiumUsers/getUserFeedbacks.js");
 const getUsersByGroup = require("../controllers/pedagogiumUsers/getUsersByGroup.js");
 const getAllUniUsers = require("../controllers/pedagogiumUsers/getAllUniUsers.js");
 const addUniUser = require("../controllers/pedagogiumUsers/addUniUser.js");
@@ -28,6 +29,8 @@ const getUniPedagogiumPlatformToken = require("../middlewares/platform/getPedago
 const router = express.Router();
 
 router.get("/", getUniUser);
+
+router.get("/feedbacks/:id", getUserFeedbacks);
 
 router.get("/byGroup/:course/:group", getUsersByGroup);
 

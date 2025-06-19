@@ -48,7 +48,6 @@ const refreshUniUserToken = async (req, res, next) => {
   const pupilId = user.pupilId;
   const marathonId = user.marathonId;
   const platformToken = req.body.authToken;
-  const feedbacks = user.feedbacks;
 
   try {
     await signInUniUser(user._id, { visited, visitedTime, token: newToken });
@@ -70,7 +69,6 @@ const refreshUniUserToken = async (req, res, next) => {
       pupilId,
       marathonId,
       platformToken,
-      feedbacks,
     },
   });
 };
