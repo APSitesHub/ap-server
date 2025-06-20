@@ -118,15 +118,7 @@ const addUserFeedback = async (userId, feedback) => {
     throw new Error("User not found");
   }
 
-  const existingFeedback = user.feedbacks.find(
-    (fb) => fb.date === feedback.date
-  );
-
-  if (existingFeedback) {
-    existingFeedback.feedback = feedback.feedback;
-  } else {
-    user.feedbacks.push(feedback);
-  }
+  user.feedbacks.push(feedback);
 
   await user.save();
   return user;
