@@ -6,7 +6,7 @@ const checkUser = require("../middlewares/crm/checkUser.js");
 const authUserAdmin = require("../middlewares/streams/authUserAdmin.js");
 
 const authUniUser = require("../middlewares/uniStreams/authUniUser.js");
-const getUniPlatformToken = require("../middlewares/platform/getUniPlatformToken.js");
+const getUniPedagogiumPlatformToken = require("../middlewares/platform/getPedagogiumPlatformToken.js");
 
 const { validateUniUser } = require("../schema/pedagogiumUsersSchema.js");
 
@@ -24,7 +24,6 @@ const editUniUser = require("../controllers/pedagogiumUsers/editUniUser.js");
 const getPedagogiumUsersAttendance = require("../controllers/pedagogiumUsers/getPedagogiumUsersAttendance.js");
 const getAllPedagogiumUsers = require("../controllers/pedagogiumUsers/getAllPedagogiumUsers.js");
 const updateUserFeedback = require("../controllers/pedagogiumUsers/updateUserFeedback.js");
-const getUniPedagogiumPlatformToken = require("../middlewares/platform/getPedagogiumPlatformToken.js");
 
 const router = express.Router();
 
@@ -54,13 +53,13 @@ router.post(
 router.post(
   "/login/lesson",
   validateUniUser,
-  getUniPlatformToken,
+  getUniPedagogiumPlatformToken,
   loginUniUserLesson
 );
 
 router.post("/refresh", getUniPedagogiumPlatformToken, refreshUniUserToken);
 
-router.post("/refresh/lesson", getUniPlatformToken, refreshUniUserTokenLesson);
+router.post("/refresh/lesson", getUniPedagogiumPlatformToken, refreshUniUserTokenLesson);
 
 router.put(
   "/:id",
