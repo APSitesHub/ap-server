@@ -44,6 +44,13 @@ const users = new Schema(
     authCode: { type: String },
     successRate: { type: String },
     temperament: { type: String },
+    locationHistory: [
+      {
+        latitude: { type: Number, required: true },
+        longitude: { type: Number, required: true },
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     versionKey: false,
