@@ -1,12 +1,13 @@
 {
   "name": "ap-server",
-  "version": "1.1.20.43",
+  "version": "1.1.20.44",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
     "start:dev": "cross-env NODE_ENV=development nodemon ./server.js",
     "lint": "eslint **/*.js",
-    "lint:fix": "eslint --fix **/*.js"
+    "lint:fix": "eslint --fix **/*.js",
+    "migrate-feedback": "node scripts/migrateFeedback.js"
   },
   "dependencies": {
     "@sentry/node": "^9.9.0",

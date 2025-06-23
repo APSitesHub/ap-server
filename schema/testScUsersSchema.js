@@ -17,16 +17,19 @@ const testScUserSchema = Joi.object({
   knowledge: Joi.string().empty(""),
   successRate: Joi.string().empty(""),
   temperament: Joi.string().empty(""),
-  feedback: Joi.array().items(Joi.object({
-    createdAt: Joi.date(),
-    text: Joi.string(),
-    date: Joi.string(),
-    activity: Joi.number(),
-    grammar: Joi.number(),
-    lexis: Joi.number(),
-    listening: Joi.number(),
-    speaking: Joi.number()
-  })),
+  feedback: Joi.array().items(
+    Joi.object({
+      createdAt: Joi.date(),
+      text: Joi.string(),
+      date: Joi.string(),
+      activity: Joi.number(),
+      grammar: Joi.number(),
+      lexis: Joi.number(),
+      listening: Joi.number(),
+      speaking: Joi.number(),
+      grade: Joi.number(),
+    })
+  ),
   grammar: Joi.number(),
   lexis: Joi.number(),
   speaking: Joi.number(),
