@@ -4,16 +4,17 @@ const allTestScUsers = async () =>
   await ScTest.find({}).select("_id name lang course feedback");
 
 const allCourseTestScUsers = async (query) => {
-  return await ScTest.find({
-    lang: { $regex: query.lang, $options: "i" },
-    course: { $regex: query.course, $options: "i" },
-  })
-    .where("feedback")
-    .slice(-1)
-    .where("visited")
-    .slice(-1)
-    .where("visitedTime")
-    .slice(-1);
+  return await ScTest.find(
+    {
+      lang: { $regex: query.lang, $options: "i" },
+      course: { $regex: query.course, $options: "i" },
+    },
+    {
+      feedback: { $slice: -1 },
+      visited: { $slice: -1 },
+      visitedTime: { $slice: -1 },
+    }
+  );
 };
 
 const allTestScEnUsers = async () =>
