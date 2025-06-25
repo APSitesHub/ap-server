@@ -43,6 +43,7 @@ const pedagogiumCoursesRouter = require("./routes/pedagogiumCourses");
 const pedagogiumKahoots = require("./routes/pedagogiumKahoots");
 const pedagogiumHostKahoots = require("./routes/pedagogiumHostKahoots");
 const pedagogiumTimetable = require("./routes/pedagogiumTimetable");
+const pedagogiumLessonsRouter = require("./routes/pedagogiumLessons");
 const Sentry = require("@sentry/node");
 const locationRoutes = require('./routes/location');
 const notificationRoutes = require('./routes/notifications');
@@ -90,6 +91,7 @@ app.use("/trial-lesson", trialLesson);
 app.use("/answers", answerRouter);
 app.use("/crm", crmRouter);
 
+app.use("/pedagogium-lessons", pedagogiumLessonsRouter);
 app.use("/pedagogium-courses", pedagogiumCoursesRouter);
 app.use("/pedagogium-teachers", pedagogiumTeachersRouter);
 app.use("/pedagogium-users", pedagogiumUsers);
