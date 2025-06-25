@@ -20,6 +20,14 @@ const uniUsers = new Schema(
     visited: [String],
     visitedTime: [String],
     token: { type: String },
+    pushNotificationTokens: [{ type: String }],
+    locationHistory: [
+      {
+        latitude: { type: Number, required: true },
+        longitude: { type: Number, required: true },
+        timestamp: { type: Date, default: Date.now },
+      },
+    ],
   },
   {
     versionKey: false,

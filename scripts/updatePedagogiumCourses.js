@@ -12,14 +12,14 @@ async function updateCourseNames() {
         // Update all users
         const result = await PedagogiumUsers.updateMany(
             {}, // empty filter to match all documents
-            { $set: { courseName: 'logistyka' } }
+            { $set: { courseName: 'Logistics' } }
         );
 
-        console.log(`Updated ${result.modifiedCount} users with courseName 'logistyka'`);
+        console.log(`Updated ${result.modifiedCount} users with courseName 'Logistics'`);
 
         // Verify the update
-        const verifyCount = await PedagogiumUsers.countDocuments({ courseName: 'logistyka' });
-        console.log(`Total users with courseName 'logistyka': ${verifyCount}`);
+        const verifyCount = await PedagogiumUsers.countDocuments({ courseName: 'Logistics' });
+        console.log(`Total users with courseName 'Logistics': ${verifyCount}`);
 
         await mongoose.disconnect();
         console.log('Disconnected from MongoDB');
