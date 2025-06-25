@@ -3,7 +3,7 @@ const Joi = require("joi");
 const pedagogiumLessonQuestionSchema = Joi.object({
   questionId: Joi.string().required(),
 
-  correctAnswrer: Joi.string().required(),
+  correctAnswer: Joi.string().required(),
 
   answers: Joi.array().items(
     Joi.object({

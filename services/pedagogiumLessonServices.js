@@ -26,7 +26,7 @@ const newQuestion = async (lessonId, body) => {
     throw new Error("Question with this ID already exists in the lesson");
   }
 
-  const correct = body.correctAnswrer.trim().toLowerCase();
+  const correct = body.correctAnswer.trim().toLowerCase();
 
   const uniqueByUserId = [];
   const seenUserIds = new Set();
@@ -50,7 +50,7 @@ const newQuestion = async (lessonId, body) => {
 
   const question = {
     questionId: body.questionId,
-    correctAnswrer: body.correctAnswrer,
+    correctAnswer: body.correctAnswer,
     answers: processedAnswers,
   };
 
