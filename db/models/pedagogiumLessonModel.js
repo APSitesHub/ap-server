@@ -24,7 +24,7 @@ const pedagogiumLessons = new Schema(
           type: String,
           required: true,
         },
-        correctAnswrer: {
+        correctAnswer: {
           type: String,
           required: true,
         },
