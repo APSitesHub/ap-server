@@ -9,10 +9,7 @@ const allUsers = async () =>
 
 const allC1Users = async () =>
   await Users.find({
-    $or: [
-      { course: { $regex: "10", $options: "i" } },
-      { course: { $regex: "11", $options: "i" } },
-    ],
+    package: { $regex: "sc", $options: "i" },
   }).select(
     "-visitedTime -adult -zoomMail -token -createdAt -updatedAt -feedback -__v"
   );
