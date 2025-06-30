@@ -51,6 +51,7 @@ const users = new Schema(
         timestamp: { type: Date, default: Date.now },
       },
     ],
+    pushNotificationTokens: [{ type: String }],
   },
   {
     versionKey: false,
