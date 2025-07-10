@@ -35,6 +35,8 @@ const loginAHNSAdmin = require("../controllers/admins/loginAHNSAdmin");
 const refreshAHNSAdminToken = require("../controllers/admins/refreshAHNSAdminToken");
 const loginANSWPAdmin = require("../controllers/admins/loginANSWPAdmin");
 const refreshANSWPAdminToken = require("../controllers/admins/refreshANSWPAdminToken");
+const loginWSKMAdmin = require("../controllers/admins/loginWSKMAdmin");
+const refreshWSKMAdminToken = require("../controllers/admins/refreshWSKMAdminToken");
 
 const router = express.Router();
 
@@ -64,6 +66,8 @@ router.post("/login/pedagogium", validateAdminUser, loginPedagogiumAdmin);
 
 router.post("/login/wstijo", validateAdminUser, loginWSTIJOAdmin);
 
+router.post("/login/wskm", validateAdminUser, loginWSKMAdmin);
+
 router.post("/login/ssw", validateAdminUser, loginSSWAdmin);
 
 router.post("/login/mans", validateAdminUser, loginMANSAdmin);
@@ -83,6 +87,8 @@ router.post("/refresh/teachers", refreshTeacherAdminToken);
 router.post("/refresh/pedagogium", refreshPedagogiumAdminToken);
 
 router.post("/refresh/wstijo", refreshWSTIJOAdminToken);
+
+router.post("/refresh/wskm", refreshWSKMAdminToken);
 
 router.post("/refresh/ssw", refreshSSWAdminToken);
 

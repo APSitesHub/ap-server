@@ -30,6 +30,22 @@ const allWSTIJOUsers = async () =>
     },
   }).select("-visitedTime -token -university -createdAt -updatedAt");
 
+  const allWSKMUsers = async () =>
+  await UniUsers.find({
+    university: "WSKM (Wyższa Szkoła Kadr Menedżerskich)",
+    name: {
+      $nin: [
+        "Pedagogium",
+        "WSTIJO",
+        "WSKM",
+        "Dev Acc",
+        "Krzysztof Lewandowski",
+        "New Student",
+        "Test Acc",
+      ],
+    },
+  }).select("-visitedTime -token -university -createdAt -updatedAt");
+
 const allSSWUsers = async () =>
   await UniUsers.find({
     university: "SSW (Świętokrzyska Szkoła Wyższa im. św. Jana Pawła II)",
@@ -109,6 +125,7 @@ module.exports = {
   allUniUsers,
   allPedagogiumUsers,
   allWSTIJOUsers,
+  allWSKMUsers,
   allSSWUsers,
   allMANSUsers,
   allAHNSUsers,
