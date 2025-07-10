@@ -16,6 +16,9 @@ const findPedagogiumAdmin = async () =>
 const findWSTIJOAdmin = async () =>
   await Admins.findOne({ login: "WSTIJOAdmin" });
 
+const findWSKMAdmin = async () =>
+  await Admins.findOne({ login: "WSKMAdmin" });
+
 const findSSWAdmin = async () => await Admins.findOne({ login: "SSWAdmin" });
 
 const findMANSAdmin = async () => await Admins.findOne({ login: "MANSAdmin" });
@@ -52,6 +55,7 @@ module.exports = {
   findTeacherAdmin,
   findPedagogiumAdmin,
   findWSTIJOAdmin,
+  findWSKMAdmin,
   findSSWAdmin,
   findMANSAdmin,
   findAHNSAdmin,

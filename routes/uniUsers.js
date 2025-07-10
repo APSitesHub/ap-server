@@ -29,6 +29,7 @@ const getAllMANSUsers = require("../controllers/uniUsers/getAllMANSUsers.js");
 const getAllAHNSUsers = require("../controllers/uniUsers/getAllAHNSUsers.js");
 const getAllANSWPUsers = require("../controllers/uniUsers/getAllANSWPUsers.js");
 const getAllWSTIJOUsers = require("../controllers/uniUsers/getAllWSTIJOUsers.js");
+const getAllWSKMUsers = require("../controllers/uniUsers/getAllWSKMUsers.js");
 
 const router = express.Router();
 
@@ -39,6 +40,8 @@ router.get("/admin", authUserAdmin, getAllUniUsers);
 router.get("/admin/pedagogium", authUserAdmin, getAllPedagogiumUsers);
 
 router.get("/admin/wstijo", authUserAdmin, getAllWSTIJOUsers);
+
+router.get("/admin/wskm", authUserAdmin, getAllWSKMUsers);
 
 router.get("/admin/ssw", authUserAdmin, getAllSSWUsers);
 
