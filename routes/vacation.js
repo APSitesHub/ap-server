@@ -3,7 +3,6 @@ const createTasksForAllServiceUsers = require("../utils/crm/createTasksForAllSer
 
 const router = express.Router();
 router.post("/new", (req, res) => {
-  console.log("vacation/new");
   const teacherName = req.body.data[0];
   const dateFrom = new Date(req.body.data[4]).toLocaleDateString("uk-UA", {
     day: "2-digit",
