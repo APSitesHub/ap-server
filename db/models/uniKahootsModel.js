@@ -128,22 +128,13 @@ const uniKahoots = new Schema(
         wstih_prep_5: String,
       },
     },
-    wskm_logistics: {
+    wskm_cnc: {
       links: {
-        wskm_logistics_1: String,
-        wskm_logistics_2: String,
-        wskm_logistics_3: String,
-        wskm_logistics_4: String,
-        wskm_logistics_5: String,
-      },
-    },
-    wskm_prep: {
-      links: {
-        wskm_prep_1: String,
-        wskm_prep_2: String,
-        wskm_prep_3: String,
-        wskm_prep_4: String,
-        wskm_prep_5: String,
+        wskm_cnc_1: String,
+        wskm_cnc_2: String,
+        wskm_cnc_3: String,
+        wskm_cnc_4: String,
+        wskm_cnc_5: String,
       },
     },
     wssip_logistics: {
