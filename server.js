@@ -15,6 +15,9 @@ const { processLeadsByStatuses } = require("./services/cronjob/updateGroup");
 const server = http.createServer(app);
 const io = socketIo(server);
 
+speakingWebSocket = require("./services/speaking/speackingWebSocket");
+speakingWebSocket(io);
+
 const ACTIONS = {
   JOIN: "join",
   LEAVE: "leave",
@@ -276,24 +279,30 @@ cron.schedule("0 3 * * 1", async () => {
   await runWeeklyLeadUpdate();
 });
 // Oleg analytics cron job
-cron.schedule("0 2 * * *", async () => {
-  console.log("Running nightly cron job to update the table");
-  try {
-    await updateTable();
-    console.log("Nightly cron job to update the table FINISHED");
-  } catch (error) {
-    console.error(
-      "Nightly cron job to update the table FAILED with an error:",
-      error
-    );
+cron.schedule(
+  "0 2 * * *",
+  async () => {
+    console.log("Running nightly cron job to update the table");
+    try {
+      await updateTable();
+      console.log("Nightly cron job to update the table FINISHED");
+    } catch (error) {
+      console.error(
+        "Nightly cron job to update the table FAILED with an error:",
+        error
+      );
+    }
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/Kyiv",
   }
-},{
-  scheduled: true,
-  timezone: "Europe/Kyiv"
-});
-cron.schedule("0 3 * * *", async () => {
-  console.log("Running nightly cron job to update the table v2");
-  try {
+);
+cron.schedule(
+  "0 3 * * *",
+  async () => {
+    console.log("Running nightly cron job to update the table v2");
+    try {
       await processLeadsByStatuses(75659060);
       await processLeadsByStatuses(75659064);
       await processLeadsByStatuses(75659068);
@@ -303,17 +312,19 @@ cron.schedule("0 3 * * *", async () => {
       await processLeadsByStatuses(75398868);
       await processLeadsByStatuses(58435407);
       await processLeadsByStatuses(58435411);
-    console.log("Nightly cron job to update the table FINISHED v2");
-  } catch (error) {
-    console.error(
-      "Nightly cron job to update the table FAILED v2 with an error:",
-      error
-    );
+      console.log("Nightly cron job to update the table FINISHED v2");
+    } catch (error) {
+      console.error(
+        "Nightly cron job to update the table FAILED v2 with an error:",
+        error
+      );
+    }
+  },
+  {
+    scheduled: true,
+    timezone: "Europe/Kyiv",
   }
-},{
-  scheduled: true,
-  timezone: "Europe/Kyiv"
-});
+);
 
 const startServer = async () => {
   try {
