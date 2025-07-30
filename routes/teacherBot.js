@@ -363,12 +363,15 @@ async function getBookableStaff(serviceIds, isChildren, teacherLevel) {
     }
 
     if (teacherLevel) {
-      console.log(teacherLevel);
-
       const level = normalize(teacherLevel);
-      result = result.filter((employee) =>
-        normalize(employee.name).split(" ").includes(level)
-      );
+      result = result.filter((employee) => {
+        const normalizedName = normalize(normalizeTeacherName(employee.name));
+        const matches = normalizedName.match(/\b(a0|a1|a2|b1|b2|c1|c2)\b/);
+
+        if (!matches) return true;
+
+        return matches.includes(level);
+      });
     }
 
     return result;
