@@ -11,12 +11,12 @@ const { DateTime } = require("luxon");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const bot = new TelegramBot(
-  process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION,
+const bot = process.env.NODE_ENV === "production"
+    ? new TelegramBot(process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION,
   {
     polling: true,
   }
-);
+) : null;
 
 async function fetchSessions(date, page) {
   const apiUrl = `https://api.alteg.io/api/v1/records/${process.env.ALTEGIO_COMPANY_ID}`;
