@@ -11,12 +11,12 @@ const { DateTime } = require("luxon");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const bot = process.env.NODE_ENV === "production"
-    ? new TelegramBot(process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION,
-  {
-    polling: true,
-  }
-) : null;
+const bot =
+  process.env.NODE_ENV === "production"
+    ? new TelegramBot(process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION, {
+        polling: true,
+      })
+    : null;
 
 async function fetchSessions(date, page) {
   const apiUrl = `https://api.alteg.io/api/v1/records/${process.env.ALTEGIO_COMPANY_ID}`;
@@ -63,48 +63,50 @@ async function getSessionsByDate(date) {
 }
 
 async function notificationBotAuthListener() {
-  bot.on("message", (msg) => {
-    if (msg.text === "/start") {
-      const chatId = msg.chat.id;
+  if (bot) {
+    bot.on("message", (msg) => {
+      if (msg.text === "/start") {
+        const chatId = msg.chat.id;
 
-      bot.sendMessage(chatId, "Введіть Ваш код авторизації");
+        bot.sendMessage(chatId, "Введіть Ваш код авторизації");
 
-      const listener = async (nextMsg) => {
-        if (nextMsg.chat.id === chatId && nextMsg.text !== "/start") {
-          const authCode = nextMsg.text;
+        const listener = async (nextMsg) => {
+          if (nextMsg.chat.id === chatId && nextMsg.text !== "/start") {
+            const authCode = nextMsg.text;
 
-          const isUserAvailable = await getByCrmId(authCode);
+            const isUserAvailable = await getByCrmId(authCode);
 
-          if (isUserAvailable) {
-            bot.sendMessage(chatId, "✅ Ви вже підписані на сповіщення");
-            return;
+            if (isUserAvailable) {
+              bot.sendMessage(chatId, "✅ Ви вже підписані на сповіщення");
+              return;
+            }
+
+            const lead = await getCRMLead(authCode);
+
+            if (!lead) {
+              bot.sendMessage(chatId, "⛔ Не коректний код авторизації");
+              return;
+            }
+
+            await newIndividualUser({
+              crmId: authCode,
+              chatId: chatId,
+              name: lead.name,
+            });
+
+            bot.sendMessage(
+              chatId,
+              "✅ Ви успішно підписались на сповіщення. Тепер тут будуть з'являтись повідомлення про найближчі заняття"
+            );
+
+            bot.removeListener("message", listener);
           }
+        };
 
-          const lead = await getCRMLead(authCode);
-
-          if (!lead) {
-            bot.sendMessage(chatId, "⛔ Не коректний код авторизації");
-            return;
-          }
-
-          await newIndividualUser({
-            crmId: authCode,
-            chatId: chatId,
-            name: lead.name,
-          });
-
-          bot.sendMessage(
-            chatId,
-            "✅ Ви успішно підписались на сповіщення. Тепер тут будуть з'являтись повідомлення про найближчі заняття"
-          );
-
-          bot.removeListener("message", listener);
-        }
-      };
-
-      bot.on("message", listener);
-    }
-  });
+        bot.on("message", listener);
+      }
+    });
+  }
 }
 
 function filterSessionsByTime(sessions, from, to) {
@@ -145,100 +147,104 @@ function extractTime(datetimeStr) {
 }
 
 async function dailyIndividualNotifications() {
-  try {
-    const date = getFormattedDate("tomorrow");
-    const sessions = await getSessionsByDate(date);
+  if (bot) {
+    try {
+      const date = getFormattedDate("tomorrow");
+      const sessions = await getSessionsByDate(date);
 
-    const users = await getAllUsersBySrmIds(
-      sessions.map((session) => extractId(session.client?.name))
-    );
-
-    users.forEach(async (user) => {
-      const session = sessions.find(
-        (session) => extractId(session.client.name) === user.crmId
+      const users = await getAllUsersBySrmIds(
+        sessions.map((session) => extractId(session.client?.name))
       );
-      const lessonTime = extractTime(session.datetime);
 
-      const message = `📢 Завтра відбудеться заняття! 🧑‍🏫
+      users.forEach(async (user) => {
+        const session = sessions.find(
+          (session) => extractId(session.client.name) === user.crmId
+        );
+        const lessonTime = extractTime(session.datetime);
+
+        const message = `📢 Завтра відбудеться заняття! 🧑‍🏫
 Все як заплановано — о ${lessonTime} за Київським часом 📚😉`;
-      let isSent;
-      try {
-        await bot.sendMessage(user.chatId, message);
-        isSent = true;
-      } catch (e) {
-        isSent = false;
-        console.error("Error sending message to bot", e);
-      }
+        let isSent;
+        try {
+          await bot.sendMessage(user.chatId, message);
+          isSent = true;
+        } catch (e) {
+          isSent = false;
+          console.error("Error sending message to bot", e);
+        }
 
-      try {
-        newMessage({
-          chatId: user.chatId,
-          message: {
-            datetime: DateTime.now().setZone("Europe/Kyiv"),
-            appointmentId: session.id,
-            text: message,
-            isSent,
-          },
-        });
-      } catch (e) {
-        console.error("Failed to add message to db", e);
-      }
-    });
-  } catch (error) {
-    console.error("Error creating appointment:", error);
+        try {
+          newMessage({
+            chatId: user.chatId,
+            message: {
+              datetime: DateTime.now().setZone("Europe/Kyiv"),
+              appointmentId: session.id,
+              text: message,
+              isSent,
+            },
+          });
+        } catch (e) {
+          console.error("Failed to add message to db", e);
+        }
+      });
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+    }
   }
 }
 
 async function hourlyIndividualNotifications() {
-  try {
-    const now = DateTime.now().setZone("Europe/Kyiv");
-    const from = now.plus({ minutes: 90 }).toISO(); // через 1.5 години
-    const to = now.plus({ minutes: 150 }).toISO(); // через 2.5 години
+  if (bot) {
+    try {
+      const now = DateTime.now().setZone("Europe/Kyiv");
+      const from = now.plus({ minutes: 90 }).toISO(); // через 1.5 години
+      const to = now.plus({ minutes: 150 }).toISO(); // через 2.5 години
 
-    const date = getFormattedDate("today");
-    const sessions = await getSessionsByDate(date);
-    const filtredSessions = filterSessionsByTime(sessions, from, to);
+      const date = getFormattedDate("today");
+      const sessions = await getSessionsByDate(date);
+      const filtredSessions = filterSessionsByTime(sessions, from, to);
 
-    const users = await getAllUsersBySrmIds(
-      filtredSessions.map((session) => extractId(session.client.name))
-    );
-
-    users.forEach(async (user) => {
-      const session = filtredSessions.find(
-        (session) => extractId(session.client.name) === user.crmId
+      const users = await getAllUsersBySrmIds(
+        filtredSessions.map((session) => extractId(session.client.name))
       );
-      console.log(session);
 
-      const lessonTime = extractTime(session.datetime);
+      users.forEach(async (user) => {
+        const session = filtredSessions.find(
+          (session) => extractId(session.client.name) === user.crmId
+        );
+        console.log(session);
 
-      const message = `📢 Скоро відбудеться заняття! 🧑‍🏫 Тому давай там, доробляй всі справи 📝 і на урок 🕒  
+        const lessonTime = extractTime(session.datetime);
+
+        const message = `📢 Скоро відбудеться заняття! 🧑‍🏫 Тому давай там, доробляй всі справи 📝 і на урок 🕒  
 Все як заплановано — о ${lessonTime} за Київським часом 🇺🇦  
 Може ще встигнеш домашку зробити 📚😉`;
-      let isSent;
-      try {
-        await bot.sendMessage(user.chatId, message);
-        isSent = true;
-      } catch (e) {
-        isSent = false;
-        console.error("Error sending message to bot", e);
-      }
+        let isSent;
+        try {
+          await bot.sendMessage(user.chatId, message);
+          isSent = true;
+        } catch (e) {
+          isSent = false;
+          console.error("Error sending message to bot", e);
+        }
 
-      try {
-        newMessage({
-          chatId: user.chatId,
-          message: {
-            datetime: now,
-            appointmentId: session.id,
-            text: message,
-            isSent,
-          },
-        });
-      } catch (e) {
-        console.error("Failed to add message to db", e);
-      }
-    });
-  } catch (error) {
-    console.error("Error creating appointment:", error);
+        try {
+          newMessage({
+            chatId: user.chatId,
+            message: {
+              datetime: now,
+              appointmentId: session.id,
+              text: message,
+              isSent,
+            },
+          });
+        } catch (e) {
+          console.error("Failed to add message to db", e);
+        }
+      });
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+    }
   }
 }
 
