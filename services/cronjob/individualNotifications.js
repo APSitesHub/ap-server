@@ -77,12 +77,14 @@ async function notificationBotAuthListener() {
 
           if (isUserAvailable) {
             bot.sendMessage(chatId, "✅ Ви вже підписані на сповіщення");
+            return;
           }
 
           const lead = await getCRMLead(authCode);
 
           if (!lead) {
             bot.sendMessage(chatId, "⛔ Не коректний код авторизації");
+            return;
           }
 
           await newIndividualUser({
