@@ -15,7 +15,7 @@ const { processLeadsByStatuses } = require("./services/cronjob/updateGroup");
 const server = http.createServer(app);
 const io = socketIo(server);
 
-speakingWebSocket = require("./services/speaking/speackingWebSocket");
+speakingWebSocket = require("./services/speaking/speakingWebSocket");
 speakingWebSocket(io);
 
 const ACTIONS = {
