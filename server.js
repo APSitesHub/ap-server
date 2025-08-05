@@ -331,8 +331,6 @@ cron.schedule(
 cron.schedule(
   "0 * * * *",
   () => {
-    console.log("HHHHHHHHHHH");
-
     hourlyIndividualNotifications(); // запускає кожну годину
   },
   {
@@ -343,8 +341,6 @@ cron.schedule(
 cron.schedule(
   "0 12 * * *", // запускає о 12:00 кожного дня
   () => {
-    console.log("DDDDDDDDDD");
-
     dailyIndividualNotifications();
   },
   {
