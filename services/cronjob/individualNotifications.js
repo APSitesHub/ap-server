@@ -160,7 +160,7 @@ async function dailyIndividualNotifications() {
       const lessonTime = extractTime(session.datetime);
 
       const message = `📢 Завтра відбудеться заняття! 🧑‍🏫
-Все як заплановано — о 17:00 за Київським часом 📚😉`;
+Все як заплановано — о ${lessonTime} за Київським часом 📚😉`;
       let isSent;
       try {
         await bot.sendMessage(user.chatId, message);
