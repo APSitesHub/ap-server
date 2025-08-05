@@ -16,7 +16,6 @@ const {
   notificationBotAuthListener,
   hourlyIndividualNotifications,
   dailyIndividualNotifications,
-  test,
 } = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
