@@ -12,7 +12,7 @@ const { DateTime } = require("luxon");
 axios.defaults.baseURL = process.env.BASE_URL;
 
 const bot = new TelegramBot(
-  process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATOIN_BOT,
+  process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION,
   {
     polling: true,
   }
