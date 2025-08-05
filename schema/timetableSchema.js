@@ -14,6 +14,7 @@ const timetableSchema = Joi.object({
       teacher: Joi.string().empty(""),
     })
   ),
+  isHoliday: Joi.boolean().required(),
 });
 
 const validateTimetable = ({ body }, res, next) => {

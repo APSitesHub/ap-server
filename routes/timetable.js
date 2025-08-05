@@ -12,6 +12,7 @@ const removeTimetable = require("../controllers/timetable/removeTimetable");
 const removeScheduleFromTimetable = require("../controllers/timetable/removeScheduleFromTimetable");
 const updateScheduleInTimetable = require("../controllers/timetable/updateScheduleInTimetable");
 const editTimetableLevelCourse = require("../controllers/timetable/editTimetableLevelCourse");
+const editTimetableHolidayStatus = require("../controllers/timetable/editTimetableHolidayStatus");
 
 const router = express.Router();
 
@@ -28,5 +29,7 @@ router.delete("/:id", removeTimetable);
 router.patch("/course/:id", editTimetableLevelCourse);
 
 router.patch("/schedule/:id", removeScheduleFromTimetable);
+
+router.patch("/course/holiday/:id", editTimetableHolidayStatus);
 
 module.exports = router;

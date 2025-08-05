@@ -24,6 +24,10 @@ const timetable = new Schema(
         teacher: { type: String },
       },
     ],
+    isHoliday: {
+      type: Boolean,
+      required: [true, "No holiday status"],
+    },
   },
   {
     versionKey: false,
