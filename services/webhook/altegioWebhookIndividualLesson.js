@@ -52,13 +52,6 @@ const altegioWebhookIndividualLesson = async (req, res) => {
     req.body.data.id
   );
 
-  if (req.body.data.staff.id === 2179564) {
-    console.log("==============test==============");
-    console.log(req.body.status);
-    console.log(req.body.data.visit_attendance);
-    console.log(req.body.data);
-  }
-
   try {
     const { status, resource, data } = req.body;
     const userName = data.client?.name || "";
