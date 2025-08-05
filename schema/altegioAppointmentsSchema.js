@@ -25,8 +25,12 @@ const altegioAppointmentsSchema = Joi.object({
     "any.required": "No endDateTime",
     "date.base": "endDateTime must be a valid date",
   }),
-  available: Joi.boolean().default(true).messages({
-    "boolean.base": "available must be a boolean",
+  status: Joi.string().required().messages({
+    "any.required": "No status",
+    "string.base": "status must be a string",
+  }),
+  isDeleted: Joi.boolean().default(false).messages({
+    "boolean.base": "isDeleted must be a boolean",
   }),
 });
 

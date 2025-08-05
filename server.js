@@ -12,7 +12,11 @@ const {
 const { runWeeklyLeadUpdate } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 const { processLeadsByStatuses } = require("./services/cronjob/updateGroup");
-const individualNotifications = require("./services/cronjob/individualNotifications");
+const {
+  notificationBotAuthListener,
+  hourlyIndividualNotifications,
+  dailyIndividualNotifications,
+} = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
 
@@ -324,14 +328,30 @@ cron.schedule(
   }
 );
 
-// cron.schedule("*/5 * * * * *", () => {
-//   console.log("running every 5 seconds");
-//   individualNotifications();
-// });
+cron.schedule(
+  "0 * * * *",
+  () => {
+    hourlyIndividualNotifications(); // запускає кожну годину
+  },
+  {
+    timezone: "Europe/Kyiv",
+  }
+);
+
+cron.schedule(
+  "0 12 * * *", // запускає о 12:00 кожного дня
+  () => {
+    dailyIndividualNotifications();
+  },
+  {
+    timezone: "Europe/Kyiv",
+  }
+);
 
 const startServer = async () => {
   try {
     await connectDB();
+    notificationBotAuthListener();
     server.listen(process.env.PORT, (error) => {
       if (error) {
         console.log("Server launch error", error);

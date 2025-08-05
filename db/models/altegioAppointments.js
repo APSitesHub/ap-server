@@ -1,3 +1,4 @@
+const { required } = require("joi");
 const { Schema, model } = require("mongoose");
 
 const altegioAppointments = new Schema(
@@ -26,7 +27,11 @@ const altegioAppointments = new Schema(
       type: Date,
       required: [true, "No endDateTime"],
     },
-    available: { type: Boolean, default: true },
+    status: {
+      type: String,
+      required: [true, "No status"],
+    },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     versionKey: false,
