@@ -11,12 +11,16 @@ const { DateTime } = require("luxon");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
-const bot =
-  process.env.NODE_ENV === "production"
-    ? new TelegramBot(process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION, {
-        polling: true,
-      })
-    : null;
+async function botInit() {
+  const bot =
+    process.env.NODE_ENV === "production"
+      ? new TelegramBot(process.env.TELEGRAM_BOT_TOKEN_AP_NOTIFICATION, {
+          polling: true,
+        })
+      : null;
+
+  return bot;
+}
 
 async function fetchSessions(date, page) {
   const apiUrl = `https://api.alteg.io/api/v1/records/${process.env.ALTEGIO_COMPANY_ID}`;
@@ -62,7 +66,7 @@ async function getSessionsByDate(date) {
   }
 }
 
-async function notificationBotAuthListener() {
+async function notificationBotAuthListener(bot) {
   if (bot) {
     bot.on("message", (msg) => {
       if (msg.text === "/start") {
@@ -146,7 +150,7 @@ function extractTime(datetimeStr) {
   return `${hours}:${minutes}`;
 }
 
-async function dailyIndividualNotifications() {
+async function dailyIndividualNotifications(bot) {
   if (bot) {
     try {
       const date = getFormattedDate("tomorrow");
@@ -193,13 +197,12 @@ async function dailyIndividualNotifications() {
   }
 }
 
-async function hourlyIndividualNotifications() {
+async function hourlyIndividualNotifications(bot) {
   if (bot) {
     try {
       const now = DateTime.now().setZone("Europe/Kyiv");
       const from = now.plus({ minutes: 90 }).toISO(); // через 1.5 години
       const to = now.plus({ minutes: 150 }).toISO(); // через 2.5 години
-
       const date = getFormattedDate("today");
       const sessions = await getSessionsByDate(date);
       const filtredSessions = filterSessionsByTime(sessions, from, to);
@@ -212,10 +215,7 @@ async function hourlyIndividualNotifications() {
         const session = filtredSessions.find(
           (session) => extractId(session.client.name) === user.crmId
         );
-        console.log(session);
-
         const lessonTime = extractTime(session.datetime);
-
         const message = `📢 Скоро відбудеться заняття! 🧑‍🏫 Тому давай там, доробляй всі справи 📝 і на урок 🕒  
 Все як заплановано — о ${lessonTime} за Київським часом 🇺🇦  
 Може ще встигнеш домашку зробити 📚😉`;
@@ -252,4 +252,5 @@ module.exports = {
   hourlyIndividualNotifications,
   dailyIndividualNotifications,
   notificationBotAuthListener,
+  botInit,
 };
