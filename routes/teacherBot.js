@@ -106,9 +106,10 @@ const router = express.Router();
 router.post("/found_teacher", async (req, res) => {
   const RESPONSIBLE_MANGER_ID = 557260;
   const DATE_TIME_LESSON_START = 1824843;
+  const DATE_TIME_LESSON_SECOND = 1828605;
   // const DATE_TIME_LESSON_END = 1824931;
   // const LESSON_TYPE = 1824839;
-  // const LESSON_LEVEL = 1824721;
+  const LESSON_LEVEL = 1824721;
   const LESSON_LANGUAGE = 1824775;
   // const TEACHER = 1824847;
   const FOR_CHILDREN = 1824855;
@@ -152,6 +153,12 @@ router.post("/found_teacher", async (req, res) => {
             dateTimeLessonStart: convertToISODate(filed.values[0].value),
           };
           break;
+        case DATE_TIME_LESSON_SECOND:
+          userInfoForLesson = {
+            ...userInfoForLesson,
+            dateTimeLessonSecond: convertToISODate(filed.values[0].value),
+          };
+          break;
         case LESSON_LANGUAGE:
           userInfoForLesson = {
             ...userInfoForLesson,
@@ -164,13 +171,25 @@ router.post("/found_teacher", async (req, res) => {
             isChildren: filed.values[0].value,
           };
           break;
+        case LESSON_LEVEL:
+          userInfoForLesson = {
+            ...userInfoForLesson,
+            teacherLevel: filed.values[0].value,
+          };
+          break;
       }
     });
 
     const dateTimeStart = userInfoForLesson.dateTimeLessonStart;
+    const dateTimeSecond = userInfoForLesson.dateTimeLessonSecond;
     const isChildren = Boolean(userInfoForLesson.isChildren);
+    const teacherLevel = userInfoForLesson.teacherLevel;
     const serviceIds = trialServicesMap[userInfoForLesson.lesson_language];
-    const bookableStaff = await getBookableStaff(serviceIds, isChildren);
+    const bookableStaff = await getBookableStaff(
+      serviceIds,
+      isChildren,
+      teacherLevel
+    );
 
     if (!dateTimeStart) {
       taskMsg = "Не вказано дату пошуку!";
@@ -183,13 +202,30 @@ router.post("/found_teacher", async (req, res) => {
     }
 
     const sessions = await getSessions(bookableStaff, dateTimeStart);
+    let secondSessions;
+    let list;
 
-    const list = sessions
-      .map(
-        (employee) =>
-          `${normalizeTeacherName(employee.name)} ${employee.freeSessions}`
-      )
-      .join("\n");
+    if (dateTimeSecond) {
+      secondSessions = await getSessions(bookableStaff, dateTimeSecond);
+
+      const comparedSessions = mergeSessions(sessions, secondSessions);
+
+      list = comparedSessions
+        .map(
+          (employee) => `${normalizeTeacherName(employee.name)}:
+            [${normalizeDate(dateTimeStart)}] - ${employee.firstSessions}
+            [${normalizeDate(dateTimeSecond)}] - ${employee.secondSessions}
+          `
+        )
+        .join("\n");
+    } else {
+      list = sessions
+        .map(
+          (employee) =>
+            `${normalizeTeacherName(employee.name)} ${employee.freeSessions}`
+        )
+        .join("\n");
+    }
 
     if (!list.length) {
       taskMsg = "Вільних викладачів не знайдено!";
@@ -233,6 +269,22 @@ function normalizeTeacherName(name) {
   return [...firstTwoWords, ...levels].join(" ");
 }
 
+function normalizeDate(dateStr) {
+  const date = new Date(dateStr);
+  const weekday = date.toLocaleDateString("uk-UA", {
+    weekday: "short",
+    timeZone: "Europe/Kyiv",
+  });
+
+  const dayMonth = date.toLocaleDateString("uk-UA", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone: "Europe/Kyiv",
+  });
+
+  return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} - ${dayMonth}`;
+}
+
 function convertToISODate(data) {
   const date = DateTime.fromMillis(+data * 1000, { zone: "Europe/Kiev" });
   const formattedDate = date.toFormat("yyyy-LL-dd'T'HH:mm");
@@ -262,12 +314,11 @@ function getNearbyTimes(date, timesArray) {
       });
       return slotDateTime.toFormat("HH:mm");
     });
-  console.log("Filtered times:", filteredTimes);
 
   return filteredTimes.length ? `(${filteredTimes.join(", ")})` : null;
 }
 
-async function getBookableStaff(serviceIds, isChildren) {
+async function getBookableStaff(serviceIds, isChildren, teacherLevel) {
   const companyId = process.env.ALTEGIO_COMPANY_ID;
   const companyToken = process.env.ALTEGIO_COMPANY_TOKEN;
   const firedStatus = "ЗВІЛЬНЕНО";
@@ -291,21 +342,39 @@ async function getBookableStaff(serviceIds, isChildren) {
     if (!response.data.success) {
       throw new Error("API call unsuccessful");
     }
+    const normalize = (str) => str.trim().toLowerCase();
+
     const bookableStaff = response.data.data.filter((employee) => {
-      const employeeName = employee.name.toUpperCase();
+      const name = normalize(employee.name);
       return (
-        Boolean(employee.bookable) &&
-        !employeeName.includes(firedStatus.toUpperCase()) &&
-        !employeeName.includes(webinarsOnlyStatus.toUpperCase())
+        employee.bookable &&
+        !name.includes(normalize(firedStatus)) &&
+        !name.includes(normalize(webinarsOnlyStatus))
       );
     });
+
+    let result = [...bookableStaff];
+
     if (isChildren) {
-      return bookableStaff.filter(
-        (employee) => !`${employee.name}`.includes(withoutChildrenStatus)
+      result = result.filter(
+        (employee) =>
+          !normalize(employee.name).includes(normalize(withoutChildrenStatus))
       );
     }
 
-    return bookableStaff;
+    if (teacherLevel) {
+      const level = normalize(teacherLevel);
+      result = result.filter((employee) => {
+        const normalizedName = normalize(normalizeTeacherName(employee.name));
+        const matches = normalizedName.match(/\b(a0|a1|a2|b1|b2|c1|c2)\b/);
+
+        if (!matches) return true;
+
+        return matches.includes(level);
+      });
+    }
+
+    return result;
   } catch (error) {
     console.error("Error fetching bookable staff:", error.message);
   }
@@ -348,6 +417,22 @@ async function getSessions(teachers, startDate) {
     console.error("Critical error in getSessions:", e);
     return [];
   }
+}
+
+function mergeSessions(firstArray, secondArray) {
+  const secondMap = new Map(secondArray.map((item) => [item.id, item]));
+
+  return firstArray
+    .filter((item) => secondMap.has(item.id))
+    .map((item) => {
+      const match = secondMap.get(item.id);
+      return {
+        id: item.id,
+        name: item.name,
+        firstSessions: item.freeSessions,
+        secondSessions: match.freeSessions,
+      };
+    });
 }
 
 module.exports = router;

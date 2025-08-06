@@ -1,9 +1,11 @@
-const { findLessonsByGroupAndDate } = require("../../services/uniLessonResultsServices");
+const {
+  findLessonsByGroupAndDate,
+} = require("../../services/uniLessonResultsServices");
 
 const getLessonsByGroupAndDate = async (req, res) => {
   try {
     res
-      .status(201)
+      .status(200)
       .json(await findLessonsByGroupAndDate(req.params.group, req.params.date));
   } catch (e) {
     res.status(500).json({ error: "Internal Server Error" });
