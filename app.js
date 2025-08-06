@@ -50,6 +50,7 @@ const toursRouter = require("./routes/tours");
 const Sentry = require("@sentry/node");
 const locationRoutes = require("./routes/location");
 const notificationRoutes = require("./routes/notifications");
+const feedbackRouter = require("./routes/feedback");
 const vacationRouter = require("./routes/vacation");
 
 const app = express();
@@ -108,6 +109,7 @@ app.use("/pedagogium-host-kahoots", pedagogiumHostKahoots);
 app.use("/pedagogium-timetable", pedagogiumTimetable);
 app.use("/location", locationRoutes);
 app.use("/notifications", notificationRoutes);
+app.use("/feedback", feedbackRouter);
 
 app.get("/debug-sentry", function mainHandler(req, res) {
   throw new Error("My first Sentry error!");
