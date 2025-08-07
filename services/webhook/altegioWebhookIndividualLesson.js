@@ -57,7 +57,7 @@ const altegioWebhookIndividualLesson = async (req, res) => {
     const userName = data.client?.name || "";
     const visit_attendance = data.visit_attendance; // 0(Pending) | 1(Arrived) | -1(No-show) | 2(Confirmed)
     const leadId = Math.max(
-      ...(data.client.name.match(/\d+/g)?.map(Number) || [0])
+      ...(data.client?.name?.match(/\d+/g)?.map(Number) || [0])
     ); // беремо crmId з імені клієнта
     const startDateTime = new Date(data.date);
     const endDateTime = new Date(

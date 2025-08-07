@@ -16,9 +16,12 @@ const {
   notificationBotAuthListener,
   hourlyIndividualNotifications,
   dailyIndividualNotifications,
+  botInit,
 } = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
+
+let notficationBot;
 
 const ACTIONS = {
   JOIN: "join",
@@ -331,7 +334,7 @@ cron.schedule(
 cron.schedule(
   "0 * * * *",
   () => {
-    hourlyIndividualNotifications(); // запускає кожну годину
+    hourlyIndividualNotifications(notficationBot); // запускає кожну годину
   },
   {
     timezone: "Europe/Kyiv",
@@ -341,7 +344,7 @@ cron.schedule(
 cron.schedule(
   "0 12 * * *", // запускає о 12:00 кожного дня
   () => {
-    dailyIndividualNotifications();
+    dailyIndividualNotifications(notficationBot);
   },
   {
     timezone: "Europe/Kyiv",
@@ -351,7 +354,8 @@ cron.schedule(
 const startServer = async () => {
   try {
     await connectDB();
-    notificationBotAuthListener();
+    notficationBot = await botInit();
+    notificationBotAuthListener(notficationBot);
     server.listen(process.env.PORT, (error) => {
       if (error) {
         console.log("Server launch error", error);
