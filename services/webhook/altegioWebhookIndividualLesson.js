@@ -1,8 +1,5 @@
 /* eslint-disable camelcase */
 const axios = require("axios");
-const getCRMLead = require("../crmGetLead");
-const { getToken } = require("../tokensServices");
-const { sendMessageToChat } = require("../botTelegram");
 const {
   format,
   parseISO,
@@ -11,6 +8,7 @@ const {
   setSeconds,
 } = require("date-fns");
 const { uk, id } = require("date-fns/locale");
+const { DateTime } = require("luxon");
 const { prepareLessonRoom } = require("../prepareLessonRoom");
 const { findTeacherByAltegioID } = require("../teachersServices");
 const {
@@ -45,6 +43,25 @@ const IndividualServicesList = [
   12466060, 12466057, 12466055, 12466049, 12466046, 12466042,
 ];
 
+function parseUserName(userName) {
+  const words = userName.trim().split(/\s+/); // розбиває за пробілами
+  let leadId = "";
+  const nameParts = [];
+
+  for (const word of words) {
+    if (!leadId && /^\d+$/.test(word)) {
+      leadId = word;
+    } else {
+      nameParts.push(word);
+    }
+  }
+
+  return {
+    leadId,
+    leadName: nameParts.join(" "),
+  };
+}
+
 // Webhook обробник для Altegio
 const altegioWebhookIndividualLesson = async (req, res) => {
   console.log(
@@ -54,17 +71,20 @@ const altegioWebhookIndividualLesson = async (req, res) => {
 
   try {
     const { status, resource, data } = req.body;
-    const userName = data.client?.name || "";
+    const { leadId, leadName } = parseUserName(data.client?.name || "");
     const visit_attendance = data.visit_attendance; // 0(Pending) | 1(Arrived) | -1(No-show) | 2(Confirmed)
-    const leadId = Math.max(
-      ...(data.client?.name?.match(/\d+/g)?.map(Number) || [0])
-    ); // беремо crmId з імені клієнта
-    const startDateTime = new Date(data.date);
-    const endDateTime = new Date(
-      startDateTime.getTime() + data.seance_length * 1000
-    );
+    const date = new Date(data.date);
+    const startDateTime = DateTime.fromJSDate(date, {
+      zone: "Europe/Kyiv",
+    }).toISO();
+    const endDateTime = DateTime.fromJSDate(
+      new Date(date.getTime() + data.seance_length * 1000),
+      {
+        zone: "Europe/Kyiv",
+      }
+    ).toISO();
 
-    if (!userName) {
+    if (!leadName) {
       return res.status(200).json({ message: "Invalid client name" });
     }
     const isIndividualLesson = data.services.some((service) =>
@@ -91,8 +111,11 @@ const altegioWebhookIndividualLesson = async (req, res) => {
           await newAppointment({
             appointmentId: data.id,
             leadId,
+            leadName,
             teacherId: data.staff.id,
+            teacherName: data.staff.name,
             serviceId: data.services[0].id,
+            serviceName: data.services[0].title,
             startDateTime,
             endDateTime,
             status: visit_attendance,

@@ -11,13 +11,25 @@ const altegioAppointments = new Schema(
       type: String,
       required: [true, "No leadId"],
     },
+    leadName: {
+      type: String,
+      required: [true, "No leadName"],
+    },
     teacherId: {
       type: String,
       required: [true, "No teacherId"],
     },
+    teacherName: {
+      type: String,
+      required: [true, "No teacherName"],
+    },
     serviceId: {
       type: String,
       required: [true, "No serviceId"],
+    },
+    serviceName: {
+      type: String,
+      required: [true, "No serviceName"],
     },
     startDateTime: {
       type: Date,
@@ -31,6 +43,7 @@ const altegioAppointments = new Schema(
       type: String,
       required: [true, "No status"],
     },
+    IsTrial: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
   },
   {

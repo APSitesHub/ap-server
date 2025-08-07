@@ -9,13 +9,25 @@ const altegioAppointmentsSchema = Joi.object({
     "any.required": "No leadId",
     "string.base": "leadId must be a string",
   }),
+  leadName: Joi.string().required().messages({
+    "any.required": "No leadName",
+    "string.base": "leadName must be a string",
+  }),
   teacherId: Joi.string().required().messages({
     "any.required": "No teacherId",
     "string.base": "teacherId must be a string",
   }),
+  teacherName: Joi.string().required().messages({
+    "any.required": "No teacherName",
+    "string.base": "teacherName must be a string",
+  }),
   serviceId: Joi.string().required().messages({
     "any.required": "No serviceId",
     "string.base": "serviceId must be a string",
+  }),
+  serviceName: Joi.string().required().messages({
+    "any.required": "No serviceName",
+    "string.base": "serviceName must be a string",
   }),
   startDateTime: Joi.date().required().messages({
     "any.required": "No startDateTime",
@@ -28,6 +40,9 @@ const altegioAppointmentsSchema = Joi.object({
   status: Joi.string().required().messages({
     "any.required": "No status",
     "string.base": "status must be a string",
+  }),
+  isTrial: Joi.boolean().default(false).messages({
+    "boolean.base": "isTrial must be a boolean",
   }),
   isDeleted: Joi.boolean().default(false).messages({
     "boolean.base": "isDeleted must be a boolean",
