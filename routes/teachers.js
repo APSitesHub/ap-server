@@ -16,6 +16,7 @@ const refreshTeacherToken = require("../controllers/teachers/refreshTeacherToken
 const editTeacher = require("../controllers/teachers/editTeacher");
 const addTeachersBulk = require("../controllers/teachers/addTeachersBulk");
 const getTeacherPlatformToken = require("../middlewares/platform/getTeacherPlatformToken");
+const getAllTeachersBasicInfo = require("../controllers/teachers/getAllTeachersBasicInfo");
 
 const router = express.Router();
 
@@ -26,6 +27,8 @@ router.get("/en", authTeacherAdmin, getAllTeachersEn);
 router.get("/de", authTeacherAdmin, getAllTeachersDe);
 
 router.get("/pl", authTeacherAdmin, getAllTeachersPl);
+
+router.get("/basic", authTeacherAdmin, getAllTeachersBasicInfo);
 
 router.get("/:id", authTeacherAdmin, getOneTeacher);
 
