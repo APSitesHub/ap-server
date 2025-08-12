@@ -1,16 +1,8 @@
 /* eslint-disable camelcase */
-const axios = require("axios");
-const {
-  format,
-  parseISO,
-  setHours,
-  setMinutes,
-  setSeconds,
-} = require("date-fns");
-const { uk, id } = require("date-fns/locale");
 const { DateTime } = require("luxon");
 const { prepareLessonRoom } = require("../prepareLessonRoom");
 const { findTeacherByAltegioID } = require("../teachersServices");
+const { altegioPut } = require("../altegio/altegioAuth");
 const {
   newAppointment,
   updateAppointment,
@@ -243,16 +235,9 @@ async function updateIndividualLesson(appointment, roomLink, teacher) {
   };
 
   try {
-    await axios.put(
+    await altegioPut(
       `https://api.alteg.io/api/v1/record/${process.env.ALTEGIO_COMPANY_ID}/${appointment.id}`,
-      updatedAppointmemtBody,
-      {
-        headers: {
-          Accept: "application/vnd.api.v2+json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.ALTEGIO_COMPANY_TOKEN}, User ${process.env.ALTEGIO_USER_TOKEN}`,
-        },
-      }
+      updatedAppointmemtBody
     );
   } catch (error) {
     console.error("Error lesson updating:", error);

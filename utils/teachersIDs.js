@@ -7,17 +7,11 @@ const {
 const fs = require("fs/promises");
 const path = require("path");
 const connectDB = require("../db/connection");
+const { altegioGet } = require("../services/altegio/altegioAuth");
 
 const getAllStuffFromAltegio = async () => {
-  const response = await axios.get(
-    `https://api.alteg.io/api/v1/book_staff/${process.env.ALTEGIO_COMPANY_ID}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/vnd.api.v2+json",
-        Authorization: `Bearer ${process.env.ALTEGIO_COMPANY_TOKEN}, User ${process.env.ALTEGIO_USER_TOKEN}`,
-      },
-    }
+  const response = await altegioGet(
+    `https://api.alteg.io/api/v1/book_staff/${process.env.ALTEGIO_COMPANY_ID}`
   );
 
   const result = response.data.data.map((user) => {
