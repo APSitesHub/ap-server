@@ -3,6 +3,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { Bot } = require("viber-bot");
 
 const router = require("./routes/main");
 const leadsRouter = require("./routes/leads");
@@ -58,6 +59,19 @@ const app = express();
 Sentry.setupExpressErrorHandler(app);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
+
+const bot =
+  process.env.NODE_ENV === "production"
+    ? new Bot({
+        authToken: process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION,
+        name: "AP Education Notification",
+        avatar: "https://ap.education/assets/icon/LogoRevers.svg",
+      })
+    : null;
+
+if (process.env.NODE_ENV === "production") {
+  app.use("/viber/webhook", bot.middleware());
+}
 
 app.use(logger(formatsLogger));
 app.use(cors());
@@ -124,4 +138,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-module.exports = app;
+module.exports = { app, bot };

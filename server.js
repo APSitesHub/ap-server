@@ -2,7 +2,7 @@ require("./utils/services/sentry");
 const http = require("http");
 const socketIo = require("socket.io");
 const { version, validate } = require("uuid");
-const app = require("./app");
+const { app, bot } = require("./app");
 const connectDB = require("./db/connection");
 const { updateTable } = require("./utils/crm/paymentSheet");
 require("dotenv").config();
@@ -17,6 +17,7 @@ const {
   hourlyIndividualNotifications,
   dailyIndividualNotifications,
   botInit,
+  viberNotificationBotAuthListener,
 } = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -332,9 +333,15 @@ cron.schedule(
 );
 
 cron.schedule(
-  "0 * * * *",
-  () => {
-    hourlyIndividualNotifications(notficationBot); // запускає кожну годину
+  "36 * * * *", // запускає кожну годину
+  async () => {
+    try {
+      console.log("hourly reminder start");
+      await hourlyIndividualNotifications(notficationBot);
+      console.log("hourly reminder completed successfully");
+    } catch (e) {
+      console.error("hourly reminder completed width error: ", e);
+    }
   },
   {
     timezone: "Europe/Kyiv",
@@ -343,8 +350,14 @@ cron.schedule(
 
 cron.schedule(
   "0 12 * * *", // запускає о 12:00 кожного дня
-  () => {
-    dailyIndividualNotifications(notficationBot);
+  async () => {
+    try {
+      console.log("daily reminder start");
+      await dailyIndividualNotifications(notficationBot);
+      console.log("daily reminder completed successfully");
+    } catch (e) {
+      console.error("daily reminder completed width error: ", e);
+    }
   },
   {
     timezone: "Europe/Kyiv",
@@ -356,12 +369,28 @@ const startServer = async () => {
     await connectDB();
     notficationBot = await botInit();
     notificationBotAuthListener(notficationBot);
-    server.listen(process.env.PORT, (error) => {
+    viberNotificationBotAuthListener(bot);
+    server.listen(process.env.PORT, async (error) => {
       if (error) {
         console.log("Server launch error", error);
       }
       console.log(`Database connection successful on port ${process.env.PORT}`);
       console.log(`Run with environment ${process.env.NODE_ENV.toUpperCase()}`);
+
+      if (process.env.NODE_ENV === "production") {
+        try {
+          const res = await bot.setWebhook(
+            `https://ap-server-8qi1.onrender.com/viber/webhook`
+          );
+          if (res.status === 0) {
+            console.log("Viber bot webhook run!");
+          } else {
+            console.warn("Warning: Viber bot webhook failed: ", res);
+          }
+        } catch (webhookErr) {
+          console.error("Error: Viber bot webhook failed:", webhookErr);
+        }
+      }
     });
   } catch (err) {
     console.log(`Failed to launch application with an error: "${err.message}"`);
