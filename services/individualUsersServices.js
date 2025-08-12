@@ -12,6 +12,12 @@ const newMessage = async ({ chatId, message }) => {
 
 const getByCrmId = async (crmId) => await IndividualUsers.findOne({ crmId });
 
+const getByViberChatId = async (viberChatId) => 
+  await IndividualUsers.findOne({ viberChatId });
+
+const getByTelegramChatId = async (chatId) =>
+  await IndividualUsers.findOne({ chatId });
+
 const getAllUsersBySrmIds = async (crmIds) => {
   try {
     if (!Array.isArray(crmIds) || crmIds.length === 0) return [];
@@ -31,5 +37,7 @@ module.exports = {
   newIndividualUser,
   newMessage,
   getByCrmId,
+  getByViberChatId,
+  getByTelegramChatId,
   getAllUsersBySrmIds,
 };

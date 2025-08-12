@@ -11,7 +11,9 @@ const individualUsers = new Schema(
     },
     chatId: {
       type: String,
-      required: [true, "No chatId"],
+    },
+    viberChatId: {
+      type: String,
     },
     name: {
       type: String,
@@ -19,6 +21,10 @@ const individualUsers = new Schema(
     },
     messagesHistory: [
       {
+        messenger: {
+          type: String,
+          enum: ["viber", "telegram"],
+        },
         datetime: { type: Date, required: [true, "No datetime"] },
         appointmentId: { type: String, required: [true, "No appointmentId"] },
         text: { type: String, required: [true, "No message text"] },
