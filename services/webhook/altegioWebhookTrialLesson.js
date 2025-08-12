@@ -3,6 +3,7 @@ const axios = require("axios");
 const getCRMLead = require("../crmGetLead");
 const { getToken } = require("../tokensServices");
 const { sendMessageToChat } = require("../botTelegram");
+const { altegioPut } = require("../altegio/altegioAuth");
 const {
   format,
   parseISO,
@@ -10,7 +11,7 @@ const {
   setMinutes,
   setSeconds,
 } = require("date-fns");
-const { uk, id } = require("date-fns/locale");
+const { uk } = require("date-fns/locale");
 const { prepareLessonRoom } = require("../prepareLessonRoom");
 
 const SalesServicesIdList = [
@@ -400,7 +401,7 @@ async function bookIndividualLesson(appointment, roomLink, teacher) {
   try {
     // console.log(appointment);
 
-    await axios.put(
+    await altegioPut(
       `https://api.alteg.io/api/v1/record/${process.env.ALTEGIO_COMPANY_ID}/${appointment.id}`,
       {
         ...appointment,
@@ -414,13 +415,6 @@ async function bookIndividualLesson(appointment, roomLink, teacher) {
   Логін: ${process.env.HOST_USERNAME}
   Пароль: ${process.env.HOST_PASSWORD}
 `,
-      },
-      {
-        headers: {
-          Accept: "application/vnd.api.v2+json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.ALTEGIO_COMPANY_TOKEN}, User ${process.env.ALTEGIO_USER_TOKEN}`,
-        },
       }
     );
   } catch (error) {

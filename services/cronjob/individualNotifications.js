@@ -10,6 +10,7 @@ const {
 } = require("../individualUsersServices");
 const getCRMLead = require("../crmGetLead");
 const { DateTime } = require("luxon");
+const { altegioGet } = require("../altegio/altegioAuth");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
@@ -26,12 +27,7 @@ async function botInit() {
 
 async function fetchSessions(date, page) {
   const apiUrl = `https://api.alteg.io/api/v1/records/${process.env.ALTEGIO_COMPANY_ID}`;
-  const response = await axios.get(apiUrl, {
-    headers: {
-      Accept: "application/vnd.api.v2+json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.ALTEGIO_COMPANY_TOKEN}, User ${process.env.ALTEGIO_USER_TOKEN}`,
-    },
+  const response = await altegioGet(apiUrl, {
     params: {
       page,
       start_date: date,
