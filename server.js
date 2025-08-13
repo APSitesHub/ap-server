@@ -301,7 +301,7 @@ cron.schedule(
   },
   {
     scheduled: true,
-    timezone: "Europe/Kyiv",
+    timezone: "Europe/Kiev",
   }
 );
 cron.schedule(
@@ -328,23 +328,23 @@ cron.schedule(
   },
   {
     scheduled: true,
-    timezone: "Europe/Kyiv",
+    timezone: "Europe/Kiev",
   }
 );
 
 cron.schedule(
-  "36 * * * *", // запускає кожну годину
+  "0 * * * *", // запускає кожну годину
   async () => {
     try {
       console.log("hourly reminder start");
-      await hourlyIndividualNotifications(notficationBot);
+      await hourlyIndividualNotifications(notficationBot, bot);
       console.log("hourly reminder completed successfully");
     } catch (e) {
       console.error("hourly reminder completed width error: ", e);
     }
   },
   {
-    timezone: "Europe/Kyiv",
+    timezone: "Europe/Kiev",
   }
 );
 
@@ -353,14 +353,14 @@ cron.schedule(
   async () => {
     try {
       console.log("daily reminder start");
-      await dailyIndividualNotifications(notficationBot);
+      await dailyIndividualNotifications(notficationBot, bot);
       console.log("daily reminder completed successfully");
     } catch (e) {
       console.error("daily reminder completed width error: ", e);
     }
   },
   {
-    timezone: "Europe/Kyiv",
+    timezone: "Europe/Kiev",
   }
 );
 

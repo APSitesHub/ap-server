@@ -8,13 +8,13 @@ router.post("/new", (req, res) => {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-    timeZone: "Europe/Kyiv",
+    timeZone: "Europe/Kiev",
   });
   const dateTo = new Date(req.body.data[5]).toLocaleDateString("uk-UA", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-    timeZone: "Europe/Kyiv",
+    timeZone: "Europe/Kiev",
   });
   const taskText = `Викладач ${teacherName} буде відсутній в період: ${dateFrom}-${dateTo}`;
 
