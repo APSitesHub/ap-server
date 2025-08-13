@@ -133,12 +133,12 @@ async function processAppointment(appointment) {
     // Формуємо дати
     const date = new Date(appointment.datetime);
     const startDateTime = DateTime.fromJSDate(date, {
-      zone: "Europe/Kyiv",
+      zone: "Europe/Kiev",
     }).toISO();
     const endDateTime = DateTime.fromJSDate(
       new Date(date.getTime() + appointment.seance_length * 1000),
       {
-        zone: "Europe/Kyiv",
+        zone: "Europe/Kiev",
       }
     ).toISO();
 

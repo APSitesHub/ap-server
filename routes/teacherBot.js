@@ -273,13 +273,13 @@ function normalizeDate(dateStr) {
   const date = new Date(dateStr);
   const weekday = date.toLocaleDateString("uk-UA", {
     weekday: "short",
-    timeZone: "Europe/Kyiv",
+    timeZone: "Europe/Kiev",
   });
 
   const dayMonth = date.toLocaleDateString("uk-UA", {
     day: "2-digit",
     month: "2-digit",
-    timeZone: "Europe/Kyiv",
+    timeZone: "Europe/Kiev",
   });
 
   return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} - ${dayMonth}`;

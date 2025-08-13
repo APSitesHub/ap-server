@@ -67,12 +67,12 @@ const altegioWebhookIndividualLesson = async (req, res) => {
     const visit_attendance = data.visit_attendance; // 0(Pending) | 1(Arrived) | -1(No-show) | 2(Confirmed)
     const date = new Date(data.date);
     const startDateTime = DateTime.fromJSDate(date, {
-      zone: "Europe/Kyiv",
+      zone: "Europe/Kiev",
     }).toISO();
     const endDateTime = DateTime.fromJSDate(
       new Date(date.getTime() + data.seance_length * 1000),
       {
-        zone: "Europe/Kyiv",
+        zone: "Europe/Kiev",
       }
     ).toISO();
 

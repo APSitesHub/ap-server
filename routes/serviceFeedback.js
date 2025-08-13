@@ -12,7 +12,7 @@ router.post("/", async (req, res) => {
     const manager = await getCRMUser(lead.responsible_user_id);
     const date = new Date();
     const formattedDate = date.toLocaleString("uk-UA", {
-      timeZone: "Europe/Kyiv",
+      timeZone: "Europe/Kiev",
       dateStyle: "full",
       timeStyle: "medium",
     });

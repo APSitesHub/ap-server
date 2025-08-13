@@ -120,52 +120,32 @@ async function notificationBotAuthListener(bot) {
 async function viberNotificationBotAuthListener(bot) {
   const userStates = {};
 
-  bot.onSubscribe((response) => {
-    const userId = response.userProfile.id;
-    userStates[userId] = { waitingForCode: true, chatId: userId };
-    response.send(new Message.Text("Введіть ваш код авторизації"));
-  });
-
-  bot.on(Events.MESSAGE_RECEIVED, async (message, response) => {
-    const authKeyboard = {
-      Type: "keyboard",
-      Buttons: [
-        {
-          ActionType: "reply",
-          ActionBody: "start",
-          Text: "<b>Авторизуватись</b>",
-          TextSize: "large",
-          BgColor: "#44b360",
-        },
-      ],
-    };
-
-    const userId = response.userProfile.id;
-    const messageText = message.text.trim().toLowerCase();
-
+  if (bot) {
     bot.onSubscribe((response) => {
       const userId = response.userProfile.id;
       userStates[userId] = { waitingForCode: true, chatId: userId };
-      response.send(
-        new Message.Text(
-          "Привіт! Щоб почати, натисніть кнопку 'Авторизуватись'.",
-          authKeyboard
-        )
-      );
+      response.send(new Message.Text("Введіть ваш код авторизації"));
     });
 
-    if (messageText === "start") {
-      userStates[userId] = { waitingForCode: true, chatId: userId };
-      response.send(new Message.Text("Введіть ваш код авторизації"));
-    } else if (userStates[userId]?.waitingForCode) {
-      const code = messageText;
-      const authResult = await authUser(code, userId, true);
-      response.send(new Message.Text(authResult));
-      userStates[userId].waitingForCode = false;
-    } else {
-      const isUserAuthorized = await getByViberChatId(userId);
+    bot.on(Events.MESSAGE_RECEIVED, async (message, response) => {
+      const authKeyboard = {
+        Type: "keyboard",
+        Buttons: [
+          {
+            ActionType: "reply",
+            ActionBody: "start",
+            Text: "<b>Авторизуватись</b>",
+            TextSize: "large",
+            BgColor: "#44b360",
+          },
+        ],
+      };
 
-      if (!isUserAuthorized) {
+      const userId = response.userProfile.id;
+      const messageText = message.text.trim().toLowerCase();
+
+      bot.onSubscribe((response) => {
+        const userId = response.userProfile.id;
         userStates[userId] = { waitingForCode: true, chatId: userId };
         response.send(
           new Message.Text(
@@ -173,9 +153,31 @@ async function viberNotificationBotAuthListener(bot) {
             authKeyboard
           )
         );
+      });
+
+      if (messageText === "start") {
+        userStates[userId] = { waitingForCode: true, chatId: userId };
+        response.send(new Message.Text("Введіть ваш код авторизації"));
+      } else if (userStates[userId]?.waitingForCode) {
+        const code = messageText;
+        const authResult = await authUser(code, userId, true);
+        response.send(new Message.Text(authResult));
+        userStates[userId].waitingForCode = false;
+      } else {
+        const isUserAuthorized = await getByViberChatId(userId);
+
+        if (!isUserAuthorized) {
+          userStates[userId] = { waitingForCode: true, chatId: userId };
+          response.send(
+            new Message.Text(
+              "Привіт! Щоб почати, натисніть кнопку 'Авторизуватись'.",
+              authKeyboard
+            )
+          );
+        }
       }
-    }
-  });
+    });
+  }
 }
 
 function filterSessionsByTime(sessions, from, to) {
@@ -247,7 +249,7 @@ async function dailyIndividualNotifications(tgBot, viberBot) {
             chatId: user.chatId,
             message: {
               messenger: "telegram",
-              datetime: DateTime.now().setZone("Europe/Kyiv"),
+              datetime: DateTime.now().setZone("Europe/Kiev"),
               appointmentId: session.id,
               text: message,
               isSent,
@@ -276,7 +278,7 @@ async function dailyIndividualNotifications(tgBot, viberBot) {
             chatId: user.chatId,
             message: {
               messenger: "viber",
-              datetime: DateTime.now().setZone("Europe/Kyiv"),
+              datetime: DateTime.now().setZone("Europe/Kiev"),
               appointmentId: session.id,
               text: message,
               isSent,
@@ -294,7 +296,7 @@ async function dailyIndividualNotifications(tgBot, viberBot) {
 
 async function hourlyIndividualNotifications(tgBot, viberBot) {
   try {
-    const now = DateTime.now().setZone("Europe/Kyiv");
+    const now = DateTime.now().setZone("Europe/Kiev");
     const from = now.plus({ minutes: 90 }).toISO(); // через 1.5 години
     const to = now.plus({ minutes: 150 }).toISO(); // через 2.5 години
     const date = getFormattedDate("today");
@@ -310,9 +312,9 @@ async function hourlyIndividualNotifications(tgBot, viberBot) {
         (session) => extractId(session.client.name) === user.crmId
       );
       const lessonTime = extractTime(session.datetime);
-      const message = `📢 Скоро відбудеться заняття! 🧑‍🏫 Тому давай там, доробляй всі справи 📝 і на урок 🕒  
-Все як заплановано — о ${lessonTime} за Київським часом 🇺🇦  
-Може ще встигнеш домашку зробити 📚😉`;
+      const message = `📢 Скоро відбудеться заняття! 🧑‍🏫 Тому давай там, доробляй всі справи 📝 і на урок 🕒
+    Все як заплановано — о ${lessonTime} за Київським часом 🇺🇦
+    Може ще встигнеш домашку зробити 📚😉`;
       if (tgBot && user.chatId) {
         let isSent = false;
         try {
@@ -327,7 +329,7 @@ async function hourlyIndividualNotifications(tgBot, viberBot) {
             chatId: user.chatId,
             message: {
               messenger: "telegram",
-              datetime: DateTime.now().setZone("Europe/Kyiv"),
+              datetime: DateTime.now().setZone("Europe/Kiev"),
               appointmentId: session.id,
               text: message,
               isSent,
@@ -356,7 +358,7 @@ async function hourlyIndividualNotifications(tgBot, viberBot) {
             chatId: user.chatId,
             message: {
               messenger: "viber",
-              datetime: DateTime.now().setZone("Europe/Kyiv"),
+              datetime: DateTime.now().setZone("Europe/Kiev"),
               appointmentId: session.id,
               text: message,
               isSent,
