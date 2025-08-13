@@ -54,6 +54,7 @@ const notificationRoutes = require("./routes/notifications");
 const feedbackRouter = require("./routes/feedback");
 const vacationRouter = require("./routes/vacation");
 const serviceFeedbackRouter = require("./routes/serviceFeedback");
+const appointmentsRouter = require("./routes/appointments");
 
 const app = express();
 Sentry.setupExpressErrorHandler(app);
@@ -115,6 +116,7 @@ app.use("/tours", toursRouter);
 app.use("/crm", crmRouter);
 app.use("/vacation", vacationRouter);
 app.use("/service-feedback", serviceFeedbackRouter);
+app.use("/appointments", appointmentsRouter);
 
 app.use("/pedagogium-lessons", pedagogiumLessonsRouter);
 app.use("/pedagogium-courses", pedagogiumCoursesRouter);
