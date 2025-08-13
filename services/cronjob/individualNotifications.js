@@ -214,6 +214,57 @@ function extractTime(datetimeStr) {
   return datetimeStr.split(" ")[1].slice(0, -3);
 }
 
+async function oneTimeNotification(tgBot) {
+  const usersCrmIds = [
+    22069177, 22039617, 18692899, 22108173, 19052033, 22129317, 22110293,
+    21282897,
+  ];
+
+  try {
+    const date = getFormattedDate("tomorrow");
+    const sessions = await getSessionsByDate(date);
+    const users = await getAllUsersBySrmIds(usersCrmIds);
+
+    users.forEach(async (user) => {
+      const session = sessions.find(
+        (session) => extractId(session.client.name) === user.crmId
+      );
+
+      const lessonTime = extractTime(session.date);
+
+      const message = `📢 Завтра відбудеться заняття! 🧑‍🏫
+Все як заплановано — о ${lessonTime} за Київським часом 📚😉`;
+
+      if (tgBot && user.chatId) {
+        let isSent = false;
+        try {
+          await tgBot.sendMessage(user.chatId, message);
+          isSent = true;
+        } catch (e) {
+          console.error("Error sending message to Telegram bot", e);
+        }
+
+        try {
+          newMessage({
+            chatId: user.chatId,
+            message: {
+              messenger: "telegram",
+              datetime: DateTime.now().setZone("Europe/Kiev"),
+              appointmentId: session.id,
+              text: message,
+              isSent,
+            },
+          });
+        } catch (e) {
+          console.error("Failed to add message to db", e);
+        }
+      }
+    });
+  } catch (e) {
+    console.error("Error message sending:", error);
+  }
+}
+
 async function dailyIndividualNotifications(tgBot, viberBot) {
   try {
     const date = getFormattedDate("tomorrow");
@@ -287,7 +338,7 @@ async function dailyIndividualNotifications(tgBot, viberBot) {
       }
     });
   } catch (error) {
-    console.error("Error creating appointment:", error);
+    console.error("Error message sending:", error);
   }
 }
 
@@ -377,4 +428,5 @@ module.exports = {
   notificationBotAuthListener,
   viberNotificationBotAuthListener,
   botInit,
+  oneTimeNotification,
 };
