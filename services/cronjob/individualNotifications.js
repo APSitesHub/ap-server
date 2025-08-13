@@ -211,10 +211,7 @@ function extractId(str) {
 }
 
 function extractTime(datetimeStr) {
-  const date = new Date(datetimeStr);
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  return `${hours}:${minutes}`;
+  return datetimeStr.split(" ")[1].slice(0, -3);
 }
 
 async function dailyIndividualNotifications(tgBot, viberBot) {
@@ -230,7 +227,7 @@ async function dailyIndividualNotifications(tgBot, viberBot) {
       const session = sessions.find(
         (session) => extractId(session.client.name) === user.crmId
       );
-      const lessonTime = extractTime(session.datetime);
+      const lessonTime = extractTime(session.date);
 
       const message = `📢 Завтра відбудеться заняття! 🧑‍🏫
 Все як заплановано — о ${lessonTime} за Київським часом 📚😉`;
@@ -311,7 +308,7 @@ async function hourlyIndividualNotifications(tgBot, viberBot) {
       const session = filtredSessions.find(
         (session) => extractId(session.client.name) === user.crmId
       );
-      const lessonTime = extractTime(session.datetime);
+      const lessonTime = extractTime(session.date);
       const message = `📢 Скоро відбудеться заняття! 🧑‍🏫 Тому давай там, доробляй всі справи 📝 і на урок 🕒
     Все як заплановано — о ${lessonTime} за Київським часом 🇺🇦
     Може ще встигнеш домашку зробити 📚😉`;
