@@ -8,6 +8,15 @@ const findAppointments = async ({ start, end }) =>
     },
   });
 
+const findAppointmentsByStudent = async ({ leadId, start, end }) =>
+  await AltegioAppointments.find({
+    leadId: leadId,
+    startDateTime: {
+      $gte: start,
+      $lte: end,
+    },
+  });
+
 const newAppointment = async (body) => {
   return await AltegioAppointments(body).save();
 };
@@ -20,6 +29,7 @@ const updateAppointment = async (appointmentId, body) => {
 
 module.exports = {
   findAppointments,
+  findAppointmentsByStudent,
   newAppointment,
   updateAppointment,
 };
