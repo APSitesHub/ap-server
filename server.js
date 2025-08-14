@@ -18,7 +18,6 @@ const {
   dailyIndividualNotifications,
   botInit,
   viberNotificationBotAuthListener,
-  oneTimeNotification,
 } = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -355,22 +354,6 @@ cron.schedule(
     try {
       console.log("daily reminder start");
       await dailyIndividualNotifications(notficationBot, bot);
-      console.log("daily reminder completed successfully");
-    } catch (e) {
-      console.error("daily reminder completed width error: ", e);
-    }
-  },
-  {
-    timezone: "Europe/Kiev",
-  }
-);
-
-cron.schedule(
-  "10 18 * * *", // одноразово
-  async () => {
-    try {
-      console.log("daily reminder start");
-      await oneTimeNotification(notficationBot);
       console.log("daily reminder completed successfully");
     } catch (e) {
       console.error("daily reminder completed width error: ", e);
