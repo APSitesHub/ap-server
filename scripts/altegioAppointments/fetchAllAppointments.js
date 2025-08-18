@@ -92,15 +92,69 @@ async function fetchAppointmentsPage(page, count, startDate, endDate) {
   }
 }
 
-async function processAppointment(appointment) {
+async function updateAppointmentIfChanged(existingAppointment, appointment) {
+  try {
+    const currentStatus = appointment.visit_attendance?.toString() || "0";
+    const currentIsDeleted = appointment.deleted === 1;
+    
+    // Перевіряємо чи змінились ключові поля
+    const hasStatusChanged = existingAppointment.status !== currentStatus;
+    const hasDeletedChanged = existingAppointment.isDeleted !== currentIsDeleted;
+    
+    if (!hasStatusChanged && !hasDeletedChanged) {
+      return null; // Нічого не змінилось
+    }
+
+    // Готуємо дані для оновлення
+    const updateData = {};
+    if (hasStatusChanged) {
+      updateData.status = currentStatus;
+    }
+    if (hasDeletedChanged) {
+      updateData.isDeleted = currentIsDeleted;
+    }
+
+    // Оновлюємо запис
+    await AltegioAppointments.findOneAndUpdate(
+      { appointmentId: appointment.id.toString() },
+      { $set: updateData },
+      { new: true }
+    ).maxTimeMS(8000);
+
+    const changes = [];
+    if (hasStatusChanged) {
+      changes.push(`status: ${existingAppointment.status} → ${currentStatus}`);
+    }
+    if (hasDeletedChanged) {
+      changes.push(`deleted: ${existingAppointment.isDeleted} → ${currentIsDeleted}`);
+    }
+
+    console.log(`Updated appointment ${appointment.id} - ${changes.join(', ')}`);
+    return { updated: true, changes: changes.join(', ') };
+
+  } catch (error) {
+    console.error(`Error updating appointment ${appointment.id}:`, error.message);
+    return null;
+  }
+}
+
+async function processAppointment(appointment, updateMode = false) {
   try {
     // Перевіряємо чи це індивідуальний урок
     const isIndividualLesson = appointment.services?.some((service) =>
       IndividualServicesList.includes(service.id)
     );
 
-    if (!isIndividualLesson) {
-      return null; // Пропускаємо якщо не індивідуальний урок
+    // Перевіряємо чи це trial урок за ID сервісу
+    const isTrialLesson = appointment.services?.some((service) => 
+      SalesServicesIdList.includes(service.id) || 
+      LevelDefinitionIdList.includes(service.id) ||
+      C2UTrialId.includes(service.id)
+    );
+
+    // Пропускаємо якщо це не індивідуальний урок і не trial урок
+    if (!isIndividualLesson && !isTrialLesson) {
+      return null;
     }
 
     // Парсимо ім'я клієнта для отримання leadId та leadName
@@ -126,8 +180,20 @@ async function processAppointment(appointment) {
     }
 
     if (existingAppointment) {
-      console.log(`Appointment ${appointment.id} already exists in database`);
-      return null;
+      // Якщо запис існує, перевіряємо чи потрібно його оновити
+      if (updateMode) {
+        const updateResult = await updateAppointmentIfChanged(existingAppointment, appointment);
+        if (updateResult && updateResult.updated) {
+          console.log(`Appointment ${appointment.id} updated - ${updateResult.changes}`);
+          return { updated: true, changes: updateResult.changes };
+        } else {
+          console.log(`Appointment ${appointment.id} - no changes needed`);
+          return null;
+        }
+      } else {
+        console.log(`Appointment ${appointment.id} already exists in database`);
+        return null;
+      }
     }
 
     // Формуємо дати
@@ -146,11 +212,7 @@ async function processAppointment(appointment) {
     // SalesServicesIdList - загальні sales/trial уроки
     // LevelDefinitionIdList - уроки для визначення рівня (також trial)
     // C2UTrialId - спеціальні C2U пробні уроки
-    const isTrialLesson = appointment.services?.some((service) => 
-      SalesServicesIdList.includes(service.id) || 
-      LevelDefinitionIdList.includes(service.id) ||
-      C2UTrialId.includes(service.id)
-    );
+    // (isTrialLesson вже визначено вище)
 
     // Створюємо новий запис
     const newAppointmentData = {
@@ -188,6 +250,67 @@ async function processAppointment(appointment) {
     console.error(`Error processing appointment ${appointment.id}:`, error.message);
     return null;
   }
+}
+
+async function updateExistingAppointments(startDate, endDate) {
+  console.log(`Starting to update existing appointments from ${startDate} to ${endDate}`);
+  
+  let page = 1;
+  let totalProcessed = 0;
+  let totalUpdated = 0;
+  const count = 50; // максимум записів на сторінку
+  
+  try {
+    while (true) {
+      console.log(`Fetching page ${page} for updates...`);
+      
+      // Робимо запит до API
+      const result = await fetchAppointmentsPage(page, count, startDate, endDate);
+      
+      if (!result.success || !result.data || result.data.length === 0) {
+        console.log("No more appointments found");
+        break;
+      }
+
+      console.log(`Checking ${result.data.length} appointments from page ${page} for updates`);
+      
+      // Обробляємо кожен appointment в режимі оновлення
+      for (let i = 0; i < result.data.length; i++) {
+        const appointment = result.data[i];
+        const updateResult = await processAppointment(appointment, true); // updateMode = true
+        totalProcessed++;
+        if (updateResult && updateResult.updated) {
+          totalUpdated++;
+        }
+        
+        // Невелика пауза кожні 10 записів для зменшення навантаження на БД
+        if ((i + 1) % 10 === 0) {
+          await delay(100); // 100ms пауза кожні 10 записів
+        }
+      }
+
+      // Якщо кількість отриманих записів менша за count, значить це остання сторінка
+      if (result.data.length < count) {
+        console.log("Reached last page");
+        break;
+      }
+
+      page++;
+      
+      // Rate limiting - чекаємо перед наступним запитом
+      await delay(RATE_LIMIT_DELAY);
+    }
+  } catch (error) {
+    console.error("Error in updateExistingAppointments:", error.message);
+    throw error;
+  }
+
+  console.log(`\nUpdate completed:`);
+  console.log(`Total appointments processed: ${totalProcessed}`);
+  console.log(`Total appointments updated: ${totalUpdated}`);
+  console.log(`Appointments unchanged: ${totalProcessed - totalUpdated}`);
+  
+  return { totalProcessed, totalUpdated };
 }
 
 async function fetchAllAppointments(startDate, endDate) {
@@ -256,14 +379,24 @@ async function main() {
   const args = process.argv.slice(2);
   
   if (args.length < 2) {
-    console.log("Usage: node fetchAllAppointments.js <start_date> <end_date>");
+    console.log("Usage: node fetchAllAppointments.js <start_date> <end_date> [mode]");
     console.log("Date format: YYYY-MM-DD");
-    console.log("Example: node fetchAllAppointments.js 2025-01-01 2025-01-31");
+    console.log("Mode: 'fetch' (default) or 'update'");
+    console.log("Examples:");
+    console.log("  node fetchAllAppointments.js 2025-01-01 2025-01-31          # Fetch new appointments");
+    console.log("  node fetchAllAppointments.js 2025-01-01 2025-01-31 update   # Update existing appointments");
     process.exit(1);
   }
 
   const startDate = args[0];
   const endDate = args[1];
+  const mode = args[2] || 'fetch';
+
+  // Валідація режиму
+  if (!['fetch', 'update'].includes(mode)) {
+    console.error("Invalid mode. Use 'fetch' or 'update'");
+    process.exit(1);
+  }
 
   // Валідація дат
   const startDateObj = new Date(startDate);
@@ -289,9 +422,14 @@ async function main() {
     
     console.log("Connected to database");
     console.log(`Database state: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Not connected'}`);
-    console.log(`Fetching appointments from ${startDate} to ${endDate}`);
     
-    await fetchAllAppointments(startDate, endDate);
+    if (mode === 'update') {
+      console.log(`Updating existing appointments from ${startDate} to ${endDate}`);
+      await updateExistingAppointments(startDate, endDate);
+    } else {
+      console.log(`Fetching new appointments from ${startDate} to ${endDate}`);
+      await fetchAllAppointments(startDate, endDate);
+    }
     
     console.log("Script completed successfully");
     process.exit(0);
@@ -308,6 +446,8 @@ if (require.main === module) {
 
 module.exports = {
   fetchAllAppointments,
+  updateExistingAppointments,
   processAppointment,
   fetchAppointmentsPage,
+  updateAppointmentIfChanged,
 };
