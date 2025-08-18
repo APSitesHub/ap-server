@@ -1,5 +1,26 @@
 const { Schema, model } = require("mongoose");
 
+/**
+ * AltegioAppointments Schema
+ *
+ * Represents an appointment in the Altegio system.
+ *
+ * @typedef {Object} AltegioAppointments
+ * @property {string} appointmentId - Unique identifier for the appointment. Required.
+ * @property {string} leadId - Unique identifier for the lead. Required.
+ * @property {string} leadName - Name of the lead. Required.
+ * @property {string} teacherId - Unique identifier for the teacher. Required.
+ * @property {string} teacherName - Name of the teacher. Required.
+ * @property {string} serviceId - Unique identifier for the service. Required.
+ * @property {string} serviceName - Name of the service. Required.
+ * @property {Date} startDateTime - Start date and time of the appointment. Required.
+ * @property {Date} endDateTime - End date and time of the appointment. Required.
+ * @property {string} status - Status of the appointment. Required.
+ * @property {boolean} [IsTrial=false] - Indicates if the appointment is a trial. Default is false.
+ * @property {boolean} [isDeleted=false] - Indicates if the appointment is deleted. Default is false.
+ * @property {boolean} [leadPurchasedCourse=false] - Indicates if the lead has purchased a course. Default is false.
+ * @property {Date} [courseePurchaseDate] - Date of payment confirmation.
+ */
 const altegioAppointments = new Schema(
   {
     appointmentId: {
@@ -44,6 +65,8 @@ const altegioAppointments = new Schema(
     },
     IsTrial: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
+    leadPurchasedCourse: { type: Boolean, default: false },
+    courseePurchaseDate: { type: Date },
   },
   {
     versionKey: false,
