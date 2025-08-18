@@ -8,7 +8,7 @@ const updateLastTrialLesson = async (leadId) => {
     // Знаходимо всі пробні уроки для цього ліда
     const trialLessons = await AltegioAppointments.find({
       leadId: leadId.toString(),
-      status: 2,
+      status: 1,
       IsTrial: true,
       isDeleted: false
     })
