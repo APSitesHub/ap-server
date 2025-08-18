@@ -99,8 +99,16 @@ async function processAppointment(appointment) {
       IndividualServicesList.includes(service.id)
     );
 
-    if (!isIndividualLesson) {
-      return null; // Пропускаємо якщо не індивідуальний урок
+    // Перевіряємо чи це trial урок за ID сервісу
+    const isTrialLesson = appointment.services?.some((service) => 
+      SalesServicesIdList.includes(service.id) || 
+      LevelDefinitionIdList.includes(service.id) ||
+      C2UTrialId.includes(service.id)
+    );
+
+    // Пропускаємо якщо це не індивідуальний урок і не trial урок
+    if (!isIndividualLesson && !isTrialLesson) {
+      return null;
     }
 
     // Парсимо ім'я клієнта для отримання leadId та leadName
@@ -146,11 +154,7 @@ async function processAppointment(appointment) {
     // SalesServicesIdList - загальні sales/trial уроки
     // LevelDefinitionIdList - уроки для визначення рівня (також trial)
     // C2UTrialId - спеціальні C2U пробні уроки
-    const isTrialLesson = appointment.services?.some((service) => 
-      SalesServicesIdList.includes(service.id) || 
-      LevelDefinitionIdList.includes(service.id) ||
-      C2UTrialId.includes(service.id)
-    );
+    // (isTrialLesson вже визначено вище)
 
     // Створюємо новий запис
     const newAppointmentData = {
@@ -165,7 +169,7 @@ async function processAppointment(appointment) {
       endDateTime,
       status: appointment.visit_attendance?.toString() || "0",
       IsTrial: isTrialLesson,
-      isDeleted: appointment.deleted === 1,
+      isDeleted: appointment.deleted,
     };
 
     // Зберігаємо новий запис з обробкою помилок
@@ -188,6 +192,144 @@ async function processAppointment(appointment) {
     console.error(`Error processing appointment ${appointment.id}:`, error.message);
     return null;
   }
+}
+
+async function updateExistingAppointments(startDate, endDate) {
+  console.log(`Starting to update existing appointments from ${startDate} to ${endDate}`);
+  
+  let page = 1;
+  let totalProcessed = 0;
+  let totalUpdated = 0;
+  let totalNew = 0;
+  const count = 50; // максимум записів на сторінку
+  
+  try {
+    while (true) {
+      console.log(`Fetching page ${page}...`);
+      
+      // Робимо запит до API
+      const result = await fetchAppointmentsPage(page, count, startDate, endDate);
+      
+      if (!result.success || !result.data || result.data.length === 0) {
+        console.log("No more appointments found");
+        break;
+      }
+
+      console.log(`Processing ${result.data.length} appointments from page ${page}`);
+      
+      // Обробляємо кожен appointment
+      for (let i = 0; i < result.data.length; i++) {
+        const appointment = result.data[i];
+        
+        try {
+          // Перевіряємо чи це індивідуальний урок або trial урок
+          const isIndividualLesson = appointment.services?.some((service) =>
+            IndividualServicesList.includes(service.id)
+          );
+
+          const isTrialLesson = appointment.services?.some((service) => 
+            SalesServicesIdList.includes(service.id) || 
+            LevelDefinitionIdList.includes(service.id) ||
+            C2UTrialId.includes(service.id)
+          );
+
+          // Пропускаємо якщо це не індивідуальний урок і не trial урок
+          if (!isIndividualLesson && !isTrialLesson) {
+            totalProcessed++;
+            continue;
+          }
+
+          // Парсимо ім'я клієнта
+          const { leadId, leadName } = parseUserName(appointment.client?.name || "");
+
+          if (!leadId || !leadName) {
+            console.log(`Skipping appointment ${appointment.id} - no valid leadId or leadName`);
+            totalProcessed++;
+            continue;
+          }
+
+          // Формуємо дати
+          const date = new Date(appointment.datetime);
+          const startDateTime = DateTime.fromJSDate(date, {
+            zone: "Europe/Kyiv",
+          }).toISO();
+          const endDateTime = DateTime.fromJSDate(
+            new Date(date.getTime() + appointment.seance_length * 1000),
+            {
+              zone: "Europe/Kyiv",
+            }
+          ).toISO();
+
+          // Оновлені дані для appointment
+          const appointmentData = {
+            appointmentId: appointment.id.toString(),
+            leadId,
+            leadName,
+            teacherId: appointment.staff?.id?.toString() || "",
+            teacherName: appointment.staff?.name || "",
+            serviceId: appointment.services?.[0]?.id?.toString() || "",
+            serviceName: appointment.services?.[0]?.title || "",
+            startDateTime,
+            endDateTime,
+            status: appointment.visit_attendance?.toString() || "0",
+            IsTrial: isTrialLesson,
+            isDeleted: appointment.deleted,
+          };
+
+          // Шукаємо існуючий запис та оновлюємо або створюємо новий
+          const existingAppointment = await AltegioAppointments.findOneAndUpdate(
+            { appointmentId: appointment.id.toString() },
+            appointmentData,
+            { 
+              new: true, 
+              upsert: true, // створити новий якщо не існує
+              setDefaultsOnInsert: true 
+            }
+          ).maxTimeMS(10000);
+
+          if (existingAppointment.isNew !== false) {
+            totalNew++;
+            console.log(`Created new appointment ${appointment.id} for ${leadName} (Trial: ${isTrialLesson ? 'Yes' : 'No'})`);
+          } else {
+            totalUpdated++;
+            console.log(`Updated appointment ${appointment.id} for ${leadName} (Trial: ${isTrialLesson ? 'Yes' : 'No'})`);
+          }
+
+        } catch (error) {
+          console.error(`Error processing appointment ${appointment.id}:`, error.message);
+        }
+        
+        totalProcessed++;
+        
+        // Невелика пауза кожні 10 записів
+        if ((i + 1) % 10 === 0) {
+          await delay(100);
+        }
+      }
+
+      // Якщо кількість отриманих записів менша за count, це остання сторінка
+      if (result.data.length < count) {
+        console.log("Reached last page");
+        break;
+      }
+
+      page++;
+      
+      // Rate limiting
+      await delay(RATE_LIMIT_DELAY);
+    }
+  } catch (error) {
+    console.error("Error in updateExistingAppointments:", error.message);
+    throw error;
+  }
+
+  console.log(`\nUpdate completed:`);
+  console.log(`Total appointments processed: ${totalProcessed}`);
+  console.log(`Total appointments updated: ${totalUpdated}`);
+  console.log(`Total new appointments created: ${totalNew}`);
+  console.log(`Appointments skipped: ${totalProcessed - totalUpdated - totalNew}`);
+  
+  return { totalProcessed, totalUpdated, totalNew };
 }
 
 async function fetchAllAppointments(startDate, endDate) {
@@ -256,14 +398,19 @@ async function main() {
   const args = process.argv.slice(2);
   
   if (args.length < 2) {
-    console.log("Usage: node fetchAllAppointments.js <start_date> <end_date>");
+    console.log("Usage: node fetchAllAppointments.js <start_date> <end_date> [--update]");
     console.log("Date format: YYYY-MM-DD");
-    console.log("Example: node fetchAllAppointments.js 2025-01-01 2025-01-31");
+    console.log("Options:");
+    console.log("  --update    Update existing appointments (upsert mode)");
+    console.log("Examples:");
+    console.log("  node fetchAllAppointments.js 2025-01-01 2025-01-31");
+    console.log("  node fetchAllAppointments.js 2025-01-01 2025-01-31 --update");
     process.exit(1);
   }
 
   const startDate = args[0];
   const endDate = args[1];
+  const updateMode = args.includes('--update');
 
   // Валідація дат
   const startDateObj = new Date(startDate);
@@ -289,9 +436,13 @@ async function main() {
     
     console.log("Connected to database");
     console.log(`Database state: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Not connected'}`);
-    console.log(`Fetching appointments from ${startDate} to ${endDate}`);
+    console.log(`${updateMode ? 'Updating' : 'Fetching'} appointments from ${startDate} to ${endDate}`);
     
-    await fetchAllAppointments(startDate, endDate);
+    if (updateMode) {
+      await updateExistingAppointments(startDate, endDate);
+    } else {
+      await fetchAllAppointments(startDate, endDate);
+    }
     
     console.log("Script completed successfully");
     process.exit(0);
@@ -308,6 +459,7 @@ if (require.main === module) {
 
 module.exports = {
   fetchAllAppointments,
+  updateExistingAppointments,
   processAppointment,
   fetchAppointmentsPage,
 };
