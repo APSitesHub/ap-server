@@ -34,6 +34,19 @@ const IndividualServicesList = [
   12465931, 12465927, 12466089, 12466087, 12466083, 12466073, 12466072,
   12466060, 12466057, 12466055, 12466049, 12466046, 12466042,
 ];
+const SalesServicesIdList = [
+  10669989, 10669992, 10669994, 12452584, 12452585, 12460475, 12035570,
+  11004387,
+];
+
+// Список сервісів для визначення рівня (Level Definition)
+const LevelDefinitionIdList = [
+  12500073, 12318088, 12287043, 12287042, 12186844, 12186843, 12186842,
+  12186841, 12186840, 12186839, 12186838, 12186837,
+];
+
+// C2U Trial сервіси
+const C2UTrialId = [12460475];
 
 function parseUserName(userName) {
   const words = userName.trim().split(/\s+/); // розбиває за пробілами
@@ -80,7 +93,10 @@ const altegioWebhookIndividualLesson = async (req, res) => {
       return res.status(200).json({ message: "Invalid client name" });
     }
     const isIndividualLesson = data.services.some((service) =>
-      IndividualServicesList.includes(service.id)
+      IndividualServicesList.includes(service.id) ||
+      SalesServicesIdList.includes(service.id) ||
+      LevelDefinitionIdList.includes(service.id) ||
+      C2UTrialId.includes(service.id)
     );
     if (!isIndividualLesson) {
       return res
