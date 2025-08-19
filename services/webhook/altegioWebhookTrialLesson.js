@@ -360,7 +360,6 @@ const altegioWebhook = async (req, res) => {
     ) {
       try {
         console.log("Preparing lesson room for individual lesson...");
-        console.log(req);
         const { roomLink, teacher } = await prepareLessonRoom(data.staff_id);
 
         const appointment = {
