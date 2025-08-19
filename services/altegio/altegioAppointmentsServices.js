@@ -8,13 +8,14 @@ const findAppointments = async ({ start, end }) =>
     },
   });
 
-const findAppointmentsByStudent = async ({ leadId, start, end }) =>
+const findAppointmentsByStudent = async ({ leadId, start, end, IsTrial }) =>
   await AltegioAppointments.find({
     leadId: leadId,
     startDateTime: {
       $gte: start,
       $lte: end,
     },
+    IsTrial: IsTrial,
   });
 
 const newAppointment = async (body) => {
