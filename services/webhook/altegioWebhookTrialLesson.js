@@ -411,7 +411,9 @@ async function bookIndividualLesson(
       `https://api.alteg.io/api/v1/record/${process.env.ALTEGIO_COMPANY_ID}/${appointment.id}`,
       {
         ...appointment,
-        comment: `Посилання на урок: ${roomLink}
+        comment: `${prevComment}
+w
+Посилання на урок: ${roomLink}
 
 Логін і пароль на платформу:
   Логін: ${teacher.login}
