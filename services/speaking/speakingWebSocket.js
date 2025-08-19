@@ -19,7 +19,7 @@ function speakingWebSocket(io) {
 
   sp.on("connection", (socket) => {
     socket.on(ACTIONS.JOIN, (data) => {
-      const { room, login, userName, userId, role } = data;
+      const { room, login, userName, userId, role, disconnected } = data;
       socket.join(room);
 
       if (!rooms[room]) {
@@ -27,9 +27,11 @@ function speakingWebSocket(io) {
       }
       const userInRoom = rooms[room].find((u) => u.login === login);
 
+      console.log("connection");
       console.log(userInRoom);
 
       if (userInRoom && role !== "admin") {
+        userInRoom.disconnected = false;
         userInRoom.socketId = socket.id;
         rooms[room].forEach((user) => {
           sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
@@ -37,10 +39,28 @@ function speakingWebSocket(io) {
           });
         });
 
+        const admins = rooms[room].filter((u) => u.role === "admin");
+        admins.forEach((admin) => {
+          sp.to(admin.socketId).emit(ACTIONS.USER_RECONNECTED, {
+            login: userInRoom.login,
+            userName: userInRoom.userName,
+            role: userInRoom.role,
+            userId: userInRoom.userId,
+            disconnected: userInRoom.disconnected,
+          });
+        });
+
         return;
       }
 
-      rooms[room].push({ login, userName, role, userId, socketId: socket.id });
+      rooms[room].push({
+        login,
+        userName,
+        role,
+        userId,
+        socketId: socket.id,
+        disconnected,
+      });
       console.log(
         `Користувач ${login} (${userName}) приєднався до кімнати ${room} як ${role}`
       );
@@ -91,6 +111,8 @@ function speakingWebSocket(io) {
     });
 
     socket.on(ACTIONS.START_LESSON, ({ room }) => {
+      console.log("lesson start in ", room);
+
       if (rooms[room]) {
         rooms[room].forEach((user) => {
           sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
@@ -106,15 +128,26 @@ function speakingWebSocket(io) {
       console.log(`Користувач з socketId ${socket.id} відключився`);
       for (const room in rooms) {
         const user = rooms[room].find((u) => u.socketId === socket.id);
+        if (user) {
+          user.disconnected = true;
+        }
+
+        if (user && user.role === "admin") {
+          rooms[room] = rooms[room].filter((u) => u.socketId !== socket.id);
+        }
 
         if (user && user.role !== "admin") {
           const admins = rooms[room].filter((u) => u.role === "admin");
+          console.log("sent");
+          console.log(admins);
+
           admins.forEach((admin) => {
             sp.to(admin.socketId).emit(ACTIONS.USER_DISCONNECTED, {
               login: user.login,
               userName: user.userName,
               role: user.role,
               userId: user.userId,
+              disconnected: user.disconnected,
             });
           });
         }
