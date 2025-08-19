@@ -159,7 +159,7 @@ const PersonalLinkMapTrial = [
     teacherId: 2212152,
     link: "https://academy.ap.education/room/trial/shvets/68f68f33-636c-4fbf-ae66-999897c4e654",
   },
-    {
+  {
     teacherId: 2704377,
     link: "https://academy.ap.education/room/trial/tsvihun/bcbad8df-888c-4333-97c9-6bb5fc14770f",
   },
@@ -192,7 +192,6 @@ const StatusMappingReanimation = {
   German: 63642552,
   Polish: 63642556,
 };
-
 
 // Webhook обробник для Altegio
 const altegioWebhook = async (req, res) => {
@@ -361,7 +360,6 @@ const altegioWebhook = async (req, res) => {
     ) {
       try {
         console.log("Preparing lesson room for individual lesson...");
-        console.log(req)
         const { roomLink, teacher } = await prepareLessonRoom(data.staff_id);
 
         const appointment = {
@@ -373,7 +371,7 @@ const altegioWebhook = async (req, res) => {
           client: data.client,
         };
 
-        bookIndividualLesson(appointment, roomLink, teacher);
+        bookIndividualLesson(appointment, roomLink, teacher, data.comment);
 
         return res.status(200).json({
           message: "Individual lesson booked successfully",
@@ -397,15 +395,24 @@ const altegioWebhook = async (req, res) => {
   }
 };
 
-async function bookIndividualLesson(appointment, roomLink, teacher) {
-  try {
-    // console.log(appointment);
+async function bookIndividualLesson(
+  appointment,
+  roomLink,
+  teacher,
+  prevComment
+) {
+  if (prevComment.includes("Посилання на урок:")) {
+    return;
+  }
 
+  try {
     await altegioPut(
       `https://api.alteg.io/api/v1/record/${process.env.ALTEGIO_COMPANY_ID}/${appointment.id}`,
       {
         ...appointment,
-        comment: `Посилання на урок: ${roomLink}
+        comment: `${prevComment}
+
+Посилання на урок: ${roomLink}
 
 Логін і пароль на платформу:
   Логін: ${teacher.login}
