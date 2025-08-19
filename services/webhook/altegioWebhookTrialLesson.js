@@ -412,7 +412,7 @@ async function bookIndividualLesson(
       {
         ...appointment,
         comment: `${prevComment}
-w
+
 Посилання на урок: ${roomLink}
 
 Логін і пароль на платформу:
