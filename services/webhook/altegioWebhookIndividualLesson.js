@@ -207,7 +207,7 @@ const altegioWebhookIndividualLesson = async (req, res) => {
         seance_length: data.seance_length,
         client: data.client,
       };
-      await updateIndividualLesson(appointment, roomLink, teacher);
+      await updateIndividualLesson(appointment, roomLink, teacher, data.comment);
     }
 
     if (status === "delete") {
@@ -235,10 +235,16 @@ const altegioWebhookIndividualLesson = async (req, res) => {
   }
 };
 
-async function updateIndividualLesson(appointment, roomLink, teacher) {
+async function updateIndividualLesson(appointment, roomLink, teacher, prevComment) {
+  if (prevComment.includes('Посилання на урок:')) {
+    return;
+  }
+
   const updatedAppointmemtBody = {
     ...appointment,
-    comment: `Посилання на урок: ${roomLink}
+    comment: `${prevComment}
+
+Посилання на урок: ${roomLink}
 
 Логін і пароль на платформу:
   Логін: ${teacher.login}
