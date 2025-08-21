@@ -36,6 +36,8 @@ const postLeadFeedback = require("../controllers/leads/postLeadFeedback.js");
 const postLeadNMT = require("../controllers/quiz/postLeadNMT");
 const postPartnerLeadNMT = require("../controllers/leads/postPartnerLeadNMT");
 const postLeadWheelWin = require("../controllers/leads/postLeadWheelWin");
+const postExamLead = require("../controllers/leads/postExamLead");
+const { validateExamLead } = require("../schema/examLeadSchema");
 const router = express.Router();
 
 router.get("/", getLeads);
@@ -80,4 +82,5 @@ router.post("/bodocard", postBodoCardLead);
 router.post("/lead-payment", postPaymentSignature);
 router.post("/wayforpay-callback", postWayforPayCallback);
 router.post("/wheel-win", postLeadWheelWin);
+router.post("/exam", validateExamLead, postExamLead);
 module.exports = router;

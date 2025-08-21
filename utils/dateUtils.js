@@ -14,7 +14,7 @@ function toSheetsDate(timestamp) {
 
 function toLocalTime(timestamp) {
     const date = timestamp ? new Date(timestamp * 1000) : new Date();
-    const kievTime = formatInTimeZone(date, 'Europe/Kyiv', 'dd.MM.yyyy');
+    const kievTime = formatInTimeZone(date, 'Europe/Kiev', 'dd.MM.yyyy');
     return kievTime;
 }
 

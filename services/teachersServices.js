@@ -2,17 +2,23 @@ const Teachers = require("../db/models/teachersModel");
 
 const allTeachers = async () => await Teachers.find({});
 
-const allEnTeachers = async () => await Teachers.find({$or: [{lang: 'en'}, {lang: 'en de'}]});
+const allEnTeachers = async () =>
+  await Teachers.find({ $or: [{ lang: "en" }, { lang: "en de" }] });
 
-const allDeTeachers = async () => await Teachers.find({$or: [{lang: 'de'}, {lang: 'en de'}]});
+const allDeTeachers = async () =>
+  await Teachers.find({ $or: [{ lang: "de" }, { lang: "en de" }] });
 
-const allPlTeachers = async () => await Teachers.find({lang: 'pl'});
+const allPlTeachers = async () => await Teachers.find({ lang: "pl" });
+
+const allTeachersBasicInfo = async () =>
+  await Teachers.find({}).select("name lang altegioId crmId");
 
 const findTeacher = async (query) => await Teachers.findOne(query);
 
 const findTeacherByID = async (id) => await Teachers.findById(id);
 
-const findTeacherByAltegioID = async (altegioId) => await Teachers.findOne({ altegioId });
+const findTeacherByAltegioID = async (altegioId) =>
+  await Teachers.findOne({ altegioId });
 
 const newTeacher = async (body) => await Teachers(body).save();
 
@@ -29,6 +35,7 @@ module.exports = {
   allEnTeachers,
   allDeTeachers,
   allPlTeachers,
+  allTeachersBasicInfo,
   findTeacher,
   findTeacherByID,
   findTeacherByAltegioID,

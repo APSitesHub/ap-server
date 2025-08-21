@@ -109,7 +109,7 @@ router.post("/found_teacher", async (req, res) => {
   const DATE_TIME_LESSON_SECOND = 1828605;
   // const DATE_TIME_LESSON_END = 1824931;
   // const LESSON_TYPE = 1824839;
-  // const LESSON_LEVEL = 1824721;
+  const LESSON_LEVEL = 1824721;
   const LESSON_LANGUAGE = 1824775;
   // const TEACHER = 1824847;
   const FOR_CHILDREN = 1824855;
@@ -171,14 +171,25 @@ router.post("/found_teacher", async (req, res) => {
             isChildren: filed.values[0].value,
           };
           break;
+        case LESSON_LEVEL:
+          userInfoForLesson = {
+            ...userInfoForLesson,
+            teacherLevel: filed.values[0].value,
+          };
+          break;
       }
     });
 
     const dateTimeStart = userInfoForLesson.dateTimeLessonStart;
     const dateTimeSecond = userInfoForLesson.dateTimeLessonSecond;
     const isChildren = Boolean(userInfoForLesson.isChildren);
+    const teacherLevel = userInfoForLesson.teacherLevel;
     const serviceIds = trialServicesMap[userInfoForLesson.lesson_language];
-    const bookableStaff = await getBookableStaff(serviceIds, isChildren);
+    const bookableStaff = await getBookableStaff(
+      serviceIds,
+      isChildren,
+      teacherLevel
+    );
 
     if (!dateTimeStart) {
       taskMsg = "Не вказано дату пошуку!";
@@ -262,13 +273,13 @@ function normalizeDate(dateStr) {
   const date = new Date(dateStr);
   const weekday = date.toLocaleDateString("uk-UA", {
     weekday: "short",
-    timeZone: "Europe/Kyiv",
+    timeZone: "Europe/Kiev",
   });
 
   const dayMonth = date.toLocaleDateString("uk-UA", {
     day: "2-digit",
     month: "2-digit",
-    timeZone: "Europe/Kyiv",
+    timeZone: "Europe/Kiev",
   });
 
   return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} - ${dayMonth}`;
@@ -307,7 +318,7 @@ function getNearbyTimes(date, timesArray) {
   return filteredTimes.length ? `(${filteredTimes.join(", ")})` : null;
 }
 
-async function getBookableStaff(serviceIds, isChildren) {
+async function getBookableStaff(serviceIds, isChildren, teacherLevel) {
   const companyId = process.env.ALTEGIO_COMPANY_ID;
   const companyToken = process.env.ALTEGIO_COMPANY_TOKEN;
   const firedStatus = "ЗВІЛЬНЕНО";
@@ -331,21 +342,39 @@ async function getBookableStaff(serviceIds, isChildren) {
     if (!response.data.success) {
       throw new Error("API call unsuccessful");
     }
+    const normalize = (str) => str.trim().toLowerCase();
+
     const bookableStaff = response.data.data.filter((employee) => {
-      const employeeName = employee.name.toUpperCase();
+      const name = normalize(employee.name);
       return (
-        Boolean(employee.bookable) &&
-        !employeeName.includes(firedStatus.toUpperCase()) &&
-        !employeeName.includes(webinarsOnlyStatus.toUpperCase())
+        employee.bookable &&
+        !name.includes(normalize(firedStatus)) &&
+        !name.includes(normalize(webinarsOnlyStatus))
       );
     });
+
+    let result = [...bookableStaff];
+
     if (isChildren) {
-      return bookableStaff.filter(
-        (employee) => !`${employee.name}`.includes(withoutChildrenStatus)
+      result = result.filter(
+        (employee) =>
+          !normalize(employee.name).includes(normalize(withoutChildrenStatus))
       );
     }
 
-    return bookableStaff;
+    if (teacherLevel) {
+      const level = normalize(teacherLevel);
+      result = result.filter((employee) => {
+        const normalizedName = normalize(normalizeTeacherName(employee.name));
+        const matches = normalizedName.match(/\b(a0|a1|a2|b1|b2|c1|c2)\b/);
+
+        if (!matches) return true;
+
+        return matches.includes(level);
+      });
+    }
+
+    return result;
   } catch (error) {
     console.error("Error fetching bookable staff:", error.message);
   }

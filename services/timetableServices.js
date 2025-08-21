@@ -17,6 +17,9 @@ const updateTimetable = async (id, body) =>
     { upsert: true, new: true }
   );
 
+const updateCourseHolidayStatus = async (id, body) =>
+  await Timetable.findByIdAndUpdate(id, body, { new: true });
+
 const updateOnlyTimetableInfo = async (id, body) =>
   await Timetable.findByIdAndUpdate(id, body, { new: true });
 
@@ -33,6 +36,7 @@ module.exports = {
   findTimetable,
   newTimetable,
   updateTimetable,
+  updateCourseHolidayStatus,
   updateOnlyTimetableInfo,
   updateTimetableWithoutCourse,
   deleteTimetable,

@@ -1,6 +1,6 @@
 {
   "name": "ap-server",
-  "version": "1.1.20.48",
+  "version": "1.1.20.49",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
@@ -30,7 +30,8 @@
     "node-cron": "^3.0.3",
     "node-telegram-bot-api": "^0.66.0",
     "socket.io": "^4.8.1",
-    "transliteration": "^2.3.5"
+    "transliteration": "^2.3.5",
+    "viber-bot": "^1.0.18"
   },
   "devDependencies": {
     "eslint": "7.19.0",

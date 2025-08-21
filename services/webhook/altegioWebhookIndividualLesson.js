@@ -1,18 +1,12 @@
 /* eslint-disable camelcase */
-const axios = require("axios");
-const getCRMLead = require("../crmGetLead");
-const { getToken } = require("../tokensServices");
-const { sendMessageToChat } = require("../botTelegram");
-const {
-  format,
-  parseISO,
-  setHours,
-  setMinutes,
-  setSeconds,
-} = require("date-fns");
-const { uk, id } = require("date-fns/locale");
+const { DateTime } = require("luxon");
 const { prepareLessonRoom } = require("../prepareLessonRoom");
 const { findTeacherByAltegioID } = require("../teachersServices");
+const { altegioPut } = require("../altegio/altegioAuth");
+const {
+  newAppointment,
+  updateAppointment,
+} = require("../altegio/altegioAppointmentsServices");
 
 // Ід сервісів для індивідуальних уроків. За ними генеруються лінки для Altegio
 const IndividualServicesList = [
@@ -40,6 +34,38 @@ const IndividualServicesList = [
   12465931, 12465927, 12466089, 12466087, 12466083, 12466073, 12466072,
   12466060, 12466057, 12466055, 12466049, 12466046, 12466042,
 ];
+const SalesServicesIdList = [
+  10669989, 10669992, 10669994, 12452584, 12452585, 12460475, 12035570,
+  11004387,
+];
+
+// Список сервісів для визначення рівня (Level Definition)
+const LevelDefinitionIdList = [
+  12500073, 12318088, 12287043, 12287042, 12186844, 12186843, 12186842,
+  12186841, 12186840, 12186839, 12186838, 12186837,
+];
+
+// C2U Trial сервіси
+const C2UTrialId = [12460475];
+
+function parseUserName(userName) {
+  const words = userName.trim().split(/\s+/); // розбиває за пробілами
+  let leadId = "";
+  const nameParts = [];
+
+  for (const word of words) {
+    if (!leadId && /^\d+$/.test(word)) {
+      leadId = word;
+    } else {
+      nameParts.push(word);
+    }
+  }
+
+  return {
+    leadId,
+    leadName: nameParts.join(" "),
+  };
+}
 
 // Webhook обробник для Altegio
 const altegioWebhookIndividualLesson = async (req, res) => {
@@ -50,14 +76,27 @@ const altegioWebhookIndividualLesson = async (req, res) => {
 
   try {
     const { status, resource, data } = req.body;
-    const userName = data.client?.name || "";
-    const visit_attendance = data.visit_attendance;
+    const { leadId, leadName } = parseUserName(data.client?.name || "");
+    const visit_attendance = data.visit_attendance; // 0(Pending) | 1(Arrived) | -1(No-show) | 2(Confirmed)
+    const date = new Date(data.date);
+    const startDateTime = DateTime.fromJSDate(date, {
+      zone: "Europe/Kiev",
+    }).toISO();
+    const endDateTime = DateTime.fromJSDate(
+      new Date(date.getTime() + data.seance_length * 1000),
+      {
+        zone: "Europe/Kiev",
+      }
+    ).toISO();
 
-    if (!userName) {
+    if (!leadName) {
       return res.status(200).json({ message: "Invalid client name" });
     }
     const isIndividualLesson = data.services.some((service) =>
-      IndividualServicesList.includes(service.id)
+      IndividualServicesList.includes(service.id) ||
+      SalesServicesIdList.includes(service.id) ||
+      LevelDefinitionIdList.includes(service.id) ||
+      C2UTrialId.includes(service.id)
     );
     if (!isIndividualLesson) {
       return res
@@ -74,6 +113,26 @@ const altegioWebhookIndividualLesson = async (req, res) => {
 
     if (status === "create") {
       try {
+        // додавання в БД
+
+        if (leadId) {
+          await newAppointment({
+            appointmentId: data.id,
+            leadId,
+            leadName,
+            teacherId: data.staff.id,
+            teacherName: data.staff.name,
+            serviceId: data.services[0].id,
+            serviceName: data.services[0].title,
+            startDateTime,
+            endDateTime,
+            status: visit_attendance,
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+      try {
         const teacher = await findTeacherByAltegioID(data.staff_id);
         if (!teacher) {
           return res.status(200).json({
@@ -82,6 +141,7 @@ const altegioWebhookIndividualLesson = async (req, res) => {
           });
         }
         const roomLink = await prepareLessonRoom(teacher);
+
         const appointment = {
           id: data.id,
           staff_id: data.staff_id,
@@ -101,6 +161,26 @@ const altegioWebhookIndividualLesson = async (req, res) => {
           message: "Error preparing lesson room",
           status: "badRequest",
         });
+      }
+    }
+
+    if (status === "update") {
+      try {
+        await updateAppointment(
+          {
+            appointmentId: data.id,
+          },
+          {
+            leadId,
+            teacherId: data.staff.id,
+            serviceId: data.services[0].id,
+            startDateTime,
+            endDateTime,
+            status: visit_attendance,
+          }
+        );
+      } catch (e) {
+        console.error(e);
       }
     }
 
@@ -127,8 +207,24 @@ const altegioWebhookIndividualLesson = async (req, res) => {
         seance_length: data.seance_length,
         client: data.client,
       };
-      await updateIndividualLesson(appointment, roomLink, teacher);
+      await updateIndividualLesson(appointment, roomLink, teacher, data.comment);
     }
+
+    if (status === "delete") {
+      try {
+        await updateAppointment(
+          {
+            appointmentId: data.id,
+          },
+          {
+            isDeleted: true,
+          }
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     // Якщо жодна умова не виконана
     return res.status(200).json({ message: "No action required" });
   } catch (error) {
@@ -139,10 +235,16 @@ const altegioWebhookIndividualLesson = async (req, res) => {
   }
 };
 
-async function updateIndividualLesson(appointment, roomLink, teacher) {
+async function updateIndividualLesson(appointment, roomLink, teacher, prevComment) {
+  if (prevComment.includes('Посилання на урок:')) {
+    return;
+  }
+
   const updatedAppointmemtBody = {
     ...appointment,
-    comment: `Посилання на урок: ${roomLink}
+    comment: `${prevComment}
+
+Посилання на урок: ${roomLink}
 
 Логін і пароль на платформу:
   Логін: ${teacher.login}
@@ -155,16 +257,9 @@ async function updateIndividualLesson(appointment, roomLink, teacher) {
   };
 
   try {
-    await axios.put(
+    await altegioPut(
       `https://api.alteg.io/api/v1/record/${process.env.ALTEGIO_COMPANY_ID}/${appointment.id}`,
-      updatedAppointmemtBody,
-      {
-        headers: {
-          Accept: "application/vnd.api.v2+json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.ALTEGIO_COMPANY_TOKEN}, User ${process.env.ALTEGIO_USER_TOKEN}`,
-        },
-      }
+      updatedAppointmemtBody
     );
   } catch (error) {
     console.error("Error lesson updating:", error);

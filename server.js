@@ -2,7 +2,7 @@ require("./utils/services/sentry");
 const http = require("http");
 const socketIo = require("socket.io");
 const { version, validate } = require("uuid");
-const app = require("./app");
+const { app, bot } = require("./app");
 const connectDB = require("./db/connection");
 const { updateTable } = require("./utils/crm/paymentSheet");
 require("dotenv").config();
@@ -12,11 +12,19 @@ const {
 const { runWeeklyLeadUpdate } = require("./services/cronjob/visiting");
 const cron = require("node-cron");
 const { processLeadsByStatuses } = require("./services/cronjob/updateGroup");
+const {
+  notificationBotAuthListener,
+  hourlyIndividualNotifications,
+  dailyIndividualNotifications,
+  botInit,
+  viberNotificationBotAuthListener,
+} = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
-
 speakingWebSocket = require("./services/speaking/speakingWebSocket");
 speakingWebSocket(io);
+
+let notficationBot;
 
 const ACTIONS = {
   JOIN: "join",
@@ -295,7 +303,7 @@ cron.schedule(
   },
   {
     scheduled: true,
-    timezone: "Europe/Kyiv",
+    timezone: "Europe/Kiev",
   }
 );
 cron.schedule(
@@ -322,19 +330,69 @@ cron.schedule(
   },
   {
     scheduled: true,
-    timezone: "Europe/Kyiv",
+    timezone: "Europe/Kiev",
+  }
+);
+
+cron.schedule(
+  "0 * * * *", // запускає кожну годину
+  async () => {
+    try {
+      console.log("hourly reminder start");
+      await hourlyIndividualNotifications(notficationBot, bot);
+      console.log("hourly reminder completed successfully");
+    } catch (e) {
+      console.error("hourly reminder completed width error: ", e);
+    }
+  },
+  {
+    timezone: "Europe/Kiev",
+  }
+);
+
+cron.schedule(
+  "0 12 * * *", // запускає о 12:00 кожного дня
+  async () => {
+    try {
+      console.log("daily reminder start");
+      await dailyIndividualNotifications(notficationBot, bot);
+      console.log("daily reminder completed successfully");
+    } catch (e) {
+      console.error("daily reminder completed width error: ", e);
+    }
+  },
+  {
+    timezone: "Europe/Kiev",
   }
 );
 
 const startServer = async () => {
   try {
     await connectDB();
-    server.listen(process.env.PORT, (error) => {
+    notficationBot = await botInit();
+    notificationBotAuthListener(notficationBot);
+    viberNotificationBotAuthListener(bot);
+    server.listen(process.env.PORT, async (error) => {
       if (error) {
         console.log("Server launch error", error);
       }
       console.log(`Database connection successful on port ${process.env.PORT}`);
       console.log(`Run with environment ${process.env.NODE_ENV.toUpperCase()}`);
+
+      if (process.env.NODE_ENV === "production") {
+        try {
+          const res = await bot.setWebhook(
+            `https://ap-server-8qi1.onrender.com/viber/webhook`
+          );
+          if (res.status === 0) {
+            console.log("Viber bot webhook run!");
+          } else {
+            console.warn("Warning: Viber bot webhook failed: ", res);
+          }
+        } catch (webhookErr) {
+          console.error("Error: Viber bot webhook failed:", webhookErr);
+        }
+      }
     });
   } catch (err) {
     console.log(`Failed to launch application with an error: "${err.message}"`);
