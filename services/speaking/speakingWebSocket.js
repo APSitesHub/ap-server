@@ -33,9 +33,6 @@ function speakingWebSocket(io) {
       }
       const userInRoom = rooms[room].find((u) => u.login === login);
 
-      console.log("connection");
-      console.log(userInRoom);
-
       if (userInRoom && role !== "admin") {
         userInRoom.disconnected = false;
         userInRoom.socketId = socket.id;
@@ -52,9 +49,6 @@ function speakingWebSocket(io) {
 
         const admins = rooms[room].filter((u) => u.role === "admin");
         admins.forEach((admin) => {
-          console.log("USER_IN_ROOM: ", userInRoom);
-          console.log(rooms[room]);
-
           sp.to(admin.socketId).emit(ACTIONS.USER_RECONNECTED, {
             login: userInRoom.login,
             userName: userInRoom.userName,
@@ -75,13 +69,8 @@ function speakingWebSocket(io) {
         socketId: socket.id,
         disconnected,
       });
-      console.log(
-        `Користувач ${login} (${userName}) приєднався до кімнати ${room} як ${role}`
-      );
 
       if (role === "admin") {
-        console.log(rooms);
-
         sp.to(socket.id).emit(
           ACTIONS.USERS_IN_ROOM,
           rooms[room].filter((u) => u.role === "user")
@@ -120,14 +109,11 @@ function speakingWebSocket(io) {
     socket.on(ACTIONS.LEAVE, ({ room, login }) => {
       if (rooms[room]) {
         rooms[room] = rooms[room].filter((u) => u.login !== login);
-        console.log(`Користувач ${login} залишив кімнату ${room}`);
       }
       socket.leave(room);
     });
 
     socket.on(ACTIONS.SAVE_ROOMS, ({ room, users }) => {
-      console.log("SAVE_ROOMS", users);
-
       if (!rooms[room]) {
         rooms[room] = [];
       }
@@ -145,37 +131,12 @@ function speakingWebSocket(io) {
       rooms[room] = [...updatedUsers, ...admins];
     });
 
-    // socket.on(ACTIONS.TO_GENERAL_ROOM, ({ room }) => {
-    //   console.log(`Користувач ${socket.id} відправився до загальної кімнати`);
-
-    //   if (rooms[room]) {
-    //     rooms[room].forEach((user) => {
-    //       user.roomNumber = null;
-
-    //       console.log(
-    //         `Користувач ${user.login} (${user.userName}) відправлений до загальної кімнати`
-    //       );
-
-    //       sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
-    //         roomNumber: null,
-    //       });
-    //     });
-    //   } else {
-    //     console.error(`Кімната ${room} не знайдена`);
-    //   }
-    // });
-
-    socket.on(ACTIONS.START_LESSON, ({ room }) => {
-      console.log("lesson start in ", room);
-
+    socket.on(ACTIONS.START_LESSON, ({ room, withDelay }) => {
       if (rooms[room]) {
         rooms[room].forEach((user) => {
-          console.log(
-            `Користувач ${user.login} (${user.userName}) почав урок в кімнаті ${user.roomNumber}`
-          );
-
           sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
             roomNumber: user.roomNumber,
+            withDelay,
           });
         });
       } else {
@@ -184,8 +145,6 @@ function speakingWebSocket(io) {
     });
 
     socket.on(ACTIONS.END_LESSON, ({ room }) => {
-      console.log("lesson end in ", room);
-
       if (rooms[room]) {
         rooms[room].forEach((user) => {
           sp.to(user.socketId).emit(ACTIONS.END_LESSON);
@@ -198,7 +157,6 @@ function speakingWebSocket(io) {
     });
 
     socket.on(ACTIONS.DISCONNECT, () => {
-      console.log(`Користувач з socketId ${socket.id} відключився`);
       for (const room in rooms) {
         const user = rooms[room].find((u) => u.socketId === socket.id);
         if (user) {
@@ -211,9 +169,6 @@ function speakingWebSocket(io) {
 
         if (user && user.role !== "admin") {
           const admins = rooms[room].filter((u) => u.role === "admin");
-          console.log("sent");
-          console.log(admins);
-
           admins.forEach((admin) => {
             sp.to(admin.socketId).emit(ACTIONS.USER_DISCONNECTED, {
               login: user.login,
