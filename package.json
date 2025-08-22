@@ -1,6 +1,6 @@
 {
   "name": "ap-server",
-  "version": "1.1.20.49",
+  "version": "1.1.21",
   "private": true,
   "scripts": {
     "start": "cross-env NODE_ENV=production node ./server.js",
@@ -10,8 +10,6 @@
     "migrate-feedback": "node scripts/migrateFeedback.js"
   },
   "dependencies": {
-    "@sentry/node": "^9.9.0",
-    "@sentry/profiling-node": "^9.9.0",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.1",
     "cors": "2.8.5",

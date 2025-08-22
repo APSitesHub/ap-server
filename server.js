@@ -1,4 +1,3 @@
-require("./utils/services/sentry");
 const http = require("http");
 const socketIo = require("socket.io");
 const { version, validate } = require("uuid");
@@ -21,6 +20,8 @@ const {
 } = require("./services/cronjob/individualNotifications");
 const server = http.createServer(app);
 const io = socketIo(server);
+speakingWebSocket = require("./services/speaking/speakingWebSocket");
+speakingWebSocket(io);
 
 let notficationBot;
 
