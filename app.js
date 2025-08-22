@@ -1,4 +1,3 @@
-require("./utils/services/sentry");
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
@@ -48,7 +47,6 @@ const pedagogiumHostKahoots = require("./routes/pedagogiumHostKahoots");
 const pedagogiumTimetable = require("./routes/pedagogiumTimetable");
 const pedagogiumLessonsRouter = require("./routes/pedagogiumLessons");
 const toursRouter = require("./routes/tours");
-const Sentry = require("@sentry/node");
 const locationRoutes = require("./routes/location");
 const notificationRoutes = require("./routes/notifications");
 const feedbackRouter = require("./routes/feedback");
@@ -57,7 +55,6 @@ const serviceFeedbackRouter = require("./routes/serviceFeedback");
 const appointmentsRouter = require("./routes/appointments");
 
 const app = express();
-Sentry.setupExpressErrorHandler(app);
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -129,9 +126,6 @@ app.use("/location", locationRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/feedback", feedbackRouter);
 
-app.get("/debug-sentry", function mainHandler(req, res) {
-  throw new Error("My first Sentry error!");
-});
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
 });

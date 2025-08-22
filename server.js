@@ -1,4 +1,3 @@
-require("./utils/services/sentry");
 const http = require("http");
 const socketIo = require("socket.io");
 const { version, validate } = require("uuid");
