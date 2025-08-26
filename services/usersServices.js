@@ -1,11 +1,29 @@
 const Users = require("../db/models/usersModel");
 
-const allUsers = async () =>
-  await Users.find({})
-    .where("visited")
-    .slice(-1)
-    .where("visitedTime")
-    .slice(-1);
+const allUsers = () =>
+  Users.aggregate([
+    {
+      $project: {
+        name: 1,
+        mail: 1,
+        zoomMail: 1,
+        password: 1,
+        crmId: 1,
+        contactId: 1,
+        pupilId: 1,
+        marathonNumber: 1,
+        age: 1,
+        lang: 1,
+        course: 1,
+        package: 1,
+        knowledge: 1,
+        manager: 1,
+        createdAt: 1,
+        visited: { $slice: ["$visited", -1] },
+        visitedTime: { $slice: ["$visitedTime", -1] },
+      },
+    },
+  ]);
 
 const allC1Users = async () =>
   await Users.find({
