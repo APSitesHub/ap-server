@@ -236,7 +236,7 @@ const altegioWebhookIndividualLesson = async (req, res) => {
 };
 
 async function updateIndividualLesson(appointment, roomLink, teacher, prevComment) {
-  if (prevComment.includes('Посилання на урок:')) {
+  if (prevComment && prevComment.includes('Посилання на урок:')) {
     return;
   }
 
