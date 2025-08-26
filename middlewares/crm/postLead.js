@@ -2,12 +2,13 @@ const axios = require("axios");
 require("dotenv").config();
 const { getToken } = require("../../services/tokensServices");
 const { newLead } = require("../../services/leadsServices");
+const { ref } = require("joi");
 
 axios.defaults.baseURL = process.env.BASE_URL;
 
 const postLead = async (req, res, _) => {
-  console.log("origin", req.headers.origin);
-
+  console.log('POST LEAD MIDDLEWARE');
+  console.log(req)
   const postRequest = [
     {
       name: `Website Lead ${req.body.name}`,
@@ -15,7 +16,7 @@ const postLead = async (req, res, _) => {
       pipeline_id: 6453287,
       custom_fields_values: [
         {
-          field_id: 1829895,
+          field_id: 1829919,
           field_name: "referral_id",
           values: [
             {
@@ -123,69 +124,69 @@ const postLead = async (req, res, _) => {
           ],
         },
       ],
-      _embedded: {
-        tags:
-          !req.headers.origin.includes("academy.") &&
-          (req.body.utm_content ||
-            req.body.utm_medium ||
-            req.body.utm_campaign ||
-            req.body.utm_source ||
-            req.body.utm_term ||
-            req.body.utm_referrer ||
-            req.body.referrer ||
-            req.body.gclientid ||
-            req.body.gclid ||
-            req.body.fbclid)
-            ? [
-                { name: "Лід з сайту" },
-                { name: req.body.tag },
-                { name: req.body.utm_source },
-                { name: req.body.utm_campaign },
-                { name: req.body.utm_term },
-                { name: req.body.utm_content },
-                { name: req.body.fbclid },
-              ]
-            : !req.headers.origin.includes("academy.")
-            ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
-            : req.body.tag
-            ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
-            : req.body.utm_content ||
-              req.body.utm_medium ||
-              req.body.utm_campaign ||
-              req.body.utm_source ||
-              req.body.utm_term ||
-              req.body.utm_referrer ||
-              req.body.referrer ||
-              req.body.gclientid ||
-              req.body.gclid ||
-              req.body.fbclid
-            ? [
-                { name: "Лід з сайту" },
-                { name: req.body.utm_source },
-                { name: req.body.utm_campaign },
-                { name: req.body.utm_term },
-                { name: req.body.utm_content },
-                { name: req.body.fbclid },
-              ]
-            : [{ name: "Лід з сайту, органіка" }],
-        contacts: [
-          {
-            name: req.body.name,
-            custom_fields_values: [
-              {
-                field_id: 556510,
-                field_name: "Work phone",
-                values: [
-                  {
-                    value: req.body.phone,
-                    enum_code: "WORK",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
+      // _embedded: {
+      //   tags:
+      //     !req.headers.origin.includes("academy.") &&
+      //     (req.body.utm_content ||
+      //       req.body.utm_medium ||
+      //       req.body.utm_campaign ||
+      //       req.body.utm_source ||
+      //       req.body.utm_term ||
+      //       req.body.utm_referrer ||
+      //       req.body.referrer ||
+      //       req.body.gclientid ||
+      //       req.body.gclid ||
+      //       req.body.fbclid)
+      //       ? [
+      //           { name: "Лід з сайту" },
+      //           { name: req.body.tag },
+      //           { name: req.body.utm_source },
+      //           { name: req.body.utm_campaign },
+      //           { name: req.body.utm_term },
+      //           { name: req.body.utm_content },
+      //           { name: req.body.fbclid },
+      //         ]
+      //       : !req.headers.origin.includes("academy.")
+      //       ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
+      //       : req.body.tag
+      //       ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
+      //       : req.body.utm_content ||
+      //         req.body.utm_medium ||
+      //         req.body.utm_campaign ||
+      //         req.body.utm_source ||
+      //         req.body.utm_term ||
+      //         req.body.utm_referrer ||
+      //         req.body.referrer ||
+      //         req.body.gclientid ||
+      //         req.body.gclid ||
+      //         req.body.fbclid
+      //       ? [
+      //           { name: "Лід з сайту" },
+      //           { name: req.body.utm_source },
+      //           { name: req.body.utm_campaign },
+      //           { name: req.body.utm_term },
+      //           { name: req.body.utm_content },
+      //           { name: req.body.fbclid },
+      //         ]
+      //       : [{ name: "Лід з сайту, органіка" }],
+      //   contacts: [
+      //     {
+      //       name: req.body.name,
+      //       custom_fields_values: [
+      //         {
+      //           field_id: 556510,
+      //           field_name: "Work phone",
+      //           values: [
+      //             {
+      //               value: req.body.phone,
+      //               enum_code: "WORK",
+      //             },
+      //           ],
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
     },
   ];
 
@@ -203,6 +204,7 @@ const postLead = async (req, res, _) => {
     gclientid: req.body.gclientid,
     gclid: req.body.gclid,
     fbclid: req.body.fbclid,
+    referral: req.body.referral || "",
   };
 
   try {
@@ -216,8 +218,8 @@ const postLead = async (req, res, _) => {
     const crmLeadId = crmLead.data[0].id;
     return res.status(201).json(await newLead({ ...lead, crmId: crmLeadId }));
   } catch (error) {
-    console.log(error);
-    return res.status(400).json(error);
+    console.log(JSON.stringify(error.response.data));
+    return res.status(400).json({ message: "Lead was not created" });
   }
 };
 
