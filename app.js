@@ -58,17 +58,23 @@ const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-const bot =
-  process.env.NODE_ENV === "production"
-    ? new Bot({
-        authToken: process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION,
-        name: "AP Education Notification",
-        avatar: "https://ap.education/assets/icon/LogoRevers.svg",
-      })
-    : null;
+let bot = null;
 
-if (process.env.NODE_ENV === "production") {
-  app.use("/viber/webhook", bot.middleware());
+if (
+  process.env.NODE_ENV === "production" &&
+  process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION456
+) {
+  try {
+    bot = new Bot({
+      authToken: process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION456,
+      name: "AP Education Notification",
+      avatar: "https://ap.education/assets/icon/LogoRevers.svg",
+    });
+
+    app.use("/viber/webhook", bot.middleware());
+  } catch (error) {
+    console.error("Failed to initialize Viber bot:", error);
+  }
 }
 
 app.use(logger(formatsLogger));
