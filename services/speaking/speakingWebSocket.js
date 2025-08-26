@@ -1,5 +1,3 @@
-const { is } = require("date-fns/locale");
-
 const ACTIONS = {
   JOIN: "join",
   LEAVE: "leave",
@@ -22,166 +20,175 @@ function speakingWebSocket(io) {
   const sp = io.of("/speaking");
 
   const rooms = {};
+  try {
+    sp.on("connection", (socket) => {
+      socket.on(ACTIONS.JOIN, (data) => {
+        const { room, login, userName, userId, role, disconnected } = data;
+        socket.join(room);
 
-  sp.on("connection", (socket) => {
-    socket.on(ACTIONS.JOIN, (data) => {
-      const { room, login, userName, userId, role, disconnected } = data;
-      socket.join(room);
+        if (!rooms[room]) {
+          rooms[room] = [];
+        }
+        const userInRoom = rooms[room].find((u) => u.login === login);
 
-      if (!rooms[room]) {
-        rooms[room] = [];
-      }
-      const userInRoom = rooms[room].find((u) => u.login === login);
+        if (userInRoom && role !== "admin") {
+          userInRoom.disconnected = false;
+          userInRoom.socketId = socket.id;
+          const admins = rooms[room].filter((u) => u.role === "admin");
 
-      if (userInRoom && role !== "admin") {
-        userInRoom.disconnected = false;
-        userInRoom.socketId = socket.id;
-
-        rooms[room].forEach((user) => {
-          sp.to(user.socketId).emit(ACTIONS.IS_ADMIN_IN_ROOM, {
-            isAdminInRoom: true,
-          });
-
-          sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
-            roomNumber: userInRoom.roomNumber,
-          });
-        });
-
-        const admins = rooms[room].filter((u) => u.role === "admin");
-        admins.forEach((admin) => {
-          sp.to(admin.socketId).emit(ACTIONS.USER_RECONNECTED, {
-            login: userInRoom.login,
-            userName: userInRoom.userName,
-            role: userInRoom.role,
-            userId: userInRoom.userId,
-            disconnected: userInRoom.disconnected,
-          });
-        });
-
-        return;
-      }
-
-      rooms[room].push({
-        login,
-        userName,
-        role,
-        userId,
-        socketId: socket.id,
-        disconnected,
-      });
-
-      if (role === "admin") {
-        sp.to(socket.id).emit(
-          ACTIONS.USERS_IN_ROOM,
-          rooms[room].filter((u) => u.role === "user")
-        );
-        sp.to(socket.id).emit(
-          ACTIONS.TEACHERS_IN_ROOM,
-          rooms[room].filter((u) => u.role === "teacher")
-        );
-
-        const users = rooms[room].filter((u) => u.role !== "admin");
-        users.forEach((user) => {
-          sp.to(user.socketId).emit(ACTIONS.IS_ADMIN_IN_ROOM, {
-            isAdminInRoom: true,
-          });
-        });
-      } else {
-        const admins = rooms[room].filter((u) => u.role === "admin");
-        socket.emit(ACTIONS.IS_ADMIN_IN_ROOM, {
-          isAdminInRoom: admins.length > 0,
-        });
-
-        admins.forEach((admin) => {
-          if (role !== "admin") {
-            sp.to(admin.socketId).emit(ACTIONS.NEW_USER, {
-              login,
-              userName,
-              role,
-              userId,
-              socketId: socket.id,
+          if (admins.length > 0) {
+            sp.to(userInRoom.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
+              roomNumber: userInRoom.roomNumber,
             });
           }
-        });
-      }
-    });
 
-    socket.on(ACTIONS.LEAVE, ({ room, login }) => {
-      if (rooms[room]) {
-        rooms[room] = rooms[room].filter((u) => u.login !== login);
-      }
-      socket.leave(room);
-    });
-
-    socket.on(ACTIONS.SAVE_ROOMS, ({ room, users }) => {
-      if (!rooms[room]) {
-        rooms[room] = [];
-      }
-
-      const admins = rooms[room].filter((u) => u.role === "admin");
-      const updatedUsers = users.map((user) => {
-        const existingUser = rooms[room].find((u) => u.login === user.login);
-        if (existingUser) {
-          return {
-            ...existingUser,
-            roomNumber: user.roomNumber,
-          };
-        }
-      });
-      rooms[room] = [...updatedUsers, ...admins];
-    });
-
-    socket.on(ACTIONS.START_LESSON, ({ room, withDelay }) => {
-      if (rooms[room]) {
-        rooms[room].forEach((user) => {
-          sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
-            roomNumber: user.roomNumber,
-            withDelay,
+          sp.to(userInRoom.socketId).emit(ACTIONS.IS_ADMIN_IN_ROOM, {
+            isAdminInRoom: admins.length > 0,
           });
-        });
-      } else {
-        console.error(`Кімната ${room} не знайдена`);
-      }
-    });
 
-    socket.on(ACTIONS.END_LESSON, ({ room }) => {
-      if (rooms[room]) {
-        rooms[room].forEach((user) => {
-          sp.to(user.socketId).emit(ACTIONS.END_LESSON);
-        });
-
-        delete rooms[room];
-      } else {
-        console.error(`Кімната ${room} не знайдена`);
-      }
-    });
-
-    socket.on(ACTIONS.DISCONNECT, () => {
-      for (const room in rooms) {
-        const user = rooms[room].find((u) => u.socketId === socket.id);
-        if (user) {
-          user.disconnected = true;
-        }
-
-        if (user && user.role === "admin") {
-          rooms[room] = rooms[room].filter((u) => u.socketId !== socket.id);
-        }
-
-        if (user && user.role !== "admin") {
-          const admins = rooms[room].filter((u) => u.role === "admin");
           admins.forEach((admin) => {
-            sp.to(admin.socketId).emit(ACTIONS.USER_DISCONNECTED, {
-              login: user.login,
-              userName: user.userName,
-              role: user.role,
-              userId: user.userId,
-              disconnected: user.disconnected,
+            sp.to(admin.socketId).emit(ACTIONS.USER_RECONNECTED, {
+              login: userInRoom.login,
+              userName: userInRoom.userName,
+              role: userInRoom.role,
+              userId: userInRoom.userId,
+              disconnected: userInRoom.disconnected,
             });
           });
+
+          return;
         }
-      }
+
+        rooms[room].push({
+          login,
+          userName,
+          role,
+          userId,
+          socketId: socket.id,
+          disconnected,
+        });
+
+        if (role === "admin") {
+          sp.to(socket.id).emit(
+            ACTIONS.USERS_IN_ROOM,
+            rooms[room].filter((u) => u.role === "user")
+          );
+          sp.to(socket.id).emit(
+            ACTIONS.TEACHERS_IN_ROOM,
+            rooms[room].filter((u) => u.role === "teacher")
+          );
+
+          const users = rooms[room].filter((u) => u.role !== "admin");
+          users.forEach((user) => {
+            sp.to(user.socketId).emit(ACTIONS.IS_ADMIN_IN_ROOM, {
+              isAdminInRoom: true,
+            });
+          });
+        } else {
+          const admins = rooms[room].filter((u) => u.role === "admin");
+          socket.emit(ACTIONS.IS_ADMIN_IN_ROOM, {
+            isAdminInRoom: admins.length > 0,
+          });
+
+          admins.forEach((admin) => {
+            if (role !== "admin") {
+              sp.to(admin.socketId).emit(ACTIONS.NEW_USER, {
+                login,
+                userName,
+                role,
+                userId,
+                socketId: socket.id,
+              });
+            }
+          });
+        }
+      });
+
+      socket.on(ACTIONS.LEAVE, ({ room, login }) => {
+        if (rooms[room]) {
+          rooms[room] = rooms[room].filter((u) => u.login !== login);
+        }
+        socket.leave(room);
+      });
+
+      socket.on(ACTIONS.SAVE_ROOMS, ({ room, users }) => {
+        if (!rooms[room]) {
+          rooms[room] = [];
+        }
+
+        console.log("SAVE_ROOMS", rooms[room]);
+
+        const admins = rooms[room].filter((u) => u.role === "admin");
+        const updatedUsers = users.map((user) => {
+          const existingUser = rooms[room].find((u) => u.login === user.login);
+          if (existingUser) {
+            return {
+              ...existingUser,
+              roomNumber: user.roomNumber,
+            };
+          }
+        });
+
+        rooms[room] = [...updatedUsers, ...admins];
+      });
+
+      socket.on(ACTIONS.START_LESSON, ({ room, withDelay }) => {
+        if (rooms[room]) {
+          rooms[room].forEach((user) => {
+            console.log("emitting to", rooms[room]);
+
+            sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
+              roomNumber: user.roomNumber,
+              withDelay,
+            });
+          });
+        } else {
+          console.error(`Кімната ${room} не знайдена`);
+        }
+      });
+
+      socket.on(ACTIONS.END_LESSON, ({ room }) => {
+        if (rooms[room]) {
+          rooms[room].forEach((user) => {
+            sp.to(user.socketId).emit(ACTIONS.END_LESSON);
+          });
+
+          delete rooms[room];
+          console.log("rooms after deleting", rooms);
+        } else {
+          console.error(`Кімната ${room} не знайдена`);
+        }
+      });
+
+      socket.on(ACTIONS.DISCONNECT, () => {
+        for (const room in rooms) {
+          const user = rooms[room].find((u) => u.socketId === socket.id);
+          if (user) {
+            user.disconnected = true;
+          }
+
+          if (user && user.role === "admin") {
+            rooms[room] = rooms[room].filter((u) => u.socketId !== socket.id);
+          }
+
+          if (user && user.role !== "admin") {
+            const admins = rooms[room].filter((u) => u.role === "admin");
+            admins.forEach((admin) => {
+              sp.to(admin.socketId).emit(ACTIONS.USER_DISCONNECTED, {
+                login: user.login,
+                userName: user.userName,
+                role: user.role,
+                userId: user.userId,
+                disconnected: user.disconnected,
+              });
+            });
+          }
+        }
+      });
     });
-  });
+  } catch (error) {
+    console.error("Error in speakingWebSocket:", error);
+  }
 }
 
 module.exports = speakingWebSocket;
