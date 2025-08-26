@@ -62,11 +62,11 @@ let bot = null;
 
 if (
   process.env.NODE_ENV === "production" &&
-  process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION456
+  process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION
 ) {
   try {
     bot = new Bot({
-      authToken: process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION456,
+      authToken: process.env.VIBER_BOT_TOKEN_AP_NOTIFICATION,
       name: "AP Education Notification",
       avatar: "https://ap.education/assets/icon/LogoRevers.svg",
     });
