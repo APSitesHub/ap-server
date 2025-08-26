@@ -15,6 +15,15 @@ const postLead = async (req, res, _) => {
       pipeline_id: 6453287,
       custom_fields_values: [
         {
+          field_id: 1829895,
+          field_name: "referral_id",
+          values: [
+            {
+              value: req.body.referral || "",
+            },
+          ],
+        },
+        {
           field_id: 556518,
           field_name: "utm_content",
           values: [
