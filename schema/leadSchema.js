@@ -15,6 +15,7 @@ const leadSchema = Joi.object({
   utm_term: Joi.string().empty(""),
   utm_referrer: Joi.string().empty(""),
   referrer: Joi.string().empty(""),
+  referral: Joi.string().optional().empty(""),
   gclientid: Joi.string().empty(""),
   gclid: Joi.string().empty(""),
   fbclid: Joi.string().empty(""),
