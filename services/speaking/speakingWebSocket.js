@@ -116,8 +116,6 @@ function speakingWebSocket(io) {
           rooms[room] = [];
         }
 
-        console.log("SAVE_ROOMS", rooms[room]);
-
         const admins = rooms[room].filter((u) => u.role === "admin");
         const updatedUsers = users.map((user) => {
           const existingUser = rooms[room].find((u) => u.login === user.login);
@@ -135,8 +133,6 @@ function speakingWebSocket(io) {
       socket.on(ACTIONS.START_LESSON, ({ room, withDelay }) => {
         if (rooms[room]) {
           rooms[room].forEach((user) => {
-            console.log("emitting to", rooms[room]);
-
             sp.to(user.socketId).emit(ACTIONS.REDIRECT_TO_ROOM, {
               roomNumber: user.roomNumber,
               withDelay,
@@ -154,7 +150,6 @@ function speakingWebSocket(io) {
           });
 
           delete rooms[room];
-          console.log("rooms after deleting", rooms);
         } else {
           console.error(`Кімната ${room} не знайдена`);
         }
