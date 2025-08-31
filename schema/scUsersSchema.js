@@ -28,6 +28,7 @@ const scUserSchema = Joi.object({
       listening: Joi.number(),
       speaking: Joi.number(),
       grade: Joi.number(),
+      isOverdue: Joi.bool(),
     })
   ),
   grammar: Joi.number(),
