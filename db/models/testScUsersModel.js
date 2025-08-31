@@ -35,6 +35,7 @@ const testScUsers = new Schema(
         listening: { type: Number },
         speaking: { type: Number },
         grade: { type: Number },
+        isOverdue: { type: Boolean },
       },
     ],
     grammar: { type: Number },
