@@ -3,12 +3,17 @@ const Teachers = require("../db/models/teachersModel");
 const allTeachers = async () => await Teachers.find({});
 
 const allEnTeachers = async () =>
-  await Teachers.find({ $or: [{ lang: "en" }, { lang: "en de" }] });
+  await Teachers.find({ $or: [{ lang: "en" }, { lang: "en de" }] }).select(
+    "_id name"
+  );
 
 const allDeTeachers = async () =>
-  await Teachers.find({ $or: [{ lang: "de" }, { lang: "en de" }] });
+  await Teachers.find({ $or: [{ lang: "de" }, { lang: "en de" }] }).select(
+    "_id name"
+  );
 
-const allPlTeachers = async () => await Teachers.find({ lang: "pl" });
+const allPlTeachers = async () =>
+  await Teachers.find({ lang: "pl" }).select("_id name");
 
 const allTeachersBasicInfo = async () =>
   await Teachers.find({}).select("name lang altegioId crmId");

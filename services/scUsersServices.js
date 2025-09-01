@@ -3,20 +3,166 @@ const ScUsers = require("../db/models/scUsersModel");
 const allScUsers = async () =>
   await ScUsers.find({}).select("_id name lang course feedback");
 
-const allScEnUsers = async () =>
-  await ScUsers.find({ $or: [{ lang: "en" }, { lang: "enkids" }] }).select(
-    "_id name lang course feedback"
-  );
+const allScEnUsers = async ({ month, year }) =>
+  await ScUsers.aggregate([
+    { $unwind: "$feedback" },
+    {
+      $addFields: {
+        feedbackDateNormalized: {
+          $cond: [
+            {
+              $regexMatch: {
+                input: "$feedback.date",
+                regex: /^\d{1,2}\.\d{1,2}\.\d{4}$/,
+              },
+            },
+            {
+              $dateFromString: {
+                dateString: "$feedback.date",
+                format: "%d.%m.%Y",
+              },
+            },
+            { $toDate: "$feedback.date" },
+          ],
+        },
+      },
+    },
+    {
+      $match: {
+        lang: { $regex: "en", $options: "i" },
+        feedbackDateNormalized: {
+          $gte: new Date(`${year}-${month}-01`),
+          $lte: new Date(year, month, 0, 23, 59, 59, 999),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: "$name" },
+        feedback: { $push: "$feedback" },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        feedback: {
+          date: 1,
+          text: 1,
+          isOverdue: 1,
+        },
+      },
+    },
+  ]);
 
-const allScDeUsers = async () =>
-  await ScUsers.find({ $or: [{ lang: "de" }, { lang: "dekids" }] }).select(
-    "_id name lang course feedback"
-  );
+const allScDeUsers = async ({ month, year }) =>
+  await ScUsers.aggregate([
+    { $unwind: "$feedback" },
+    {
+      $addFields: {
+        feedbackDateNormalized: {
+          $cond: [
+            {
+              $regexMatch: {
+                input: "$feedback.date",
+                regex: /^\d{1,2}\.\d{1,2}\.\d{4}$/,
+              },
+            },
+            {
+              $dateFromString: {
+                dateString: "$feedback.date",
+                format: "%d.%m.%Y",
+              },
+            },
+            { $toDate: "$feedback.date" },
+          ],
+        },
+      },
+    },
+    {
+      $match: {
+        lang: { $regex: "de", $options: "i" },
+        feedbackDateNormalized: {
+          $gte: new Date(`${year}-${month}-01`),
+          $lte: new Date(year, month, 0, 23, 59, 59, 999),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: "$name" },
+        feedback: { $push: "$feedback" },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        lang: 1,
+        feedback: {
+          date: 1,
+          text: 1,
+          isOverdue: 1,
+        },
+      },
+    },
+  ]);
 
-const allScPlUsers = async () =>
-  await ScUsers.find({ $or: [{ lang: "pl" }, { lang: "plkids" }] }).select(
-    "_id name lang course feedback"
-  );
+const allScPlUsers = async ({ month, year }) =>
+  await ScUsers.aggregate([
+    { $unwind: "$feedback" },
+    {
+      $addFields: {
+        feedbackDateNormalized: {
+          $cond: [
+            {
+              $regexMatch: {
+                input: "$feedback.date",
+                regex: /^\d{1,2}\.\d{1,2}\.\d{4}$/,
+              },
+            },
+            {
+              $dateFromString: {
+                dateString: "$feedback.date",
+                format: "%d.%m.%Y",
+              },
+            },
+            { $toDate: "$feedback.date" },
+          ],
+        },
+      },
+    },
+    {
+      $match: {
+        lang: { $regex: "pl", $options: "i" },
+        feedbackDateNormalized: {
+          $gte: new Date(`${year}-${month}-01`),
+          $lte: new Date(year, month, 0, 23, 59, 59, 999),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        name: { $first: "$name" },
+        feedback: { $push: "$feedback" },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        name: 1,
+        lang: 1,
+        feedback: {
+          date: 1,
+          text: 1,
+          isOverdue: 1,
+        },
+      },
+    },
+  ]);
 
 const allCourseUsers = async (query) => {
   return await ScUsers.find({
