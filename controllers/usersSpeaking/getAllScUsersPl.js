@@ -1,7 +1,7 @@
 const { allScPlUsers } = require("../../services/scUsersServices");
 
-const getAllScUsersPl = async (_, res) => {
-  return res.json(await allScPlUsers());
+const getAllScUsersPl = async (req, res) => {
+  return res.json(await allScPlUsers(req.query));
 };
 
 module.exports = getAllScUsersPl;
