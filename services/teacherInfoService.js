@@ -1,11 +1,10 @@
-const getCRMLead = require("./crmGetLead");
-const getCRMUser = require("./crmGetUser");
+const AltegioAppointments = require("../db/models/altegioAppointments");
 
 /**
- * Get teacher information by user ID through CRM API chain
- * Chain: userId (lead ID) -> lead -> responsible_user_id -> user -> name
+ * Get teacher information by user ID from Altegio appointments database
+ * Gets the most recent appointment for the user and extracts teacher information
  * 
- * @param {string|number} userId - User ID (actually lead ID in CRM)
+ * @param {string|number} userId - User ID (lead ID)
  * @returns {Promise<Object|null>} - Teacher information or null if not found
  */
 async function getTeacherInfoByUserId(userId) {
@@ -15,49 +14,39 @@ async function getTeacherInfoByUserId(userId) {
       return null;
     }
 
-    console.log(`Getting teacher info for userId: ${userId}`);
+    console.log(`Getting teacher info from appointments for userId: ${userId}`);
 
-    // Step 1: Get lead by userId (which is actually lead ID)
-    const lead = await getCRMLead(userId);
-    if (!lead) {
-      console.log(`Lead not found for userId: ${userId}`);
+    // Find the most recent appointment for this user/lead
+    const latestAppointment = await AltegioAppointments.findOne({
+      leadId: userId.toString()
+    })
+    .sort({ startDateTime: -1 }) // Sort by start date descending (most recent first)
+    .select('leadId leadName teacherId teacherName startDateTime serviceName')
+    .lean(); // Use lean() for better performance
+
+    if (!latestAppointment) {
+      console.log(`No appointments found for userId: ${userId}`);
       return null;
     }
 
-    console.log(`Lead found:`, {
-      id: lead.id,
-      name: lead.name,
-      responsible_user_id: lead.responsible_user_id
+    console.log(`Latest appointment found:`, {
+      leadId: latestAppointment.leadId,
+      leadName: latestAppointment.leadName,
+      teacherId: latestAppointment.teacherId,
+      teacherName: latestAppointment.teacherName,
+      startDateTime: latestAppointment.startDateTime,
+      serviceName: latestAppointment.serviceName
     });
 
-    // Step 2: Get responsible user ID from lead
-    const responsibleUserId = lead.responsible_user_id;
-    if (!responsibleUserId) {
-      console.log(`No responsible_user_id found in lead: ${userId}`);
-      return null;
-    }
-
-    // Step 3: Get user information by responsible_user_id
-    const user = await getCRMUser(responsibleUserId);
-    if (!user) {
-      console.log(`User not found for responsible_user_id: ${responsibleUserId}`);
-      return null;
-    }
-
-    console.log(`User found:`, {
-      id: user.id,
-      name: user.name,
-      email: user.email
-    });
-
-    // Step 4: Return teacher information
+    // Return teacher information from the latest appointment
     return {
-      teacherId: user.id,
-      teacherName: user.name,
-      teacherEmail: user.email,
-      leadId: lead.id,
-      leadName: lead.name,
-      responsibleUserId: responsibleUserId
+      teacherId: latestAppointment.teacherId || 'Unknown ID',
+      teacherName: latestAppointment.teacherName || 'Unknown Teacher',
+      teacherEmail: null, // Not available in appointments
+      leadId: latestAppointment.leadId,
+      leadName: latestAppointment.leadName || 'Unknown Lead',
+      lastAppointmentDate: latestAppointment.startDateTime,
+      lastServiceName: latestAppointment.serviceName
     };
 
   } catch (error) {

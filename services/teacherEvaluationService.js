@@ -75,25 +75,33 @@ async function writeTeacherEvaluationToSheet(evaluationData) {
       submittedAt
     } = evaluationData;
 
-    // Get teacher information using CRM API chain
-    console.log('Getting teacher info for userId:', userId);
+    // Get teacher information from Altegio appointments database
+    console.log('Getting teacher info from appointments for userId:', userId);
     const teacherInfo = await getTeacherInfoByUserId(userId);
     
     let teacherName = 'Unknown Teacher';
     let teacherId = 'Unknown ID';
     let leadName = 'Unknown Lead';
+    let lastAppointmentDate = 'N/A';
+    let lastServiceName = 'N/A';
     
     if (teacherInfo) {
       teacherName = teacherInfo.teacherName || 'Unknown Teacher';
       teacherId = teacherInfo.teacherId || 'Unknown ID';
       leadName = teacherInfo.leadName || 'Unknown Lead';
-      console.log('Teacher info retrieved:', {
+      lastAppointmentDate = teacherInfo.lastAppointmentDate ? 
+        new Date(teacherInfo.lastAppointmentDate).toLocaleString('uk-UA') : 'N/A';
+      lastServiceName = teacherInfo.lastServiceName || 'N/A';
+      
+      console.log('Teacher info retrieved from appointments:', {
         teacherName,
         teacherId,
-        leadName
+        leadName,
+        lastAppointmentDate,
+        lastServiceName
       });
     } else {
-      console.log('Could not retrieve teacher info for userId:', userId);
+      console.log('Could not retrieve teacher info from appointments for userId:', userId);
     }
 
     // Recalculate average rating to ensure accuracy
@@ -112,23 +120,25 @@ async function writeTeacherEvaluationToSheet(evaluationData) {
     const auth = getGoogleSheetsAuth();
     const sheets = getSheetsClient(auth);
     
-    // Data row to be written to the sheet (expanded with teacher info)
+    // Data row to be written to the sheet (expanded with appointment info)
     const rowData = [
       userId,                          // A: User ID (Lead ID)
-      leadName,                        // B: Lead Name
+      leadName,                        // B: Lead Name  
       teacherId,                       // C: Teacher ID
       teacherName,                     // D: Teacher Name
-      teacherClarityRating,           // E: Teacher Clarity Rating
-      lessonOrganizationRating,       // F: Lesson Organization Rating
-      overallTeacherRating,           // G: Overall Teacher Rating
-      recalculatedAverage,            // H: Average Rating
-      percentage,                     // I: Percentage
-      additionalComments || "",       // J: Additional Comments
-      formattedDate                   // K: Submitted At
+      lastAppointmentDate,             // E: Last Appointment Date
+      lastServiceName,                 // F: Last Service Name
+      teacherClarityRating,           // G: Teacher Clarity Rating
+      lessonOrganizationRating,       // H: Lesson Organization Rating
+      overallTeacherRating,           // I: Overall Teacher Rating
+      recalculatedAverage,            // J: Average Rating
+      percentage,                     // K: Percentage
+      additionalComments || "",       // L: Additional Comments
+      formattedDate                   // M: Submitted At
     ];
 
     // Check if headers exist, if not add them
-    const headerRange = `${SHEET_NAME}!A1:K1`;
+    const headerRange = `${SHEET_NAME}!A1:M1`;
     const headerResponse = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
       range: headerRange,
@@ -137,12 +147,14 @@ async function writeTeacherEvaluationToSheet(evaluationData) {
     const existingHeaders = headerResponse.data.values;
     
     if (!existingHeaders || existingHeaders.length === 0) {
-      // Add headers if they don't exist (expanded with teacher info)
+      // Add headers if they don't exist (expanded with appointment info)
       const headers = [
         "User ID (Lead ID)",
         "Lead Name",
-        "Teacher ID",
+        "Teacher ID", 
         "Teacher Name",
+        "Last Appointment Date",
+        "Last Service Name",
         "Teacher Clarity Rating",
         "Lesson Organization Rating", 
         "Overall Teacher Rating",
@@ -182,6 +194,8 @@ async function writeTeacherEvaluationToSheet(evaluationData) {
         leadName,
         teacherId,
         teacherName,
+        lastAppointmentDate,
+        lastServiceName,
         averageRating: recalculatedAverage,
         percentage,
         updatedCells: result.data.updates.updatedCells
