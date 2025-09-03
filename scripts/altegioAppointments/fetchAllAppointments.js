@@ -95,7 +95,7 @@ async function fetchAppointmentsPage(page, count, startDate, endDate) {
 async function updateAppointmentIfChanged(existingAppointment, appointment) {
   try {
     const currentStatus = appointment.visit_attendance?.toString() || "0";
-    const currentIsDeleted = appointment.deleted === 1;
+    const currentIsDeleted = appointment.deleted;
     
     // Перевіряємо чи змінились ключові поля
     const hasStatusChanged = existingAppointment.status !== currentStatus;
@@ -227,7 +227,7 @@ async function processAppointment(appointment, updateMode = false) {
       endDateTime,
       status: appointment.visit_attendance?.toString() || "0",
       IsTrial: isTrialLesson,
-      isDeleted: appointment.deleted === 1,
+      isDeleted: appointment.deleted,
     };
 
     // Зберігаємо новий запис з обробкою помилок
