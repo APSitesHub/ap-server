@@ -53,6 +53,7 @@ const feedbackRouter = require("./routes/feedback");
 const vacationRouter = require("./routes/vacation");
 const serviceFeedbackRouter = require("./routes/serviceFeedback");
 const appointmentsRouter = require("./routes/appointments");
+const teacherEvaluationRouter = require("./routes/teacherEvaluation");
 
 const app = express();
 
@@ -131,6 +132,7 @@ app.use("/pedagogium-timetable", pedagogiumTimetable);
 app.use("/location", locationRoutes);
 app.use("/notifications", notificationRoutes);
 app.use("/feedback", feedbackRouter);
+app.use("/teacher-evaluation", teacherEvaluationRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: "Not found" });
