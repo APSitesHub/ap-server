@@ -126,7 +126,7 @@ const postLead = async (req, res, _) => {
       ],
        _embedded: {
         tags:
-          !req.headers.origin.includes("academy.") &&
+          req.headers.origin && !req.headers.origin.includes("academy.") &&
           (req.body.utm_content ||
             req.body.utm_medium ||
             req.body.utm_campaign ||
@@ -146,7 +146,7 @@ const postLead = async (req, res, _) => {
                 { name: req.body.utm_content },
                 { name: req.body.fbclid },
               ]
-            : !req.headers.origin.includes("academy.")
+            : !req.headers.origin || !req.headers.origin.includes("academy.")
             ? [{ name: "Лід з сайту, органіка" }, { name: req.body.tag }]
             : req.body.tag
             ? [{ name: "Альтернативне джерело" }, { name: req.body.tag }]
