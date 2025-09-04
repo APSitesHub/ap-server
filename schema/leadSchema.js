@@ -39,6 +39,7 @@ const leadConfernceSchema = Joi.object({
   utm_term: Joi.string().empty(""),
   utm_referrer: Joi.string().empty(""),
   referrer: Joi.string().empty(""),
+  referral: Joi.string().optional().empty(""),
   gclientid: Joi.string().empty(""),
   gclid: Joi.string().empty(""),
   fbclid: Joi.string().empty(""),
@@ -130,6 +131,8 @@ const leadCertificateSchema = Joi.object({
   work: Joi.string().required(),
   job: Joi.string().required(),
   email: Joi.string().email().required(),
+  referral: Joi.string().optional().empty(""),
+
 });
 
 const leadFeedbackSchema = Joi.object({
@@ -159,7 +162,8 @@ const leadEventSchema = Joi.object({
   utm_source: Joi.string().empty(""),
   utm_term: Joi.string().empty(""),
   utm_referrer: Joi.string().empty(""),
-  referrer: Joi.string().empty(""),
+  referrer: Joi.string().optional().empty(""),
+  referral: Joi.string().optional().empty(""),
   gclientid: Joi.string().empty(""),
   gclid: Joi.string().empty(""),
   fbclid: Joi.string().empty(""),
