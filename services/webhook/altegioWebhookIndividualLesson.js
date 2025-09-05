@@ -7,6 +7,8 @@ const {
   newAppointment,
   updateAppointment,
 } = require("../altegio/altegioAppointmentsServices");
+const getCRMLead = require("../crmGetLead");
+const getCRMUser = require("../crmGetUser");
 
 // Ід сервісів для індивідуальних уроків. За ними генеруються лінки для Altegio
 const IndividualServicesList = [
@@ -65,6 +67,26 @@ function parseUserName(userName) {
     leadId,
     leadName: nameParts.join(" "),
   };
+}
+
+// Функція для отримання відповідального менеджера
+async function getResponsibleManager(leadId) {
+  try {
+    if (!leadId) return 'unknown';
+    
+    // Отримуємо ліда з CRM
+    const lead = await getCRMLead(leadId);
+    if (!lead || !lead.responsible_user_id) return 'unknown';
+    
+    // Отримуємо дані користувача (менеджера)
+    const user = await getCRMUser(lead.responsible_user_id);
+    if (!user || !user.name) return 'unknown';
+    
+    return user.name;
+  } catch (error) {
+    console.error("Error getting responsible manager:", error);
+    return 'unknown';
+  }
 }
 
 // Webhook обробник для Altegio
@@ -129,6 +151,8 @@ const altegioWebhookIndividualLesson = async (req, res) => {
             status: visit_attendance,
           });
         }
+
+        
       } catch (e) {
         console.error(e);
       }
@@ -142,6 +166,9 @@ const altegioWebhookIndividualLesson = async (req, res) => {
         }
         const roomLink = await prepareLessonRoom(teacher);
 
+        // Отримуємо відповідального менеджера
+        const responsibleManager = await getResponsibleManager(leadId);
+
         const appointment = {
           id: data.id,
           staff_id: data.staff_id,
@@ -150,7 +177,7 @@ const altegioWebhookIndividualLesson = async (req, res) => {
           seance_length: data.seance_length,
           client: data.client,
         };
-        await updateIndividualLesson(appointment, roomLink, teacher);
+        await updateIndividualLesson(appointment, roomLink, teacher, data.comment, responsibleManager);
 
         return res.status(200).json({
           message: "Individual lesson booked successfully",
@@ -199,6 +226,10 @@ const altegioWebhookIndividualLesson = async (req, res) => {
       }
 
       const roomLink = await prepareLessonRoom(teacher);
+      
+      // Отримуємо відповідального менеджера
+      const responsibleManager = await getResponsibleManager(leadId);
+      
       const appointment = {
         id: data.id,
         staff_id: data.staff_id,
@@ -207,7 +238,7 @@ const altegioWebhookIndividualLesson = async (req, res) => {
         seance_length: data.seance_length,
         client: data.client,
       };
-      await updateIndividualLesson(appointment, roomLink, teacher, data.comment);
+      await updateIndividualLesson(appointment, roomLink, teacher, data.comment, responsibleManager);
     }
 
     if (status === "delete") {
@@ -235,14 +266,19 @@ const altegioWebhookIndividualLesson = async (req, res) => {
   }
 };
 
-async function updateIndividualLesson(appointment, roomLink, teacher, prevComment) {
+async function updateIndividualLesson(appointment, roomLink, teacher, prevComment, responsibleManager) {
   if (prevComment && prevComment.includes('Посилання на урок:')) {
     return;
   }
 
+  // Додаємо інформацію про відповідального менеджера, якщо він є
+  const managerInfo = responsibleManager 
+    ? `\nВідповідальний менеджер: ${responsibleManager}\n`
+    : '';
+
   const updatedAppointmemtBody = {
     ...appointment,
-    comment: `${prevComment}
+    comment: `${prevComment}${managerInfo}
 
 Посилання на урок: ${roomLink}
 
