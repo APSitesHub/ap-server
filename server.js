@@ -378,7 +378,7 @@ const startServer = async () => {
       console.log(`Database connection successful on port ${process.env.PORT}`);
       console.log(`Run with environment ${process.env.NODE_ENV.toUpperCase()}`);
 
-      if (process.env.NODE_ENV === "production") {
+      if (process.env.NODE_ENV === "production" && bot) {
         try {
           const res = await bot.setWebhook(
             `https://ap-server-8qi1.onrender.com/viber/webhook`
@@ -391,11 +391,13 @@ const startServer = async () => {
         } catch (webhookErr) {
           console.error("Error: Viber bot webhook failed:", webhookErr);
         }
+      } else {
+        console.warn("Viber bot is not running");
       }
     });
   } catch (err) {
     console.log(`Failed to launch application with an error: "${err.message}"`);
-    process.exit(1);
+    throw err;
   }
 };
 
